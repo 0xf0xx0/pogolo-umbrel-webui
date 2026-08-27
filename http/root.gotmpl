@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>/pogolo - decentralize or die/</title>
+        <link href="/root.css" rel="stylesheet" type="text/css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <div id="pogolo-status">
+            <div><h2>Gophers:</h2><p>{{.GopherCount}}</p></div>
+            <div><h2>Uptime:</h2><p>{{.Uptime}}</p></div>
+            <div><h2>Total Hashrate:</h2><p>{{.Hashrate}}</p></div>
+            <div><h2>Best Difficulty:</h2><p>{{.BestDiff}}</p> {{/* by: {{.bestDiffAchiever}}? */}}</div>
+        </div>
+        <div>
+            <div>
+                <p>{{.Result}}</p>
+            </div>
+            <form method="post">
+                <h2>Configuration</h2>
+                 <div>
+                    <label for="tag">
+                        pool tag, customize it! add your swarm stats and a message, like '/pogolo on Umbrel - gamma x1 - hello, bitcoin! - decentralize or die/'
+                    </label>
+                    <input
+                        id="tag"
+                        name="tag"
+                        type="text"
+                        maxlength="86"
+                        spellcheck="false"
+                        placeholder="{{.Tag}}"
+                        value="{{.Tag}}"
+                        size="32"
+                    />
+                 </div>
+
+                <div>
+                    <label for="sv1Password">pool password, required from sv1 clients if set</label>
+                    <input
+                        id="sv1Password"
+                        name="sv1Password"
+                        type="text"
+                        maxlength="32"
+                        spellcheck="false"
+                        placeholder="{{.Sv1Password}}"
+                        value="{{.Sv1Password}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="poolAddr">default on-chain address to mine to if not provided by client</label>
+                    <input
+                        id="poolAddr"
+                        name="poolAddr"
+                        type="text"
+                        maxlength="62"
+                        pattern="^(?:1|3|bc1(?:q|p))\w+"
+                        spellcheck="false"
+                        placeholder="{{.PoolAddress}}"
+                        value="{{.PoolAddress}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="defaultDiff">default target difficulty if not suggested by client</label>
+                    <input
+                        id="defaultDiff"
+                        name="defaultDiff"
+                        type="number"
+                        min="1"
+                        max="1000000000"
+                        placeholder="{{.DefaultDifficulty}}"
+                        value="{{.DefaultDifficulty}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="jobInterval">how often to send new work to clients, in seconds</label>
+                    <input
+                        id="jobInterval"
+                        name="jobInterval"
+                        type="number"
+                        min="15"
+                        max="1200"
+                        placeholder="{{.JobInterval}}"
+                        value="{{.JobInterval}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="targetShareInterval">how often we want shares on average, in seconds</label>
+                    <input
+                        id="targetShareInterval"
+                        name="targetShareInterval"
+                        type="number"
+                        min="1"
+                        max="1200"
+                        placeholder="{{.TargetShareInterval}}"
+                        value="{{.TargetShareInterval}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="en2Size">extranonce2 size in bytes, usually shouldnt be touched</label>
+                    <input
+                        id="en2Size"
+                        name="en2Size"
+                        type="number"
+                        min="1"
+                        max="8"
+                        placeholder="{{.Extranonce2Size}}"
+                        value="{{.Extranonce2Size}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="versionBits">version bits as int32, ORed with the template version</label>
+                    <input
+                        id="versionBits"
+                        name="versionBits"
+                        type="number"
+                        min="-21247483648"
+                        max="21247483647"
+                        placeholder="{{.BIPVersionBits}}"
+                        value="{{.BIPVersionBits}}"
+                    />
+                </div>
+
+                <div>
+                    <label for="ignoreSuggDiff">ignore the client-suggested difficulty</label>
+                    <input
+                        id="ignoreSuggDiff"
+                        name="ignoreSuggDiff"
+                        type="checkbox"
+                        {{if .IgnoreSuggDiff}}checked{{end}}
+                    />
+                </div>
+
+                <div>
+                    <label for="disableVarDiff">disable automatic difficulty adjustment</label>
+                    <input
+                    id="disableVarDiff"
+                    name="disableVarDiff"
+                    type="checkbox"
+                    {{if .DisableVarDiff}}checked{{end}}
+                    />
+                </div>
+                <input type="submit" value="Update Config" />
+            </form>
+        </div>
+
+        {{.Injected}}
+    </body>
+</html>

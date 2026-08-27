@@ -1,0 +1,47 @@
+/*
+    a lot of the styling mooched off of umbrel-bitcoins styling
+*/
+:root {
+    --radius: 0.625rem;
+}
+html, body {
+    background-color: #262638;
+    color: #acbcb8;
+    font-family: sans-serif;
+    /*font-family: 'Iosevka', 'Fira Code', sans-serif*/
+}
+input,
+label {
+    display: block;
+    color: inherit;
+    background-color: inherit;
+    border-radius: var(--radius);
+}
+
+#pogolo-status {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 1rem;
+}
+
+form > input[type="submit"], form > h2 {
+    grid-column: 1 / span 2;
+}
+
+input[type="text"] {
+    width: 100%;
+}
+input[type="number"] {
+    width: 25%;
+}
+
+form > h2 {
+    border-radius: var(--radius);
+}
