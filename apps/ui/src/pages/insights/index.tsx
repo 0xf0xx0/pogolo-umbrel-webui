@@ -8,7 +8,8 @@ import StatSummary from './StatSummary'
 export default function InsightsPage() {
 	return (
 		<div className='flex flex-col gap-10 pb-26'>
-			<StatSummary />
+            <StatSummary />
+			{/* TODO(claude): replace with grid of currently connected clients and their stats, as reported by pogolos api */}
 			<BlockRewardsChart />
 			<BlockSizeChart />
 			<FeeRateChart />

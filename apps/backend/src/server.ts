@@ -11,14 +11,17 @@ import routes from './routes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+/// TODO(claude): no ensuring needed, pogolo takes one config file
 // Ensure that the required data directories exist before we start
 await ensureDirs()
-
+/// TODO(claude): strip manager down to use pogolo
 // Start bitcoind without blocking server start
 bootBitcoind().catch((error) => {
 	bitcoind.setLastError(error as Error) // record for /status
 	app.log.error(error, 'Bitcoind bootstrap failed.')
 })
+
+/// TODO(claude): leave the rest of this untouched outide of changing bitcoin mentions to pogolo
 
 // Create the HTTP server and register the routes
 const app = Fastify({logger: true})

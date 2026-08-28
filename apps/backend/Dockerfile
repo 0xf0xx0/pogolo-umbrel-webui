@@ -10,6 +10,8 @@
 #  – compiled shared libs (libs/settings, libs/shared-types)
 #  – Bitcoin Core binaries
 
+### TODO(claude): only use the pogolo image at 0xf0xx0/pogolo:v1.1.4-hotfix@sha256:0fb1d4696d4456ad4d5f44dae8f75fe959ea1200aac5af88ceefe289f7dfba4a
+### OR allow for pogolo to be in the same compose file (preferable)
 ###########################################
 # Bitcoin Core
 ###########################################

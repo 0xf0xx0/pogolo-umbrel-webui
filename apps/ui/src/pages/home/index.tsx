@@ -21,6 +21,7 @@ export default function HomePage() {
 	const {data: status, isError, isLoading: isStatusLoading} = useBitcoindStatus()
 	const {data: syncStatus, isLoading} = useSyncStatus()
 
+	/// TODO(claude): no globe
 	// Responsive Globe sizing
 	const [globeSize, setGlobeSize] = useState(650)
 
@@ -52,6 +53,7 @@ export default function HomePage() {
 	let syncSubtitle: React.ReactNode | null = null
 	let dialogContent: {title: string; description: string} | null = null
 
+	/// TODO(claude): remove sync stages
 	// Good explanations from Peter Wuille on sync stages:
 	// - https://bitcoin.stackexchange.com/questions/121292/how-does-block-synchronization-work-in-bitcoin-core-today
 	// - https://bitcoin.stackexchange.com/questions/76018/how-does-headers-first-prevent-disk-fill-attack/121235#121235
@@ -185,7 +187,8 @@ export default function HomePage() {
 				</CardContent>
 			</Card>
 
-			{/* Blocks — horizontally scrollable on mobile */}
+            {/* Blocks — horizontally scrollable on mobile */}
+			{/*  TODO(claude): switch to pogolo foundBlocks */}
 			<div className='w-full mt-4'>
 				<span className='text-white/50 text-[14px] font-[400] ml-4'>Latest Blocks</span>
 				<HorizontalFadeScroll>

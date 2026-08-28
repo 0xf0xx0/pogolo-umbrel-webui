@@ -3,7 +3,8 @@ import {ensureConfig} from '../config/config.js'
 
 import type {BitcoindVersion, BitcoindStatus, BitcoindLifecycleResponse, ExitInfo} from '#types'
 import type WebSocket from 'ws'
-
+/// TODO(claude): add websocket stdout+stderr log stream
+/// also centralize /api/v1/info call here
 // Single bitcoind manager instance that is used throughout the backend
 export const bitcoind = new BitcoindManager()
 

@@ -1,5 +1,6 @@
 // TODO: break out some config-helpers into a separate file
 
+/// TODO(claude): strip for pogolo schema, write toml
 import path from 'node:path'
 import {createHmac, randomBytes} from 'node:crypto'
 import fse from 'fs-extra'

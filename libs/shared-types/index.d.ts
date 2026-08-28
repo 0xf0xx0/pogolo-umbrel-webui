@@ -1,7 +1,8 @@
 // Shared type declarations from the backend and ui
+/// TODO(claude): strip down for pogolo
 
 export type BitcoindVersion = {
-	implementation: string
+	implementation: string /// TODO(claude): unneeded, just version
 	version: string
 }
 
@@ -28,6 +29,7 @@ export type ExitInfo = {
 	message: string
 }
 
+/// TODO(claude): peer info unneeded
 export type PeerCount = {
 	total: number
 	byNetwork: Record<string, {inbound: number; outbound: number; total: number}>
@@ -62,7 +64,7 @@ export type PeerLocationsResponse = {
 	userLocation: [number, number]
 	peers: PeerLocation[]
 }
-
+/// TODO(claude): tx/block/sync unneeded
 export type RawTransaction = {
 	txid: string
 	fee?: number // fee in BTC (not available for coinbase)
@@ -121,6 +123,7 @@ export type Stats = {
 	uptimeSec: number // seconds since bitcoind started (0 if down)
 }
 
+/// TODO(claude): reduce to just local
 export type ConnectionDetails = {
 	p2p: {
 		tor: {

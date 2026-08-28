@@ -1,3 +1,4 @@
+/// TODO(claude): remove
 // Block cache and data pipeline.
 //
 // A single in-memory cache of up to 200 Block objects serves all consumers

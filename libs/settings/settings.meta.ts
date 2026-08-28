@@ -1,9 +1,12 @@
 // This settings metadata file is used as a single source of truth for deriving the following:
+/// TODO(claude): convert to pogolo toml
+
 // - validation schema per Bitcoin Core version (settings.schema.ts)
 // - default settings values per Bitcoin Core version
 // - The frontend settings page (React form inputs, descriptions, tool-tips, etc.)
 // To add a new bitcoin.conf option, just add a new block to the `settingsMetadata` object and check that it is being written to the conf file correctly.
 
+/// TODO(claude): only one pogolo version, the one bundled in the dockerfile
 // Available Bitcoin Core versions
 // IMPORTANT:
 // - Any version added here needs to be added in the Dockerfile
@@ -84,6 +87,23 @@ export type VersionedOption = Option & {
 	removedIn?: BitcoinCoreVersion // exclusive
 	versionOverrides?: Partial<Record<BitcoinCoreVersion, VersionOverrides>>
 }
+
+/// TODO(claude): pogolo settings schema as go struct:
+/*
+type Pogolo struct {
+	Sv1Password         string  `toml:"password" comment:"optional, required from sv1 clients if set"`
+	Tag                 string  `toml:"tag" comment:"will be replaced by default tag if too long (about 86 chars)\ncustomize it! add your swarm stats, like\n'/pogolo - gamma x1 - decentralize or die/'"`
+	PoolAddress         string  `toml:"pool_address" comment:"default on-chain address to mine to if not provided by client"`
+	DefaultDifficulty   float64 `toml:"default_difficulty" comment:"minimum 0.16"`
+	JobInterval         uint64  `toml:"job_interval" comment:"how often to send new work to clients, in seconds"`
+	TargetShareInterval uint64  `toml:"target_share_interval" comment:"how often we want shares on average, in seconds"`
+
+	ExtraNonce2Size uint16 `toml:"extranonce2_size" comment:"extranonce2 size in bytes, usually shouldnt be touched"`
+	BIPVersionBits  int32  `toml:"bip_version_bits" comment:"version bits as int32, ORed with the template version"`
+	IgnoreSuggDiff  bool   `toml:"ignore_suggested_difficulty" comment:"ignore the client-suggested difficulty"`
+	DisableVarDiff  bool   `toml:"disable_vardiff" comment:"disable automatic difficulty adjustment"`
+}
+*/
 
 // NOTE: this is the single source of truth for the settings metadata. Everything is derived from this object (versioned metadata, versioned schema, default values, UI fields, etc).
 // TypeScript infers the type of the object literals below based on the `kind` property.

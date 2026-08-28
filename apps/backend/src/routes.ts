@@ -24,7 +24,9 @@ const configMutationQueue = new PQueue({concurrency: 1})
 
 // We attach a global error handler for all routes (see bottom of this file)
 export default fp(async (app: FastifyInstance) => {
-	const BASE = '/api'
+    const BASE = '/api'
+
+    /// TODO(claude): refactor for pogolo
 
 	// bitcoind manager routes
 	const bitcoindBase = `${BASE}/bitcoind`
@@ -36,6 +38,8 @@ export default fp(async (app: FastifyInstance) => {
 	// app.post(`${bitcoindBase}/restart`, bitcoind.restart)
 	app.get(`${bitcoindBase}/exit-info`, bitcoind.exitInfo)
 
+
+	/// TODO(claude): reduce to a single pogolo info call
 	// rpc routes
 	const rpcBase = `${BASE}/rpc`
 
@@ -94,8 +98,7 @@ export default fp(async (app: FastifyInstance) => {
 	// umbrelOS widget routes
 	const widgetBase = `${BASE}/widget`
 
-	app.get(`${widgetBase}/stats`, widgets.stats)
-	app.get(`${widgetBase}/sync`, widgets.sync)
+	app.get(`${widgetBase}/pool`, widgets.stats)
 
 	// websocket routes
 	// Note: Fastify-Websocket plugin must already be registered via app.register(fastifyWs)
@@ -119,6 +122,7 @@ export default fp(async (app: FastifyInstance) => {
 	// new transactions from bitcoind via zmq
 	app.get(`${wsBase}/transactions`, {websocket: true}, transactions.wsStream)
 
+	/// TODO(claude): we probably want to keep this
 	// bitcoind exit events
 	app.get(`${wsBase}/bitcoind/exit`, {websocket: true}, bitcoind.wsExitStream)
 

@@ -1,3 +1,4 @@
+/// TODO(claude): completely remove migration code
 // This module is responsible for migrating the JSON config from the previous app (umbel-config.json) to this app's equivalent settings.json
 // It will run on first boot after the update and coerce the values to the new schema if needed.
 import path from 'node:path'

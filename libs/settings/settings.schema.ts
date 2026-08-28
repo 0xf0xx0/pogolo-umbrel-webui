@@ -1,6 +1,8 @@
 // This is our validation schema that is derived from the settings metadata and Bitcoin Core version.
 // TODO: Consider adding a `superRefine` to handle cross-field validation.
 
+/// TODO(claude): reduce to pogolo config schema, single version
+
 import {z} from 'zod'
 import {settingsMetadataForVersion, resolveVersion, type SelectedVersion, type Option} from './settings.meta.js'
 

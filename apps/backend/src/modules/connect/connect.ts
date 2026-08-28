@@ -1,5 +1,8 @@
 import type {ConnectionDetails} from '#types'
 
+/// TODO(claude): pogolo only listens on DEVICE_DOMAIN_NAME port 5661
+/// make qr code 'stratum+tcp://$DEVICE_DOMAIN_NAME:5661'
+
 export async function getConnectionDetails(): Promise<ConnectionDetails> {
 	// P2P
 	const p2pPort = process.env['P2P_PORT'] ?? '8333'
