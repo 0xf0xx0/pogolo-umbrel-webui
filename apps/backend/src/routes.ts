@@ -5,12 +5,8 @@ import type {FastifyError, FastifyInstance} from 'fastify'
 import PQueue from 'p-queue'
 import {ZodError} from 'zod'
 
-import * as bitcoind from './modules/bitcoind/bitcoind.js'
-import * as peers from './modules/peers/peers.js'
-import * as blocks from './modules/blocks/blocks.js'
-import * as transactions from './modules/transactions/transactions.js'
-import * as sync from './modules/sync/sync.js'
-import * as stats from './modules/stats/stats.js'
+import * as pogolo from './modules/pogolo/pogolo.js'
+import {wsLogStream} from './modules/pogolo/logs.js'
 import * as connect from './modules/connect/connect.js'
 import * as config from './modules/config/config.js'
 import * as widgets from './modules/widgets/widgets.js'
@@ -19,51 +15,21 @@ import {type SettingsSchema} from '#settings'
 
 const WS_TOKEN = randomBytes(16).toString('hex')
 
-// Config mutations write shared files and restart Bitcoin Core, so run each complete operation sequentially.
+// Config mutations write a shared file, so run each complete operation sequentially.
 const configMutationQueue = new PQueue({concurrency: 1})
 
 // We attach a global error handler for all routes (see bottom of this file)
 export default fp(async (app: FastifyInstance) => {
-    const BASE = '/api'
+	const BASE = '/api'
 
-    /// TODO(claude): refactor for pogolo
+	// pool routes
+	const poolBase = `${BASE}/pool`
 
-	// bitcoind manager routes
-	const bitcoindBase = `${BASE}/bitcoind`
+	app.get(`${poolBase}/status`, pogolo.status)
+	app.get(`${poolBase}/info`, pogolo.info)
 
-	app.get(`${bitcoindBase}/version`, bitcoind.version)
-	app.get(`${bitcoindBase}/status`, bitcoind.status)
-	// app.post(`${bitcoindBase}/start`, bitcoind.start)
-	// app.post(`${bitcoindBase}/stop`, bitcoind.stop)
-	// app.post(`${bitcoindBase}/restart`, bitcoind.restart)
-	app.get(`${bitcoindBase}/exit-info`, bitcoind.exitInfo)
-
-
-	/// TODO(claude): reduce to a single pogolo info call
-	// rpc routes
-	const rpcBase = `${BASE}/rpc`
-
-	app.get(`${rpcBase}/sync`, sync.syncStatus)
-
-	app.get(`${rpcBase}/stats`, stats.summary)
-
-	app.get(`${rpcBase}/peers/info`, peers.peerInfo)
-	app.get(`${rpcBase}/peers/count`, peers.peerCount)
-	app.get(`${rpcBase}/peers/locations`, peers.peerLocations)
-
-	app.get<{Querystring: {limit?: number}}>(
-		`${rpcBase}/blocks`,
-		{
-			schema: {
-				querystring: {
-					type: 'object',
-					properties: {
-						limit: {type: 'integer', minimum: 1, maximum: blocks.MAX_BLOCKS_LIMIT},
-					},
-				},
-			},
-		},
-		(req) => blocks.list(req.query.limit),
+	app.get<{Params: {idOrNickname: string}}>(`${poolBase}/gopher/:idOrNickname`, (req) =>
+		pogolo.gopher(req.params.idOrNickname),
 	)
 
 	// connect routes
@@ -83,16 +49,11 @@ export default fp(async (app: FastifyInstance) => {
 
 	app.post(`${configBase}/restore-defaults`, () => configMutationQueue.add(() => config.restoreDefaults()))
 
-	app.get(`${configBase}/custom-options`, async () => ({
-		lines: await config.getCustomOptions(),
-	}))
+	app.get(`${configBase}/raw`, async () => ({contents: await config.getRawConfig()}))
 
-	app.patch(`${configBase}/custom-options`, async (req) => {
-		const {lines = ''} = req.body as {lines?: string}
-		return configMutationQueue.add(async () => {
-			const savedLines = await config.updateCustomOptions(lines)
-			return {lines: savedLines}
-		})
+	app.patch(`${configBase}/raw`, async (req) => {
+		const {contents = ''} = req.body as {contents?: string}
+		return configMutationQueue.add(async () => ({contents: await config.updateRawConfig(contents)}))
 	})
 
 	// umbrelOS widget routes
@@ -116,15 +77,8 @@ export default fp(async (app: FastifyInstance) => {
 		if ((request.query as {token?: string})?.token !== WS_TOKEN) return reply.code(401).send('Unauthorized')
 	})
 
-	// new blocks from bitcoind via zmq
-	app.get(`${wsBase}/blocks`, {websocket: true}, blocks.wsStream)
-
-	// new transactions from bitcoind via zmq
-	app.get(`${wsBase}/transactions`, {websocket: true}, transactions.wsStream)
-
-	/// TODO(claude): we probably want to keep this
-	// bitcoind exit events
-	app.get(`${wsBase}/bitcoind/exit`, {websocket: true}, bitcoind.wsExitStream)
+	// live pogolo log output
+	app.get(`${wsBase}/logs`, {websocket: true}, wsLogStream)
 
 	// Global error handler
 	// Catches *all* uncaught errors from any route / hook
