@@ -11,6 +11,9 @@ export const POGOLO_DIR = process.env['POGOLO_DIR'] || path.join(REPO_ROOT, 'dat
 // pogolo's config file
 export const POGOLO_CONFIG_TOML = path.join(POGOLO_DIR, 'config.toml')
 
+// pogolo's log file, tailed for the live log stream
+export const POGOLO_LOG = process.env['POGOLO_LOG'] || path.join(POGOLO_DIR, 'pogolo.log')
+
 // Settings that belong to this webui rather than to pogolo
 export const WEBUI_SETTINGS_JSON = path.join(POGOLO_DIR, 'webui-settings.json')
 

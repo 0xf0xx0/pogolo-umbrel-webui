@@ -36,9 +36,7 @@ services:
     volumes:
       - .:/repo # live source for hot reload
       - ./data/__node_modules_linux__:/repo/node_modules # deps cache shared with the ui container
-      - ./data:/data # pogolo config dir
-      # Read-only docker socket, so we can follow the pogolo container's logs.
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data:/data # pogolo config dir + log file
 
     # We install workspaces only when package-lock.json changes (uses hash guard).
     # TODO: handle changes to non-root package.json files.
@@ -66,7 +64,7 @@ services:
     environment:
       # POGOLO SETTINGS
       POGOLO_API_URL: http://10.21.21.9:5662 # pogolo's HTTP API
-      POGOLO_CONTAINER: pogolo # container name we follow logs from
+      POGOLO_LOG: /data/pogolo.log # log file we tail for the live log stream
       POGOLO_DIR: /data # where config.toml lives
       STRATUM_PORT: 5661 # shown in the connect modal
 

@@ -1,26 +1,30 @@
 // Live pogolo log stream.
 //
-// pogolo runs in its own container, so we read its output through the Docker
-// engine API over the mounted docker socket. Lines are kept in a small ring
-// buffer so a newly-connected client immediately sees recent history instead of
-// an empty pane until pogolo next logs something.
+// pogolo runs in its own container and umbrelOS does not expose the docker
+// socket to apps, so we tail the log file it writes to the shared data volume.
+// Lines are kept in a small ring buffer so a newly-connected client immediately
+// sees recent history instead of an empty pane until pogolo next logs something.
 
-import http from 'node:http'
+import fs from 'node:fs'
+import fsp from 'node:fs/promises'
 
 import {ansiToHtml} from '../../lib/ansi-to-html.js'
+import {POGOLO_LOG} from '../../lib/paths.js'
 
 import type WebSocket from 'ws'
 import type {LogLine} from '#types'
 
-const DOCKER_SOCKET = process.env['DOCKER_SOCKET'] || '/var/run/docker.sock'
-const POGOLO_CONTAINER = process.env['POGOLO_CONTAINER'] || 'pogolo'
-
 // Lines retained for replay to newly-connected clients.
 const HISTORY_LIMIT = 500
 
-// Backoff between reconnect attempts when the log stream drops or the container
-// is not up yet.
-const RECONNECT_DELAY_MS = 5000
+// How often we look for new data. The file is on a local volume, so this is a
+// cheap stat; watch() alone is not enough because it misses writes on some
+// bind-mounted filesystems.
+const POLL_INTERVAL_MS = 1000
+
+// Bytes of existing log to replay on startup, so the pane is not empty after a
+// webui restart. Only whole lines within this window are used.
+const BACKFILL_BYTES = 64 * 1024
 
 const history: LogLine[] = []
 const clients = new Set<WebSocket>()
@@ -28,11 +32,23 @@ const clients = new Set<WebSocket>()
 let seq = 0
 let started = false
 
+// Where we have read up to, and what we are reading. Tracking the inode lets us
+// notice when the file is replaced by log rotation rather than appended to.
+let offset = 0
+let inode: number | undefined
+
+// Carry for a trailing partial line between reads
+let pending = ''
+
+// poll() is triggered by both the watcher and the interval. Without this guard
+// two overlapping runs can read the same bytes before either advances `offset`,
+// which shows up as duplicated log lines.
+let polling = false
+let pollAgain = false
+
 function push(line: string) {
-	// The frame parser already strips Docker's 8-byte headers. Drop any stray
-	// control characters (keeping the ESC that starts a colour sequence) plus
-	// trailing whitespace.
-	// eslint-disable-next-line no-control-regex
+	// Drop stray control characters (keeping the ESC that starts a colour
+	// sequence) plus trailing whitespace.
 	const cleaned = line.replace(/[\x00-\x08\x0b-\x1a\x1c-\x1f]/g, '').trimEnd()
 	if (!cleaned) return
 
@@ -51,74 +67,112 @@ function push(line: string) {
 	}
 }
 
-// Docker multiplexes stdout/stderr into 8-byte-framed chunks when the container
-// has no TTY. We parse the frames so we do not emit header bytes as text.
-function createFrameParser(onLine: (line: string) => void) {
-	let buffer = Buffer.alloc(0)
-	let textBuffer = ''
+// Split a chunk into whole lines, buffering any trailing partial line.
+function emitText(text: string) {
+	pending += text
+	const lines = pending.split('\n')
+	// Keep the last (possibly partial) line buffered
+	pending = lines.pop() ?? ''
+	for (const line of lines) push(line)
+}
 
-	const emitText = (text: string) => {
-		textBuffer += text
-		const lines = textBuffer.split('\n')
-		// Keep the last (possibly partial) line buffered
-		textBuffer = lines.pop() ?? ''
-		for (const line of lines) onLine(line)
-	}
+// Read from `offset` to the end of the file.
+async function readNewData(handle: fsp.FileHandle, size: number) {
+	if (size <= offset) return
 
-	return (chunk: Buffer) => {
-		buffer = Buffer.concat([buffer, chunk])
+	const length = size - offset
+	const buffer = Buffer.alloc(length)
+	const {bytesRead} = await handle.read(buffer, 0, length, offset)
+	offset += bytesRead
 
-		// A frame header is 8 bytes: [stream_type, 0,0,0, big-endian length]
-		while (buffer.length >= 8) {
-			const streamType = buffer[0]
-			// Header bytes 1-3 are always zero for real frames. If they are not,
-			// the container is in TTY mode and the stream is raw text.
-			if (streamType > 2 || buffer[1] !== 0 || buffer[2] !== 0 || buffer[3] !== 0) {
-				emitText(buffer.toString('utf8'))
-				buffer = Buffer.alloc(0)
-				return
+	emitText(buffer.subarray(0, bytesRead).toString('utf8'))
+}
+
+// Run one read pass. Never call this directly — go through poll().
+async function readOnce() {
+	let handle: fsp.FileHandle | undefined
+
+	try {
+		handle = await fsp.open(POGOLO_LOG, 'r')
+		const stats = await handle.stat()
+
+		const isNewFile = inode !== undefined && stats.ino !== inode
+		// Truncated in place (e.g. `> pogolo.log`) or rotated to a fresh file
+		const isTruncated = stats.size < offset
+
+		if (isNewFile || isTruncated) {
+			offset = 0
+			pending = ''
+		}
+
+		// First time we have seen this file: skip most of the existing content so
+		// we do not replay an enormous log, but keep a tail for context.
+		if (inode === undefined || isNewFile) {
+			offset = Math.max(0, stats.size - BACKFILL_BYTES)
+			// Drop a partial first line from the middle of the file
+			if (offset > 0) {
+				const probe = Buffer.alloc(BACKFILL_BYTES)
+				const {bytesRead} = await handle.read(probe, 0, BACKFILL_BYTES, offset)
+				const text = probe.subarray(0, bytesRead).toString('utf8')
+				const firstBreak = text.indexOf('\n')
+				if (firstBreak !== -1) offset += firstBreak + 1
 			}
-
-			const length = buffer.readUInt32BE(4)
-			if (buffer.length < 8 + length) break // wait for the rest of the frame
-
-			emitText(buffer.subarray(8, 8 + length).toString('utf8'))
-			buffer = buffer.subarray(8 + length)
 		}
+
+		inode = stats.ino
+
+		await readNewData(handle, stats.size)
+	} catch (error) {
+		// The file may not exist until pogolo first writes to it; just wait.
+		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+			console.error('Failed to read pogolo log:', error)
+		}
+	} finally {
+		await handle?.close()
 	}
 }
 
-function connect() {
-	const request = http.request({
-		socketPath: DOCKER_SOCKET,
-		path: `/containers/${encodeURIComponent(POGOLO_CONTAINER)}/logs?stdout=1&stderr=1&follow=1&tail=${HISTORY_LIMIT}`,
-		method: 'GET',
-	})
+// Serialize read passes. A trigger that arrives mid-read queues exactly one
+// follow-up, so we never miss the write that caused it.
+async function poll(): Promise<void> {
+	if (polling) {
+		pollAgain = true
+		return
+	}
 
-	const retry = () => setTimeout(connect, RECONNECT_DELAY_MS).unref()
-
-	request.on('response', (response) => {
-		if (response.statusCode !== 200) {
-			response.resume() // drain so the socket can be reused
-			retry()
-			return
-		}
-
-		const parse = createFrameParser(push)
-		response.on('data', parse)
-		response.on('end', retry)
-		response.on('error', retry)
-	})
-
-	request.on('error', retry)
-	request.end()
+	polling = true
+	try {
+		do {
+			pollAgain = false
+			await readOnce()
+		} while (pollAgain)
+	} finally {
+		polling = false
+	}
 }
 
-// Begin following the pogolo container's logs. Safe to call more than once.
+// Begin following pogolo's log file. Safe to call more than once.
 export function startLogStream() {
 	if (started) return
 	started = true
-	connect()
+
+	void poll()
+
+	const timer = setInterval(() => void poll(), POLL_INTERVAL_MS)
+	// Never keep the process alive just for log polling
+	timer.unref()
+
+	// watch() gives us near-instant updates when the filesystem supports it;
+	// the interval above is the fallback that guarantees we still catch up.
+	try {
+		const watcher = fs.watch(POGOLO_LOG, () => void poll())
+		watcher.on('error', () => {
+			/* the poll interval keeps working on its own */
+		})
+		watcher.unref()
+	} catch {
+		// File may not exist yet, or the platform may not support watching it.
+	}
 }
 
 export function wsLogStream(socket: WebSocket) {
