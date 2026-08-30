@@ -68,12 +68,17 @@ async function writePogoloConfig(patch: Record<string, unknown>): Promise<void> 
 	// Start from what is on disk right now so concurrent hand-edits are kept
 	const existing = await readTomlConfig()
 
+	let touched = false
 	for (const [settingKey, value] of Object.entries(patch)) {
 		const tomlKey = TOML_KEY_BY_SETTING[settingKey as keyof typeof TOML_KEY_BY_SETTING]
 		// Skip settings that are not pogolo's (webui-only keys)
 		if (!tomlKey) continue
 		existing[tomlKey] = value
+		touched = true
 	}
+
+	// Rewriting the file reformats it, so don't touch it for a webui-only patch
+	if (!touched) return
 
 	await writeWithBackup(POGOLO_CONFIG_TOML, stringifyToml(existing) + '\n')
 }
@@ -81,15 +86,17 @@ async function writePogoloConfig(patch: Record<string, unknown>): Promise<void> 
 async function writeWebuiSettings(patch: Record<string, unknown>): Promise<void> {
 	const existing = await readWebuiSettings()
 
+	let touched = false
 	for (const [key, value] of Object.entries(patch)) {
 		// Only keys we model that are NOT pogolo's belong here
 		if (!(key in settingsMetadata)) continue
 		if (TOML_KEY_BY_SETTING[key as keyof typeof TOML_KEY_BY_SETTING]) continue
 		existing[key] = value
+		touched = true
 	}
 
 	// Nothing webui-owned in this patch, so leave the file alone
-	if (Object.keys(existing).length === 0) return
+	if (!touched) return
 
 	await writeWithBackup(WEBUI_SETTINGS_JSON, JSON.stringify(existing, null, 2) + '\n')
 }
