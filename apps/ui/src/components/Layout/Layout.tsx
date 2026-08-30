@@ -10,9 +10,6 @@ import Dock from './Dock'
 import Background from './Background'
 
 import {cn} from '@/lib/utils'
-import {usePrefetchInsights} from '@/hooks/usePrefetchInsights'
-import {useBitcoindExitSocket} from '@/hooks/useBitcoindExitSocket'
-import {useBlockStream} from '@/hooks/useBlockStream'
 
 // React Router injects the routed page in <Outlet/>.
 export function Layout() {
@@ -25,16 +22,6 @@ export function Layout() {
 	// Map scroll progress of <main/> to a simple fade opacity (0 -> 1 over first ~3% scroll)
 	const {scrollYProgress} = useScroll({container: mainRef})
 	const fadeOpacity = useTransform(scrollYProgress, [0, 0.03], [0, 1])
-
-	// Prefetch data for the insights page on first mount
-	// Fires after the first paint, so it never delays a page's render or its own fetches
-	usePrefetchInsights()
-
-	// Listen for bitcoind exit events so we can show a toast notification if it crashes / has crashed
-	useBitcoindExitSocket()
-
-	// Single WebSocket for real-time block updates — feeds all block query caches
-	useBlockStream()
 
 	// Reset <main/> scroll position on page change
 	// Prevents unwanted scroll position on Settings page when Insights page has been scrolled

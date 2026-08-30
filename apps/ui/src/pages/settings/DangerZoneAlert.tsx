@@ -7,8 +7,8 @@ export default function DangerZoneAlert() {
 			<TriangleAlert className='h-4 w-4' />
 			<AlertTitle className='text-[#EDCE00]'>Danger Zone</AlertTitle>
 			<AlertDescription className='text-[#EDCE00]'>
-				Any changes you make here are not validated. Please ensure that you know what you are doing, and that you
-				understand how changes may impact both your Bitcoin node and any apps or wallets that rely on it.
+				Changes you make here are written straight to pogolo's config file. Please ensure that you know what you are
+				doing, and that you understand how changes may impact your pool and the miners connected to it.
 			</AlertDescription>
 		</Alert>
 	)

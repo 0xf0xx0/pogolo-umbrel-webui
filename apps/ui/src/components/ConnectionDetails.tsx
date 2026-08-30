@@ -1,12 +1,10 @@
 import {useState} from 'react'
 import QrSvg from '@wojtekmaj/react-qr-svg'
 import copy from 'copy-to-clipboard'
-import {Copy, TriangleAlert, LockKeyhole, X as XIcon} from 'lucide-react'
-import {motion, AnimatePresence} from 'framer-motion'
+import {Copy, X as XIcon} from 'lucide-react'
 
 import UmbrelLogo from '@/assets/umbrel-logo.svg?react'
 
-import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert'
 import {
 	Dialog,
 	DialogClose,
@@ -16,27 +14,18 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import {Tabs, TabsList, TabsTrigger, TabsContent} from '@/components/ui/tabs'
 import {Button} from '@/components/ui/button'
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 
 import WalletIcon from '@/assets/wallet.svg?react'
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
-import FadeScrollArea from '@/components/shared/FadeScrollArea'
 
-import type {ConnectionDetails as ConnectionDetailsType} from '#types'
 import {useConnectionDetails} from '@/hooks/useConnectionDetails'
 
 export default function ConnectionDetails() {
 	const {data} = useConnectionDetails()
 
-	const [tab, setTab] = useState<'p2p' | 'rpc' | 'electrum'>('electrum')
-	const [net, setNet] = useState<'tor' | 'local'>('tor')
-
-	// get specific details based on the tab and network
-	// gracefully handle no data
-	const details = data?.[tab === 'electrum' ? 'rpc' : tab]?.[net] ?? {}
-	const conn = details as Partial<ConnectionDetailsType['rpc']['tor']>
+	const conn = data?.stratum.local
 
 	return (
 		<Dialog>
@@ -48,7 +37,7 @@ export default function ConnectionDetails() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[768px]'
+				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[520px]'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
@@ -61,111 +50,31 @@ export default function ConnectionDetails() {
 					<DialogTitle className='font-outfit text-white text-[20px] font-[400] text-left'>
 						<div className='flex items-center gap-2'>
 							<WalletIcon className='w-5 h-5 text-white' />
-							Connect to Bitcoin Node
+							Connect a miner
 						</div>
 					</DialogTitle>
 					<DialogDescription className='text-white/60 text-left text-[13px]'>
-						Choose how your wallet talks to your own node—for full privacy and trustless verification without relying on
-						third-party servers.
+						Point your miner at this address to start mining to your own pool. Most miners take the URL as-is; some
+						want the host and port in separate fields.
 					</DialogDescription>
 				</DialogHeader>
 
-				<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'p2p' | 'rpc' | 'electrum')}>
-					<div className='relative w-full after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-white/20'>
-						<TabsList className='relative flex bg-transparent rounded-none h-auto p-0 gap-1 z-10 w-max'>
-							<TabsTrigger
-								value='electrum'
-								className='relative text-[12px] bg-transparent border-none data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=inactive]:text-white/60 focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-white/80 transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-white'
-							>
-								Electrum
-							</TabsTrigger>
-							<TabsTrigger
-								value='rpc'
-								className='relative text-[12px] bg-transparent border-none data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=inactive]:text-white/60 focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-white/80 transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-white'
-							>
-								RPC Details
-							</TabsTrigger>
-							<TabsTrigger
-								value='p2p'
-								className='relative text-[12px] bg-transparent border-none data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=inactive]:text-white/60 focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-white/80 transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-white'
-							>
-								P2P Details
-							</TabsTrigger>
-						</TabsList>
+				<div className='space-y-4 mt-2'>
+					<div className='bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D] p-5 rounded-xl'>
+						<QR value={conn?.uri} />
 					</div>
 
-					<FadeScrollArea className='h-[min(480px,calc(90vh-200px))]'>
-						<div className='space-y-4 mt-4 flex'>
-							{/* Electrum tab with app install instructions */}
-							<TabsContent value='electrum' className='space-y-4 mt-0 min-h-[360px]'>
-								<div className='space-y-4'>
-									<div className=''>
-										<p className='text-white/60 text-[13px] font-[400]'>
-											An Electrum server is the most widely supported way to connect a wallet to your own node.
-										</p>
-									</div>
+					<div className='divide-y divide-white/6 overflow-hidden rounded-xl w-full h-fit bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
+						<Field label='URL' value={conn?.uri} />
+						<Field label='Host' value={conn?.host} />
+						<Field label='Port' value={conn?.port?.toString()} />
+					</div>
 
-									<div className='divide-y divide-white/6 overflow-hidden rounded-xl bg-white/6'>
-										<div className='px-4 py-6 space-y-4'>
-											<div>
-												<h5 className='text-white/80 text-[14px] font-[500] mb-2'>To get up and running:</h5>
-												<ol className='text-white/70 text-[13px] font-[400] space-y-2 list-decimal list-inside'>
-													<li>
-														Install an Electrum server app (e.g., Electrs) on your Umbrel device from the umbrelOS App
-														Store.
-													</li>
-													<li>Wait while it syncs and builds its index (this can take a few hours the first time).</li>
-													<li>
-														Connect your wallet: once the server is synced, add the details shown in the app to your
-														wallet's custom electrum server option.
-													</li>
-												</ol>
-												<p className='text-white/70 text-[13px] font-[400] mt-2'>
-													That's it—no credentials needed, and your wallet now gets fast, private balance and
-													transaction updates from your own node.
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</TabsContent>
-
-							{/* RPC tab */}
-							<TabsContent value='rpc' className='mt-0 min-h-[360px]'>
-								<div className='flex flex-col sm:flex-row gap-4'>
-									<ConnectionTypeAndQrCard net={net} setNet={setNet} conn={conn} />
-									{net === 'local' && (
-										<div className='sm:hidden'>
-											<LocalRPCAlert net={net} />
-										</div>
-									)}
-									<div className='divide-y divide-white/6 overflow-hidden rounded-xl w-full h-fit bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
-										<Field label='Username' value={conn.username} />
-										<Field label='Password' value={conn.password} />
-										<Field label='Host' value={conn.host} />
-										<Field label='Port' value={conn.port?.toString()} />
-									</div>
-								</div>
-								{net === 'local' && (
-									<div className='hidden sm:block mt-4'>
-										<LocalRPCAlert net={net} />
-									</div>
-								)}
-							</TabsContent>
-
-							{/* P2P tab */}
-							<TabsContent value='p2p' className='mt-0 min-h-[360px]'>
-								<div className='flex flex-col sm:flex-row gap-4'>
-									<ConnectionTypeAndQrCard net={net} setNet={setNet} conn={conn} />
-									<div className='divide-y divide-white/6 overflow-hidden rounded-xl w-full h-fit bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
-										<Field label='Host' value={conn.host} />
-										<Field label='Port' value={conn.port?.toString()} />
-									</div>
-								</div>
-							</TabsContent>
-						</div>
-					</FadeScrollArea>
-				</Tabs>
+					<p className='text-white/50 text-[12px] font-[400]'>
+						Set the worker/username to the on-chain address you want to be paid at. If you leave it blank, the pool
+						address from Settings is used instead.
+					</p>
+				</div>
 			</DialogContent>
 		</Dialog>
 	)
@@ -190,11 +99,8 @@ function Field({label, value}: {label: string; value?: string}) {
 
 			<div className='flex min-w-0 items-center justify-end gap-2'>
 				{/* show an em-dash when no data */}
-				<span
-					className='min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-white/60'
-					title={value}
-				>
-					{value}
+				<span className='min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-white/60' title={value}>
+					{value ?? '—'}
 				</span>
 
 				<Popover open={open} onOpenChange={setOpen}>
@@ -229,7 +135,7 @@ function Field({label, value}: {label: string; value?: string}) {
 // Increasing the `level` (error correction) can help.
 function QR({value}: {value?: string}) {
 	if (!value) {
-		return <div className='flex h-[196px] w-[196px] m-auto mb-4 items-center rounded-md bg-white/5' />
+		return <div className='flex h-[196px] w-[196px] m-auto items-center rounded-md bg-white/5' />
 	}
 
 	return (
@@ -265,91 +171,5 @@ function QR({value}: {value?: string}) {
         }
       `}</style>
 		</div>
-	)
-}
-
-function ConnectionTypeAndQrCard({
-	net,
-	setNet,
-	conn,
-}: {
-	net: string
-	setNet: (v: 'tor' | 'local') => void
-	conn: ConnectionDetailsType['rpc']['tor']
-}) {
-	return (
-		<div className='bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D] p-5 rounded-xl'>
-			<h3 className='text-white/60 text-[12px] font-[400] mb-2 text-center'>Connection Type</h3>
-			<Tabs value={net} onValueChange={(v: string) => setNet(v as 'tor' | 'local')} className='w-[200px] mx-auto mb-3'>
-				<TabsList className='relative flex w-full rounded-md bg-[#121212] backdrop-blur-xl p-1 ring-white/10'>
-					<GradientBorderFromTop />
-
-					<TabsTrigger
-						value='local'
-						className='relative cursor-pointer rounded-md py-2 px-4 text-[12px] font-[400] text-white/60 data-[state=active]:text-white transition-colors data-[state=active]:bg-transparent'
-					>
-						{net === 'local' && (
-							<motion.span
-								layoutId='connection-pill'
-								className='absolute inset-0 -z-10 rounded-sm bg-[#252525]'
-								transition={{type: 'tween', ease: 'easeInOut', duration: 0.2}}
-							>
-								<GradientBorderFromTop />
-							</motion.span>
-						)}
-						Local
-					</TabsTrigger>
-
-					<TabsTrigger
-						value='tor'
-						className='relative cursor-pointer rounded-md py-2 px-4 text-[12px] font-[400] text-white/60 data-[state=active]:text-white transition-colors data-[state=active]:bg-transparent'
-					>
-						{net === 'tor' && (
-							<motion.span
-								layoutId='connection-pill'
-								className='absolute inset-0 -z-10 rounded-sm bg-[#252525]'
-								transition={{type: 'tween', ease: 'easeInOut', duration: 0.2}}
-							>
-								<GradientBorderFromTop />
-							</motion.span>
-						)}
-						Tor
-					</TabsTrigger>
-				</TabsList>
-			</Tabs>
-			<QR value={conn.uri} />
-		</div>
-	)
-}
-
-function LocalRPCAlert({net}: {net: string}) {
-	return (
-		<AnimatePresence>
-			{net === 'local' && (
-				<motion.div
-					initial={{opacity: 0, y: 10}}
-					animate={{opacity: 1, y: 0}}
-					exit={{opacity: 0, y: -10}}
-					transition={{duration: 0.25}}
-					className='flex flex-col gap-3'
-				>
-					<Alert className='bg-[#EDCE0017] text-[#EDCE00] border-none'>
-						<TriangleAlert className='h-4 w-4' />
-						<AlertDescription className='text-[#EDCE00]'>
-							Using the Local network option sends your RPC username & password unencrypted over the network (e.g., café
-							Wi-Fi). To proceed, you must manually allow your wallet’s IP in the node’s RPC settings, and avoid
-							untrusted networks.
-						</AlertDescription>
-					</Alert>
-
-					<Alert className='bg-[#00BFA317] text-[#00BFA3] border-none'>
-						<LockKeyhole className='h-4 w-4' />
-						<AlertDescription className='text-[#00BFA3]'>
-							Apps on the same Umbrel device are safe—traffic stays local and never leaves the machine.
-						</AlertDescription>
-					</Alert>
-				</motion.div>
-			)}
-		</AnimatePresence>
 	)
 }

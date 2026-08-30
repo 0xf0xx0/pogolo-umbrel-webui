@@ -1,17 +1,19 @@
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query'
-import {toast} from 'sonner'
 import {api} from '@/lib/api'
 import type {SettingsSchema} from '#settings'
 
-// TODO: set actual cache times. We don't expect settings to change until the user updates them.
 export function useSettings() {
 	return useQuery({
 		queryKey: ['config', 'settings'],
 		queryFn: () => api<SettingsSchema>('/config/settings'),
-		// Tune these to taste
 		staleTime: 30_000,
 		refetchInterval: 30_000,
 	})
+}
+
+// Settings changes alter how the pool serves work, so refresh pool data after a save.
+function invalidatePoolData(qc: ReturnType<typeof useQueryClient>) {
+	qc.invalidateQueries({queryKey: ['pool']})
 }
 
 export function useUpdateSettings() {
@@ -22,22 +24,9 @@ export function useUpdateSettings() {
 		mutationFn: (data: Partial<SettingsSchema>) =>
 			api<SettingsSchema>('/config/settings', {method: 'PATCH', body: data}),
 
-		// Update/invalidate the cache so all components see the new values
 		onSuccess: (fresh: SettingsSchema) => {
 			qc.setQueryData(['config', 'settings'], fresh)
-
-			// clear crash UI
-			qc.setQueryData(['bitcoind', 'exit'], null)
-
-			// clear bitcoin crash toast if it is still showing
-			toast.dismiss('bitcoind-exit')
-
-			// Purge and kickoff background refetches for rpc data
-			qc.removeQueries({queryKey: ['rpc']})
-			qc.invalidateQueries({queryKey: ['rpc']})
-
-			// Invalidate version cache so header updates
-			qc.invalidateQueries({queryKey: ['bitcoind', 'version']})
+			invalidatePoolData(qc)
 		},
 	})
 }
@@ -51,19 +40,32 @@ export function useRestoreDefaults() {
 
 		onSuccess: (fresh: SettingsSchema) => {
 			qc.setQueryData(['config', 'settings'], fresh)
+			invalidatePoolData(qc)
+		},
+	})
+}
 
-			// clear crash UI
-			qc.setQueryData(['bitcoind', 'exit'], null)
+// Raw config.toml, for the advanced editor
+export function useRawConfig() {
+	return useQuery({
+		queryKey: ['config', 'raw'],
+		queryFn: () => api<{contents: string}>('/config/raw'),
+		staleTime: 30_000,
+	})
+}
 
-			// clear bitcoin crash toast if it is still showing
-			toast.dismiss('bitcoind-exit')
+export function useUpdateRawConfig() {
+	const qc = useQueryClient()
 
-			// Purge and kickoff background refetches for rpc data
-			qc.removeQueries({queryKey: ['rpc']})
-			qc.invalidateQueries({queryKey: ['rpc']})
+	return useMutation({
+		mutationFn: (contents: string) =>
+			api<{contents: string}>('/config/raw', {method: 'PATCH', body: {contents}}),
 
-			// Invalidate version cache so header updates
-			qc.invalidateQueries({queryKey: ['bitcoind', 'version']})
+		onSuccess: (fresh) => {
+			qc.setQueryData(['config', 'raw'], fresh)
+			// The file may now disagree with the form, so refetch both
+			qc.invalidateQueries({queryKey: ['config', 'settings']})
+			invalidatePoolData(qc)
 		},
 	})
 }

@@ -170,3 +170,118 @@ body {
 		animation: shimmer-band 3s linear infinite;
 	}
 }
+
+/* Palette for pogolo log output. The backend emits <span class="ansi-*">
+   wrappers; these map them onto colours that stay readable on the dark card. */
+.ansi-log .ansi-black {
+	color: #6b6b6b;
+}
+.ansi-log .ansi-red {
+	color: #f87171;
+}
+.ansi-log .ansi-green {
+	color: #4ade80;
+}
+.ansi-log .ansi-yellow {
+	color: #fbbf24;
+}
+.ansi-log .ansi-blue {
+	color: #60a5fa;
+}
+.ansi-log .ansi-magenta {
+	color: #e879f9;
+}
+.ansi-log .ansi-cyan {
+	color: #22d3ee;
+}
+.ansi-log .ansi-white {
+	color: #e5e5e5;
+}
+.ansi-log .ansi-bright-black {
+	color: #8a8a8a;
+}
+.ansi-log .ansi-bright-red {
+	color: #fca5a5;
+}
+.ansi-log .ansi-bright-green {
+	color: #86efac;
+}
+.ansi-log .ansi-bright-yellow {
+	color: #fde047;
+}
+.ansi-log .ansi-bright-blue {
+	color: #93c5fd;
+}
+.ansi-log .ansi-bright-magenta {
+	color: #f0abfc;
+}
+.ansi-log .ansi-bright-cyan {
+	color: #67e8f9;
+}
+.ansi-log .ansi-bright-white {
+	color: #ffffff;
+}
+
+.ansi-log .ansi-bg-black {
+	background-color: #1a1a1a;
+}
+.ansi-log .ansi-bg-red {
+	background-color: #7f1d1d;
+}
+.ansi-log .ansi-bg-green {
+	background-color: #14532d;
+}
+.ansi-log .ansi-bg-yellow {
+	background-color: #713f12;
+}
+.ansi-log .ansi-bg-blue {
+	background-color: #1e3a8a;
+}
+.ansi-log .ansi-bg-magenta {
+	background-color: #701a75;
+}
+.ansi-log .ansi-bg-cyan {
+	background-color: #164e63;
+}
+.ansi-log .ansi-bg-white {
+	background-color: #d4d4d4;
+	color: #171717;
+}
+.ansi-log .ansi-bg-bright-black {
+	background-color: #404040;
+}
+.ansi-log .ansi-bg-bright-red {
+	background-color: #b91c1c;
+}
+.ansi-log .ansi-bg-bright-green {
+	background-color: #15803d;
+}
+.ansi-log .ansi-bg-bright-yellow {
+	background-color: #a16207;
+}
+.ansi-log .ansi-bg-bright-blue {
+	background-color: #1d4ed8;
+}
+.ansi-log .ansi-bg-bright-magenta {
+	background-color: #a21caf;
+}
+.ansi-log .ansi-bg-bright-cyan {
+	background-color: #0e7490;
+}
+.ansi-log .ansi-bg-bright-white {
+	background-color: #fafafa;
+	color: #171717;
+}
+
+.ansi-log .ansi-bold {
+	font-weight: 600;
+}
+.ansi-log .ansi-dim {
+	opacity: 0.6;
+}
+.ansi-log .ansi-italic {
+	font-style: italic;
+}
+.ansi-log .ansi-underline {
+	text-decoration: underline;
+}

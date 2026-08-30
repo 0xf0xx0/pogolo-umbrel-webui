@@ -4,6 +4,7 @@ import {api} from '@/lib/api'
 export function useWebSocketToken() {
 	return useQuery({
 		queryKey: ['ws-token'],
-		queryFn: () => api<string>('/ws/token'),
+		queryFn: () => api<{token: string}>('/ws/token'),
+		staleTime: Infinity, // the token is fixed for the lifetime of the backend
 	})
 }
