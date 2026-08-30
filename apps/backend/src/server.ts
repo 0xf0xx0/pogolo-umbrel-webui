@@ -41,8 +41,8 @@ await app.register(fastifyWs)
 
 // Detect dead WebSocket connections. Without this, a client whose network
 // drops silently (no close frame) leaves a phantom connection that leaks
-// listeners forever — especially on the /ws/bitcoind/exit endpoint which
-// rarely sends data and would never trigger TCP failure detection.
+// listeners forever — especially on a quiet log stream, which can go a long
+// time without sending data and would never trigger TCP failure detection.
 const HEARTBEAT_MS = 30_000
 const aliveClients = new WeakSet<import('ws').WebSocket>()
 
