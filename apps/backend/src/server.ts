@@ -70,6 +70,10 @@ app.register(fastifyStatic, {
 
 await app.register(routes)
 
+app.get('/favicon.ico', function (req, reply) {
+  reply.sendFile('/favicons/android-chrome-192x192.png') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+})
+
 // SPA fallback is last to serve the UI routes
 app.get('/*', (_, reply) => reply.sendFile('index.html'))
 
