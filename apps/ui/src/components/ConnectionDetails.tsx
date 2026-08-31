@@ -3,7 +3,7 @@ import QrSvg from '@wojtekmaj/react-qr-svg'
 import copy from 'copy-to-clipboard'
 import {Copy, X as XIcon} from 'lucide-react'
 
-import UmbrelLogo from '@/assets/umbrel-logo.svg?react'
+import Logo from '@/assets/logo.svg?react'
 
 import {
 	Dialog,
@@ -150,7 +150,7 @@ function QR({value}: {value?: string}) {
 					width={200}
 					height={200}
 					level='Q' // Q = 25% error correction
-					fgColor='#9C4C00' // solid orange fill
+					fgColor='#c1e269' // solid orange fill
 					bgColor='transparent' // transparent background
 					cellClassPrefix='qrPx' // produces .qrPx & .qrPx-filled that we can target with CSS
 					style={{display: 'block', shapeRendering: 'crispEdges'}}
@@ -160,7 +160,7 @@ function QR({value}: {value?: string}) {
 			{/* Umbrel logo overlay */}
 			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 p-2 shadow-md pointer-events-none select-none bg-[#1C1C1C]'>
 				<div className='w-full h-full flex items-center justify-center bg-white/10 rounded-md p-1.5'>
-					<UmbrelLogo className='w-full h-full text-white' />
+					<Logo className='w-full h-full text-white' />
 				</div>
 			</div>
 
@@ -168,7 +168,6 @@ function QR({value}: {value?: string}) {
 			<style>{`
         /* add a lighter-orange outline to each "filled" cell */
         .qrPx-filled {
-          stroke: #FF7E05 !important;
           stroke-width: 0.5px !important;
           stroke-linejoin: miter;
           vector-effect: non-scaling-stroke;
