@@ -101,5 +101,5 @@ services:
     ports:
       - '127.0.0.1:5173:5173' # localhost:5173 for ui
     environment:
-      VITE_API_BASE: http://backend:3000
+      VITE_API_BASE: http://backend:5663
     networks: [devnet]
