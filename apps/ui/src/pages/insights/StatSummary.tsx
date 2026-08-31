@@ -68,9 +68,9 @@ export default function StatSummary() {
 					unit=''
 					description='The number of miners currently connected to your pool. Each connected device counts as one gopher.'
 				/>
-				<Stat
-					label='Best Share'
-					value={difficulty.value}
+                <Stat
+                    label='Best Share'
+                    value={difficulty.value || '—'}
 					unit={difficulty.unit}
 					description={`The highest-difficulty share any of your miners has submitted. A block is found when a share's difficulty is at least the network difficulty, so this is how close your pool has come to finding a block.`}
 				/>

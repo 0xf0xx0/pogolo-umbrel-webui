@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import {Button} from '../../components/ui/button'
-import notFoundImg from '@/assets/404.webp'
+import notFoundImg from '@/assets/404.jpg'
 
 export default function NotFoundPage() {
 	return (
@@ -19,8 +19,8 @@ export default function NotFoundPage() {
 
 				<div className='space-y-3'>
 					<div>
-						<p className='text-5xl md:text-8xl font-bold leading-none tracking-tighter bg-text-gradient bg-clip-text text-transparent'>
-							404
+						<p className='text-3xl md:text-5xl font-bold leading-none tracking-tighter bg-text-gradient bg-clip-text text-transparent'>
+							404 — unfed fops
 						</p>
 						<p className='mt-2 text-sm md:text-lg text-white/60'>Got lost running pogolo?</p>
 					</div>
