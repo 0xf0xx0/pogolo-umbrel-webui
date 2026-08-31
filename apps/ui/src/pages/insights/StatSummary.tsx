@@ -15,13 +15,14 @@ function Stat({
 	value: React.ReactNode
 	unit?: string
 	description?: string
-}) {
+    }) {
+    // color = color ?? 'text-white/80'
 	return (
 		<div className='flex flex-col items-center justify-center gap-2 py-6'>
 			<h3 className='flex items-center gap-1 font-bold text-[15px] font-[300] text-white/30'>
 				{label}
 				<InfoDialog
-					trigger={<InfoIcon className='w-3 h-3 text-white/30 hover:text-white/60 transition-colors' />}
+					trigger={<InfoIcon className='w-3 h-3 text-stone-300/30 hover:text-stone-300/60 transition-colors' />}
 					title={label}
 					description={description || ''}
 				/>
@@ -29,7 +30,7 @@ function Stat({
 
 			<p className='font-bold text-[20px] font-[500] leading-none'>
 				<span className='bg-text-gradient bg-clip-text text-transparent'>{value}</span>
-				{unit && <span className='ml-1 text-[13px] font-[300] text-white/50'>{unit}</span>}
+				{unit && <span className='ml-1 text-[13px] font-[300] text-stone-500/50'>{unit}</span>}
 			</p>
 		</div>
 	)
@@ -49,11 +50,11 @@ export default function StatSummary() {
 				className='
 				h-full grid grid-cols-2 md:grid-cols-4
 				[&>*:nth-child(4n+1)]:bg-transparent
-			[&>*:nth-child(4n+2)]:bg-white/5
-			[&>*:nth-child(4n+3)]:bg-white/5
+			[&>*:nth-child(4n+2)]:bg-stone-400/5
+			[&>*:nth-child(4n+3)]:bg-stone-400/5
 				[&>*:nth-child(4n+4)]:bg-transparent
 				md:[&>*:nth-child(odd)]:bg-transparent
-			md:[&>*:nth-child(even)]:bg-white/5
+			md:[&>*:nth-child(even)]:bg-stone-400/5
 				'
 			>
 				<Stat

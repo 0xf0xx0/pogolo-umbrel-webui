@@ -8,11 +8,12 @@ import {formatHashrate, formatDifficulty, formatUptimeSeconds} from '@/lib/forma
 
 import type {GopherInfo, MiniGopherInfo} from '#types'
 
-function Field({label, value, title}: {label: string; value: string; title?: string}) {
-	return (
+function Field({ label, value, title, color }: { label: string; value: string; title?: string; color?: string }) {
+    color = color ?? 'text-white/80'
+    return (
 		<div className='flex flex-col gap-0.5 min-w-0'>
-			<span className='text-white/40 text-[11px] font-[400]'>{label}</span>
-			<span className='text-white/80 text-[13px] font-[400] truncate' title={title ?? value}>
+			<span className='text-stone-600 text-[11px] font-[400]'>{label}</span>
+			<span className={`text-[13px] font-[400] truncate ${color}`} title={title ?? value}>
 				{value}
 			</span>
 		</div>
@@ -29,35 +30,36 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 	const shares = info ? `${info.sharesAccepted.toLocaleString()} / ${info.sharesRejected.toLocaleString()}` : '—'
 	const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
 	return (
-		<div className='rounded-2xl bg-neutral-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
+		<div className='rounded-2xl bg-stone-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
-				<span className='text-white text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
+				<span className='text-green-400 text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
                     {info?.nickname || mini.extranonce1}
-                    <span className='text-white/40 text-[11px] font-[400] shrink-0'>
+                    <span className='text-green-400/50 text-[11px] font-[400] shrink-0'>
                         {info?.nickname ? ` (${mini.extranonce1})` : ''}
                     </span>
 				</span>
-				<span className='text-white/40 text-[11px] font-[400] shrink-0'>{protocol}</span>
+				<span className='text-stone-600 text-[11px] font-[400] shrink-0'>{protocol}</span>
 			</div>
 
 			<div className='flex items-baseline gap-1'>
-				<span className='text-white text-[20px] font-[500] leading-none'>{hashrate.value}</span>
-				<span className='text-white/50 text-[12px] font-[400]'>{hashrate.unit}</span>
+				<span className='text-green-400 text-[20px] font-[500] leading-none'>{hashrate.value}</span>
+				<span className='text-green-400/50 text-[12px] font-[400]'>{hashrate.unit}</span>
 			</div>
 
 			<div className='grid grid-cols-2 gap-x-3 gap-y-2'>
 				<Field label='User Agent' value={mini.userAgent || '—'} />
 				<Field label='Shares (a/r)' value={shares} />
-				<Field label='Best Share' value={Object.values(bestDiff).join('') || '—'} />
-				<Field label='Target Diff' value={info ? Object.values(formatDifficulty(info.targetDifficulty)).join('') : '—'} />
-				<Field
+				<Field color='text-cyan-400' label='Best Share' value={Object.values(bestDiff).join('') || '—'} />
+				<Field color='text-blue-400' label='Target Diff' value={info ? Object.values(formatDifficulty(info.targetDifficulty)).join('') : '—'} />
+                <Field
+                    color='text-blue-400'
 					label='Avg Share Time'
 					value={info ? formatUptimeSeconds(info.averageShareTime/1000) : '—'}
 				/>
-				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} />
+				<Field color='text-blue-400' label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} />
 			</div>
 
-			{info?.address && <Field label='Address' value={info.address} />}
+			{info?.address && <Field color='text-green-600' label='Address' value={info.address} />}
 		</div>
 	)
 }
