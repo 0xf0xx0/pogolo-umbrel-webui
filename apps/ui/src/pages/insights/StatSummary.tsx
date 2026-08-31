@@ -18,7 +18,7 @@ function Stat({
 }) {
 	return (
 		<div className='flex flex-col items-center justify-center gap-2 py-6'>
-			<h3 className='flex items-center gap-1 font-outfit text-[15px] font-[300] text-white/30'>
+			<h3 className='flex items-center gap-1 font-bold text-[15px] font-[300] text-white/30'>
 				{label}
 				<InfoDialog
 					trigger={<InfoIcon className='w-3 h-3 text-white/30 hover:text-white/60 transition-colors' />}
@@ -27,7 +27,7 @@ function Stat({
 				/>
 			</h3>
 
-			<p className='font-outfit text-[20px] font-[500] leading-none'>
+			<p className='font-bold text-[20px] font-[500] leading-none'>
 				<span className='bg-text-gradient bg-clip-text text-transparent'>{value}</span>
 				{unit && <span className='ml-1 text-[13px] font-[300] text-white/50'>{unit}</span>}
 			</p>

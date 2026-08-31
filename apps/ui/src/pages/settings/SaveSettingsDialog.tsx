@@ -20,7 +20,7 @@ export default function SaveSettingsDialog({open, onOpenChange, onSave}: SaveSet
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl'>
 				<AlertDialogHeader>
-					<AlertDialogTitle className='font-outfit text-white text-[20px] font-[400] text-left'>
+					<AlertDialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
 						Save changes?
 					</AlertDialogTitle>
 					<AlertDialogDescription className='text-white/60 text-left text-[13px] space-y-3'>

@@ -47,7 +47,7 @@ export default function ConnectionDetails() {
 					</button>
 				</DialogClose>
 				<DialogHeader>
-					<DialogTitle className='font-outfit text-white text-[20px] font-[400] text-left'>
+					<DialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
 						<div className='flex items-center gap-2'>
 							<WalletIcon className='w-5 h-5 text-white' />
 							Connect a miner

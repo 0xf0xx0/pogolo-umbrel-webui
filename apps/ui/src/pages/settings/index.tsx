@@ -371,7 +371,7 @@ export default function SettingsCard() {
 						<GradientBorderFromTop />
 						<CardHeader>
 							<div className='flex items-center justify-between'>
-								<CardTitle className='font-outfit text-white text-[20px] font-[400] pt-2'>Settings</CardTitle>
+								<CardTitle className='font-bold text-white text-[20px] font-[400] pt-2'>Settings</CardTitle>
 								<div className='relative max-w-xs mt-2'>
 									<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white' />
 									<Input
@@ -478,7 +478,7 @@ export default function SettingsCard() {
 
 								<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl'>
 									<AlertDialogHeader>
-										<AlertDialogTitle className='font-outfit text-white text-[20px] font-[400] text-left'>
+										<AlertDialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
 											Restore default settings?
 										</AlertDialogTitle>
 										<AlertDialogDescription className='text-white/60 text-left text-[13px] space-y-3'>

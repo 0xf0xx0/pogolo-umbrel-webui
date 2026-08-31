@@ -78,7 +78,7 @@ export default function ClientList() {
 	return (
 		<InsightCard>
 			<CardHeader>
-				<CardTitle className='font-outfit text-white text-[20px] font-[400]'>
+				<CardTitle className='font-bold text-white text-[20px] font-[400]'>
 					Connected Miners
 					{gophers.length > 0 && <span className='text-white/40 text-[15px] font-[300] ml-2'>{gophers.length}</span>}
 				</CardTitle>
