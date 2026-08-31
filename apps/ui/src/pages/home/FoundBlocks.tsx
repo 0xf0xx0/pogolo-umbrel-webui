@@ -36,7 +36,7 @@ export default function FoundBlocks() {
 					<span className='text-white/50 text-[12px] truncate' title={block.gopher}>
 						by {block.gopher}
 					</span>
-					<span className='text-white/40 text-[11px]'>diff {formatDifficulty(block.difficulty)}</span>
+					<span className='text-white/40 text-[11px]'>diff {Object.values(formatDifficulty(block.difficulty)).join('')}</span>
 				</div>
 			))}
 		</div>

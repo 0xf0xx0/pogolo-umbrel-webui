@@ -38,7 +38,8 @@ function Stat({
 export default function StatSummary() {
 	const {data} = usePoolInfo()
 
-	const hashrate = formatHashrate(data?.totalHashrate ?? 0)
+    const hashrate = formatHashrate(data?.totalHashrate ?? 0)
+	const difficulty = formatDifficulty(data?.bestDifficulty ?? 0)
 	const uptimeStr = data && data.uptime > 0 ? formatUptimeSeconds(data.uptime) : '—'
 
 	return (
@@ -64,12 +65,13 @@ export default function StatSummary() {
 				<Stat
 					label='Gophers'
 					value={data?.totalGophers ?? 0}
-					unit='Miners'
+					unit=''
 					description='The number of miners currently connected to your pool. Each connected device counts as one gopher.'
 				/>
 				<Stat
 					label='Best Share'
-					value={formatDifficulty(data?.bestDifficulty ?? 0)}
+					value={difficulty.value}
+					unit={difficulty.unit}
 					description={`The highest-difficulty share any of your miners has submitted. A block is found when a share's difficulty is at least the network difficulty, so this is how close your pool has come to finding a block.`}
 				/>
 				<Stat

@@ -27,7 +27,7 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 	const protocol = protocolVersion === 2 ? 'SV2' : protocolVersion === 1 ? 'SV1' : '—'
 
 	const shares = info ? `${info.sharesAccepted.toLocaleString()} / ${info.sharesRejected.toLocaleString()}` : '—'
-
+	const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
 	return (
 		<div className='rounded-2xl bg-neutral-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
@@ -45,11 +45,11 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 			<div className='grid grid-cols-2 gap-x-3 gap-y-2'>
 				<Field label='User Agent' value={mini.userAgent || '—'} />
 				<Field label='Shares (a/r)' value={shares} />
-				<Field label='Best Share' value={info ? formatDifficulty(info.bestDifficulty) : '—'} />
-				<Field label='Difficulty' value={info ? formatDifficulty(info.targetDifficulty) : '—'} />
+				<Field label='Best Share' value={Object.values(bestDiff).join('') || '—'} />
+				<Field label='Target Diff' value={info ? Object.values(formatDifficulty(info.targetDifficulty)).join('') : '—'} />
 				<Field
 					label='Avg Share Time'
-					value={info && info.averageShareTime > 0 ? `${info.averageShareTime.toFixed(1)}s` : '—'}
+					value={info ? formatUptimeSeconds(info.averageShareTime/100) : '—'}
 				/>
 				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} />
 			</div>

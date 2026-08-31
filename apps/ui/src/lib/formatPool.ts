@@ -13,14 +13,15 @@ export function formatHashrate(megaHashesPerSecond: number): {value: string; uni
 }
 
 // Difficulty is unitless, so large values get an SI-style suffix.
-export function formatDifficulty(difficulty: number): string {
-	if (!Number.isFinite(difficulty) || difficulty <= 0) return '0'
-	if (difficulty >= 1e15) return `${compact.format(difficulty / 1e15)}P`
-	if (difficulty >= 1e12) return `${compact.format(difficulty / 1e12)}T`
-	if (difficulty >= 1e9) return `${compact.format(difficulty / 1e9)}G`
-	if (difficulty >= 1e6) return `${compact.format(difficulty / 1e6)}M`
-	if (difficulty >= 1e3) return `${compact.format(difficulty / 1e3)}K`
-	return compact.format(difficulty)
+/// MAYBE: use suffix as unit?
+export function formatDifficulty(difficulty: number): {value: string; unit: string} {
+	if (!Number.isFinite(difficulty) || difficulty <= 0) return {value: '', unit: ''}
+	if (difficulty >= 1e15) return {value: compact.format(difficulty / 1e15), unit: 'P'}
+	if (difficulty >= 1e12) return {value: compact.format(difficulty / 1e12), unit: 'T'}
+	if (difficulty >= 1e9) return {value: compact.format(difficulty / 1e9), unit: 'G'}
+	if (difficulty >= 1e6) return {value: compact.format(difficulty / 1e6), unit: 'M'}
+	if (difficulty >= 1e3) return {value: compact.format(difficulty / 1e3), unit: 'K'}
+	return {value: compact.format(difficulty), unit: ''}
 }
 
 // pogolo reports uptime in seconds
@@ -29,9 +30,11 @@ export function formatUptimeSeconds(seconds: number): string {
 
 	const days = Math.floor(seconds / 86_400)
 	const hours = Math.floor((seconds % 86_400) / 3600)
-	const minutes = Math.floor((seconds % 3600) / 60)
+    const minutes = Math.floor((seconds % 3600) / 60)
+	seconds = Math.floor(seconds % 60)
 
 	if (days > 0) return `${days} day${days > 1 ? 's' : ''} ${hours} hr`
 	if (hours > 0) return `${hours} hr ${minutes} min`
-	return `${minutes} min`
+	if (minutes > 0) return `${minutes} min ${seconds} sec`
+	return `${seconds} sec`
 }

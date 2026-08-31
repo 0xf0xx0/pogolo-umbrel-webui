@@ -16,13 +16,14 @@ function Stat({label, value, unit}: {label: string; value: string; unit?: string
 export default function PoolStats() {
 	const {data} = usePoolInfo()
 
-	const hashrate = formatHashrate(data?.totalHashrate ?? 0)
+    const hashrate = formatHashrate(data?.totalHashrate ?? 0)
+	const difficulty = formatDifficulty(data?.bestDifficulty ?? 0)
 
 	return (
 		<div className='w-full flex flex-col gap-5 py-2'>
 			<Stat label='Hashrate' value={hashrate.value} unit={hashrate.unit} />
 			<Stat label='Gophers' value={(data?.totalGophers ?? 0).toLocaleString()} />
-			<Stat label='Best Share' value={formatDifficulty(data?.bestDifficulty ?? 0)} />
+			<Stat label='Best Share' value={difficulty.value} unit={difficulty.unit} />
 			<Stat label='Height' value={(data?.blockHeight ?? 0).toLocaleString()} />
 		</div>
 	)
