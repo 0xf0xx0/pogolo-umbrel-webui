@@ -21,10 +21,10 @@ export default function PoolStats() {
 
 	return (
 		<div className='w-full flex flex-col gap-5 py-2'>
-			<Stat label='Hashrate' value={hashrate.value} unit={hashrate.unit} />
+            <Stat label='Total Hashrate' value={hashrate.value || '—'} unit={hashrate.unit} />
 			<Stat label='Gophers' value={(data?.totalGophers ?? 0).toLocaleString()} />
 			<Stat label='Best Share' value={difficulty.value || '—'} unit={difficulty.unit} />
-			<Stat label='Height' value={(data?.blockHeight ?? 0).toLocaleString()} />
+			<Stat label='Height' value={(data?.blockHeight ?? '—').toLocaleString()} />
 		</div>
 	)
 }

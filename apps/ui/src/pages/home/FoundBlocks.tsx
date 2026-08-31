@@ -16,7 +16,7 @@ export default function FoundBlocks() {
 	if (blocks.length === 0) {
 		return (
 			<div className='h-[120px] flex flex-col justify-center px-4'>
-				<span className='text-white/60 text-[14px]'>No blocks found yet</span>
+				<span className='text-white/60 text-[14px]'>No blocks yet!</span>
 				<span className='text-white/40 text-[12px] mt-1'>Blocks your pool mines will show up here.</span>
 			</div>
 		)

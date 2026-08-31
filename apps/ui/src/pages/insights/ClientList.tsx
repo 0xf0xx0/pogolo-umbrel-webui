@@ -49,7 +49,7 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 				<Field label='Target Diff' value={info ? Object.values(formatDifficulty(info.targetDifficulty)).join('') : '—'} />
 				<Field
 					label='Avg Share Time'
-					value={info ? formatUptimeSeconds(info.averageShareTime/100) : '—'}
+					value={info ? formatUptimeSeconds(info.averageShareTime/1000) : '—'}
 				/>
 				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} />
 			</div>
