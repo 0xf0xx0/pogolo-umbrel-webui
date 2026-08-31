@@ -37,7 +37,7 @@ export default function ConnectionDetails() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[520px]'
+				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[40vw]'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
@@ -64,15 +64,17 @@ export default function ConnectionDetails() {
 						<QR value={conn?.uri} />
 					</div>
 
-					<div className='divide-y divide-white/6 overflow-hidden rounded-xl w-full h-fit bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
-						<Field label='URL' value={conn?.uri} />
-						<Field label='Host' value={conn?.host} />
-						<Field label='Port' value={conn?.port?.toString()} />
+					<div className='divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
+						<Field className='col-span-full' label='URL' value={conn?.uri} />
+						<Field className='col-span-4' label='Host' value={conn?.host} />
+						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
+						<Field className='col-span-4' label='Username' value='btcaddress.workername' />
+						<Field className='col-span-2' label='Pass' value={conn?.password || ''} />
 					</div>
 
 					<p className='text-white/50 text-[12px] font-[400]'>
-						Set the worker/username to the on-chain address you want to be paid at. If you leave it blank, the pool
-						address from Settings is used instead.
+						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
+						address from Settings will be used instead.
 					</p>
 				</div>
 			</DialogContent>
@@ -80,7 +82,7 @@ export default function ConnectionDetails() {
 	)
 }
 
-function Field({label, value}: {label: string; value?: string}) {
+function Field({ label, value, className }: { label: string; value?: string; className?: string }) {
 	const blank = !value // true when no data
 	const [open, setOpen] = useState(false)
 
@@ -94,7 +96,7 @@ function Field({label, value}: {label: string; value?: string}) {
 	}
 
 	return (
-		<div className='h-[42px] grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 text-sm'>
+		<div className={`h-[42px] grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 text-sm ${className}`}>
 			<span className='shrink-0 text-white'>{label}</span>
 
 			<div className='flex min-w-0 items-center justify-end gap-2'>
