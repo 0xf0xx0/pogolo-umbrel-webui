@@ -24,7 +24,7 @@ export default function HomePage() {
 				<GradientBorderTopBottom depth='7%' />
 				<CardContent className='flex flex-col md:flex-row px-4 items-center'>
 					{/* Live pogolo log output + running status */}
-					<div className='relative w-full flex-none md:flex-1 h-64 md:h-[375px] rounded-2xl bg-neutral-900/20 border-white/10 border-[0.5px] overflow-hidden'>
+					<div className='relative w-full flex-none md:flex-1 h-64 md:h-[375px] rounded-2xl bg-stone-900/20 border-white/10 border-[0.5px] overflow-hidden'>
 						<GradientBorderFromCorners />
 
 						<LogStream />

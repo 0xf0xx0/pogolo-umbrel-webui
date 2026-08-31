@@ -27,7 +27,7 @@ export default function FoundBlocks() {
 			{blocks.map((block) => (
 				<div
 					key={block.hash}
-					className='shrink-0 w-[180px] rounded-2xl bg-neutral-900/40 border-white/10 border-[0.5px] p-3 flex flex-col gap-1'
+					className='shrink-0 w-[180px] rounded-2xl bg-stone-900/40 border-white/10 border-[0.5px] p-3 flex flex-col gap-1'
 				>
 					<span className='text-white text-[15px] font-[500]'>{block.height.toLocaleString()}</span>
 					<span className='text-white/50 text-[12px]'>
