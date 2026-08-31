@@ -37,7 +37,7 @@ export default function ConnectionDetails() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[40vw]'
+				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[60vw]'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
@@ -59,23 +59,25 @@ export default function ConnectionDetails() {
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-4 mt-2'>
+				<div className='space-y-4 mt-2 grid grid-cols-3 gap-4'>
 					<div className='bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D] p-5 rounded-xl'>
 						<QR value={conn?.uri} />
-					</div>
+                    </div>
 
-					<div className='divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
-						<Field className='col-span-full' label='URL' value={conn?.uri} />
-						<Field className='col-span-4' label='Host' value={conn?.host} />
-						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
-						<Field className='col-span-4' label='Username' value='btcaddress.workername' />
-						<Field className='col-span-2' label='Pass' value={conn?.password || ''} />
-					</div>
+                    <div className='col-span-2 grid grid-rows-4'>
+                        <p className='text-white/50 text-[12px] font-[400]'>
+    						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
+    						address from Settings will be used instead.
+    					</p>
 
-					<p className='text-white/50 text-[12px] font-[400]'>
-						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
-						address from Settings will be used instead.
-					</p>
+    					<div className='row-span-3 divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
+    						<Field className='col-span-full' label='URL' value={conn?.uri} />
+    						<Field className='col-span-4' label='Host' value={conn?.host} />
+    						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
+    						<Field className='col-span-4' label='Username' value='btcaddress.workername' />
+    						<Field className='col-span-2' label='Pass' value={conn?.password || ''} />
+    					</div>
+                    </div>
 				</div>
 			</DialogContent>
 		</Dialog>
