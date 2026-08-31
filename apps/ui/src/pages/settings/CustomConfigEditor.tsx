@@ -6,7 +6,7 @@ import {Button} from '@/components/ui/button'
 
 import {useRawConfig, useUpdateRawConfig} from '@/hooks/useSettings'
 
-// Direct editor for pogolo's config.toml, for options this page does not model.
+// Direct editor for pogolo's pogolo.toml, for options this page does not model.
 export default function CustomConfigEditor() {
 	const {data, isLoading} = useRawConfig()
 	const save = useUpdateRawConfig()
@@ -22,7 +22,7 @@ export default function CustomConfigEditor() {
 
 	return (
 		<div className='border border-white/20 rounded-lg p-4 w-full'>
-			<label className='text-[14px] font-[400] text-white'>Edit config.toml directly</label>
+			<label className='text-[14px] font-[400] text-white'>Edit pogolo.toml directly</label>
 			<p className='text-[13px] font-[400] text-white/60'>
 				This is pogolo's raw config file. Editing it here replaces the whole file, so anything you remove is gone.
 				Invalid TOML is rejected.

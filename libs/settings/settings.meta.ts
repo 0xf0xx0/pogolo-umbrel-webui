@@ -3,7 +3,7 @@
 // - default settings values
 // - the frontend settings page (React form inputs, descriptions, tool-tips, etc)
 //
-// `tomlKey` is the key written to pogolo's config.toml. Keys without one belong
+// `tomlKey` is the key written to pogolo's pogolo.toml. Keys without one belong
 // to this webui and are stored separately.
 
 // Tabs for organization (used in the UI to group settings)
@@ -12,7 +12,7 @@ export type Tab = 'pool' | 'advanced' | 'webui'
 interface BaseOption {
 	tab: Tab
 	label: string
-	// The key in pogolo's config.toml. Omitted for webui-only settings.
+	// The key in pogolo's pogolo.toml. Omitted for webui-only settings.
 	tomlKey?: string
 	description: string
 	subDescription?: string
@@ -178,7 +178,7 @@ export const settingsMetadata = {
 
 export type SettingKey = keyof typeof settingsMetadata
 
-// Keys that pogolo owns (written to config.toml), and those this webui owns.
+// Keys that pogolo owns (written to pogolo.toml), and those this webui owns.
 export const POGOLO_KEYS = Object.entries(settingsMetadata)
 	.filter(([, option]) => 'tomlKey' in option && option.tomlKey)
 	.map(([key]) => key) as SettingKey[]

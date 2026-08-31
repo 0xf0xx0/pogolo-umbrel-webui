@@ -75,8 +75,8 @@ app.get('/*', (_, reply) => reply.sendFile('index.html'))
 
 // Start the server
 app
-	.listen({port: 3000, host: '0.0.0.0'})
-	.then((address) => app.log.info(`pogolo backend is running at ${address}`))
+	.listen({port: 5663, host: '0.0.0.0'})
+	.then((address) => app.log.info(`pogolo webui is running at ${address}`))
 	.catch((error) => {
 		app.log.error(`Failed to start server: ${error}`)
 		process.exit(1)

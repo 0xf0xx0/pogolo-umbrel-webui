@@ -45,7 +45,7 @@ export function useRestoreDefaults() {
 	})
 }
 
-// Raw config.toml, for the advanced editor
+// Raw pogolo.toml, for the advanced editor
 export function useRawConfig() {
 	return useQuery({
 		queryKey: ['config', 'raw'],

@@ -1,4 +1,4 @@
-// Reads and writes pogolo's config.toml plus this webui's own settings.
+// Reads and writes pogolo's pogolo.toml plus this webui's own settings.
 //
 // IMPORTANT: pogolo's config may contain keys this webui does not model (newer
 // options, hand-edited values, comments). Updates therefore parse the existing
@@ -20,7 +20,7 @@ const SETTING_BY_TOML_KEY = Object.fromEntries(
 // In-memory cache of the current settings, refreshed on every successful write
 let cachedSettings: SettingsSchema | undefined
 
-// Read and parse config.toml. Returns an empty object when the file is absent
+// Read and parse pogolo.toml. Returns an empty object when the file is absent
 // or unparseable, so a broken config never takes the whole webui down.
 async function readTomlConfig(): Promise<Record<string, unknown>> {
 	try {
@@ -28,7 +28,7 @@ async function readTomlConfig(): Promise<Record<string, unknown>> {
 		return parseToml(raw) as Record<string, unknown>
 	} catch (error) {
 		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-			console.error('Failed to parse pogolo config.toml, treating as empty:', error)
+			console.error('Failed to parse pogolo pogolo.toml, treating as empty:', error)
 		}
 		return {}
 	}
@@ -63,7 +63,7 @@ export async function getSettings(): Promise<SettingsSchema> {
 	return cachedSettings
 }
 
-// Write the patch back to config.toml, preserving every key we did not touch.
+// Write the patch back to pogolo.toml, preserving every key we did not touch.
 async function writePogoloConfig(patch: Record<string, unknown>): Promise<void> {
 	// Start from what is on disk right now so concurrent hand-edits are kept
 	const existing = await readTomlConfig()
@@ -110,7 +110,7 @@ export async function updateSettings(patch: Partial<SettingsSchema>): Promise<Se
 	const validated = settingsSchema.parse(merged) as SettingsSchema
 
 	// Persist only what the user actually sent, so untouched keys keep whatever
-	// is in config.toml rather than being rewritten from our defaults.
+	// is in pogolo.toml rather than being rewritten from our defaults.
 	const changed: Record<string, unknown> = {}
 	for (const key of Object.keys(patch)) {
 		changed[key] = (validated as Record<string, unknown>)[key]
@@ -124,7 +124,7 @@ export async function updateSettings(patch: Partial<SettingsSchema>): Promise<Se
 }
 
 // Restore defaults for every setting this webui models.
-// Unknown keys in config.toml are still preserved.
+// Unknown keys in pogolo.toml are still preserved.
 export async function restoreDefaults(): Promise<SettingsSchema> {
 	const defaults = settingsSchema.parse(defaultValues()) as SettingsSchema
 
@@ -135,7 +135,7 @@ export async function restoreDefaults(): Promise<SettingsSchema> {
 	return defaults
 }
 
-// Called at server startup: make sure a config.toml exists so pogolo has
+// Called at server startup: make sure a pogolo.toml exists so pogolo has
 // something to read, without clobbering an existing one.
 export async function ensureConfig(): Promise<SettingsSchema> {
 	const exists = await fse.pathExists(POGOLO_CONFIG_TOML)
@@ -147,12 +147,12 @@ export async function ensureConfig(): Promise<SettingsSchema> {
 	return getSettings()
 }
 
-// Raw config.toml text, for the advanced editor in the settings page
+// Raw pogolo.toml text, for the advanced editor in the settings page
 export async function getRawConfig(): Promise<string> {
 	return fse.readFile(POGOLO_CONFIG_TOML, 'utf8').catch(() => '')
 }
 
-// Overwrite config.toml wholesale with user-supplied text.
+// Overwrite pogolo.toml wholesale with user-supplied text.
 // Parsed first so we reject invalid TOML before it reaches pogolo.
 export async function updateRawConfig(rawText: string): Promise<string> {
 	const normalized = rawText.replace(/\r\n/g, '\n').trimEnd()

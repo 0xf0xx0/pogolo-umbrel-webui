@@ -42,7 +42,7 @@ import {useSettings, useUpdateSettings, useRestoreDefaults} from '@/hooks/useSet
 
 type SettingName = string
 
-// Shows the config.toml key beside a setting's label
+// Shows the pogolo.toml key beside a setting's label
 function TomlKeyBadge({option}: {option: Option}) {
 	if (!option.tomlKey) return null
 
@@ -319,7 +319,7 @@ export default function SettingsCard() {
 	const isInputsDisabled = isLoading || isSubmitting
 
 	// Only send the fields the user actually changed, so untouched values keep
-	// whatever is already in config.toml.
+	// whatever is already in pogolo.toml.
 	const onUpdateSettings = (data: SettingsSchema) => {
 		const dirtyFields = form.formState.dirtyFields as Record<string, unknown>
 		const patch: Record<string, unknown> = {}
@@ -484,7 +484,7 @@ export default function SettingsCard() {
 										<AlertDialogDescription className='text-white/60 text-left text-[13px] space-y-3'>
 											<span className='block'>
 												This will restore every setting on this page to its default value. You cannot undo this action.
-												Any options in config.toml that this page does not manage are left alone.
+												Any options in pogolo.toml that this page does not manage are left alone.
 											</span>
 										</AlertDialogDescription>
 									</AlertDialogHeader>

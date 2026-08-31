@@ -82,11 +82,10 @@ COPY --from=app-builder /repo/libs/shared-types/dist ./libs/shared-types/dist
 
 ENV NODE_ENV=production
 
-# pogolo's config.toml lives here, shared with the pogolo container
+# pogolo's pogolo.toml lives here, shared with the pogolo container
 ENV POGOLO_DIR=/data
 
-# 3000 = HTTP API
-EXPOSE 3000
+EXPOSE 5663
 # app + pogolo config data
 VOLUME /data
 
