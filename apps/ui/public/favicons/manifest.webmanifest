@@ -1,7 +1,7 @@
 {
-	"name": "Bitcoin Node",
-	"short_name": "Bitcoin Node",
-	"description": "Bitcoin Node",
+	"name": "pogolo",
+	"short_name": "pogolo",
+	"description": "a Bitcoin solo mining pool",
 	"dir": "auto",
 	"lang": "en-US",
 	"display": "standalone",

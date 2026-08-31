@@ -50,7 +50,7 @@ export default function ConnectionDetails() {
 					<DialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
 						<div className='flex items-center gap-2'>
 							<WalletIcon className='w-5 h-5 text-white' />
-							Connect a miner
+							Connect a gopher
 						</div>
 					</DialogTitle>
 					<DialogDescription className='text-white/60 text-left text-[13px]'>

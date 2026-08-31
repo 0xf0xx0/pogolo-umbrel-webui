@@ -8,8 +8,8 @@
 
 html,
 body {
-	/* ── Make DM Sans the default ───────────────────── */
-	font-family: 'Iosevka', 'DM Sans Variable', sans-serif;
+	/* ── Make Iosevka the default ───────────────────── */
+	font-family: 'Iosevka', sans-serif;
 }
 
 .font-mono {
