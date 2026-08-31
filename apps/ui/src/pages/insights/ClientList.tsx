@@ -28,35 +28,36 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 	const protocol = protocolVersion === 2 ? 'SV2' : protocolVersion === 1 ? 'SV1' : '—'
 
 	const shares = info ? `${info.sharesAccepted.toLocaleString()} / ${info.sharesRejected.toLocaleString()}` : '—'
-	const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
+    const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
+	const targetDiff = formatDifficulty(info?.targetDifficulty)
 	return (
 		<div className='rounded-2xl bg-stone-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
 				<span className='text-green-400 text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
                     {info?.nickname || mini.extranonce1}
-                    <span className='text-green-400/50 text-[11px] font-[400] shrink-0'>
+                    <span className='text-green-400/50 text-[11px] font-[400] shrink-0' title={mini.extranonce1}>
                         {info?.nickname ? ` (${mini.extranonce1})` : ''}
                     </span>
 				</span>
 				<span className='text-stone-600 text-[11px] font-[400] shrink-0'>{protocol}</span>
 			</div>
 
-			<div className='flex items-baseline gap-1'>
-				<span className='text-green-400 text-[20px] font-[500] leading-none'>{hashrate.value}</span>
+			<div className='flex items-baseline gap-1' title={info?.hashrate}>
+				<span className='text-green-400 text-[20px] font-[500] leading-none'>{hashrate.value || '—'}</span>
 				<span className='text-green-400/50 text-[12px] font-[400]'>{hashrate.unit}</span>
 			</div>
 
 			<div className='grid grid-cols-2 gap-x-3 gap-y-2'>
 				<Field label='User Agent' value={mini.userAgent || '—'} />
 				<Field label='Shares (a/r)' value={shares} />
-				<Field color='text-cyan-400' label='Best Share' value={Object.values(bestDiff).join('') || '—'} />
-				<Field color='text-blue-400' label='Target Diff' value={info ? Object.values(formatDifficulty(info.targetDifficulty)).join('') : '—'} />
+				<Field color='text-cyan-400' label='Best Share' value={Object.values(bestDiff).join('') || '—'} title={info?.bestDifficulty} />
+				<Field color='text-blue-400' label='Target Diff' value={Object.values(targetDiff).join('') || '—'} title={info?.targetDifficulty} />
                 <Field
                     color='text-blue-400'
 					label='Avg Share Time'
 					value={info ? formatUptimeSeconds(info.averageShareTime/1000) : '—'}
 				/>
-				<Field color='text-blue-400' label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} />
+				<Field color='text-blue-400' label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'}/>
 			</div>
 
 			{info?.address && <Field color='text-green-600' label='Address' value={info.address} />}

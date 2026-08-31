@@ -61,7 +61,7 @@ export default function StatSummary() {
 					label='Hashrate'
 					value={hashrate.value}
 					unit={hashrate.unit}
-					description='The combined hashrate of every miner currently connected to your pool. This is estimated from the shares your miners submit, so it moves around a little even when your miners are running at a steady speed.'
+					description='The combined hashrate currently connected to your pool. This is estimated from the shares your miners submit, so it moves around a little even when your miners are running at a steady speed.'
 				/>
 				<Stat
 					label='Gophers'
@@ -73,12 +73,12 @@ export default function StatSummary() {
                     label='Best Share'
                     value={difficulty.value || '—'}
 					unit={difficulty.unit}
-					description={`The highest-difficulty share any of your miners has submitted. A block is found when a share's difficulty is at least the network difficulty, so this is how close your pool has come to finding a block.`}
+					description={`The highest-difficulty share any of your miners has submitted. A block is found when a share's difficulty is at least the network difficulty.`}
 				/>
 				<Stat
 					label='Pool Uptime'
 					value={uptimeStr}
-					description='How long pogolo has been running since it last restarted.'
+					description='How long pogolo has been running.'
 				/>
 			</div>
 		</InsightCard>
