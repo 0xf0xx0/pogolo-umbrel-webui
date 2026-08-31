@@ -32,7 +32,10 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 		<div className='rounded-2xl bg-neutral-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
 				<span className='text-white text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
-					{info?.nickname || mini.extranonce1}
+                    {info?.nickname || mini.extranonce1}
+                    <span className='text-white/40 text-[11px] font-[400] shrink-0'>
+                        {info?.nickname ? `&nbsp;(w${mini.extranonce1})` : ''}
+                    </span>
 				</span>
 				<span className='text-white/40 text-[11px] font-[400] shrink-0'>{protocol}</span>
 			</div>
