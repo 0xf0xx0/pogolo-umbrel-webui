@@ -1,5 +1,5 @@
 {
-	"name": "@umbrel-bitcoin/backend",
+	"name": "@pogolo-umbrel-webui/backend",
 	"type": "module",
 	"private": true,
 	"scripts": {

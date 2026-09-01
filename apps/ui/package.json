@@ -1,5 +1,5 @@
 {
-	"name": "@umbrel-bitcoin/ui",
+	"name": "@pogolo-umbrel-webui/ui",
 	"type": "module",
 	"private": true,
 	"scripts": {
