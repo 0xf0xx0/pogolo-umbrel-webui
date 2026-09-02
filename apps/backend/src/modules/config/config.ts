@@ -1,9 +1,10 @@
 // Reads and writes pogolo's pogolo.toml plus this webui's own settings.
 //
-// IMPORTANT: pogolo's config may contain keys this webui does not model (newer
-// options, hand-edited values, comments). Updates therefore parse the existing
-// file, overwrite only the keys the user actually changed, and write the result
-// back — unknown and unchanged fields survive untouched.
+// The settings this page owns all live under the [pogolo] table. The file also
+// holds sibling tables such as [backend], plus keys under [pogolo] that this
+// webui does not model (newer options, hand-edited values). Updates therefore
+// parse the existing file, overwrite only the keys the user actually changed,
+// and write the result back, so everything else survives untouched.
 
 import fse from 'fs-extra'
 import {parse as parseToml, stringify as stringifyToml} from 'smol-toml'
@@ -17,8 +18,19 @@ const SETTING_BY_TOML_KEY = Object.fromEntries(
 	Object.entries(TOML_KEY_BY_SETTING).map(([setting, tomlKey]) => [tomlKey, setting]),
 ) as Record<string, string>
 
+// The table our settings live under. Sibling tables (e.g. [backend]) are left alone.
+const POGOLO_TABLE = 'pogolo'
+
 // In-memory cache of the current settings, refreshed on every successful write
 let cachedSettings: SettingsSchema | undefined
+
+// The [pogolo] table from a parsed config, or an empty object if absent.
+function pogoloTable(config: Record<string, unknown>): Record<string, unknown> {
+	const table = config[POGOLO_TABLE]
+	// A malformed config could have `pogolo` as a scalar; treat that as empty
+	if (typeof table !== 'object' || table === null || Array.isArray(table)) return {}
+	return table as Record<string, unknown>
+}
 
 // Read and parse pogolo.toml. Returns an empty object when the file is absent
 // or unparseable, so a broken config never takes the whole webui down.
@@ -48,8 +60,8 @@ export async function getSettings(): Promise<SettingsSchema> {
 
 	const settings: Record<string, unknown> = {...defaultValues()}
 
-	// Pull in each modelled key that is actually present in the TOML
-	for (const [tomlKey, value] of Object.entries(toml)) {
+	// Pull in each modelled key that is actually present under [pogolo]
+	for (const [tomlKey, value] of Object.entries(pogoloTable(toml))) {
 		const settingKey = SETTING_BY_TOML_KEY[tomlKey]
 		if (settingKey !== undefined) settings[settingKey] = value
 	}
@@ -63,22 +75,26 @@ export async function getSettings(): Promise<SettingsSchema> {
 	return cachedSettings
 }
 
-// Write the patch back to pogolo.toml, preserving every key we did not touch.
+// Write the patch back to the [pogolo] table, preserving every other key and
+// every sibling table.
 async function writePogoloConfig(patch: Record<string, unknown>): Promise<void> {
 	// Start from what is on disk right now so concurrent hand-edits are kept
 	const existing = await readTomlConfig()
+	const table = pogoloTable(existing)
 
 	let touched = false
 	for (const [settingKey, value] of Object.entries(patch)) {
 		const tomlKey = TOML_KEY_BY_SETTING[settingKey as keyof typeof TOML_KEY_BY_SETTING]
 		// Skip settings that are not pogolo's (webui-only keys)
 		if (!tomlKey) continue
-		existing[tomlKey] = value
+		table[tomlKey] = value
 		touched = true
 	}
 
 	// Rewriting the file reformats it, so don't touch it for a webui-only patch
 	if (!touched) return
+
+	existing[POGOLO_TABLE] = table
 
 	await writeWithBackup(POGOLO_CONFIG_TOML, stringifyToml(existing) + '\n')
 }
