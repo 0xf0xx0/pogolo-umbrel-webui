@@ -2,65 +2,85 @@ import {useQueries} from '@tanstack/react-query'
 
 import InsightCard from './InsightsCard'
 import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import {Field, SplitField, BigStat} from '@/components/shared/Field'
 import {api} from '@/lib/api'
 import {usePoolInfo} from '@/hooks/usePogolo'
 import {formatHashrate, formatDifficulty, formatUptimeSeconds} from '@/lib/formatPool'
 
 import type {GopherInfo, MiniGopherInfo} from '#types'
 
-function Field({ label, value, title, color }: { label: string; value: string; title?: string; color?: string }) {
-    color = color ?? 'text-white/80'
-    return (
-		<div className='flex flex-col gap-0.5 min-w-0'>
-			<span className='text-stone-600 text-[11px] font-[400]'>{label}</span>
-			<span className={`text-[13px] font-[400] truncate ${color}`} title={title ?? value}>
-				{value}
-			</span>
-		</div>
-	)
-}
-
 function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | undefined}) {
 	const hashrate = formatHashrate(info?.hashrate ?? 0)
+	const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
+	const targetDiff = formatDifficulty(info?.targetDifficulty ?? 0)
 
 	// pogolo reports SV1 as 1 and SV2 as 2
 	const protocolVersion = info?.protocolVersion ?? mini.protocolVersion
 	const protocol = protocolVersion === 2 ? 'SV2' : protocolVersion === 1 ? 'SV1' : '—'
 
-	const shares = info ? `${info.sharesAccepted.toLocaleString()} / ${info.sharesRejected.toLocaleString()}` : '—'
-    const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
-	const targetDiff = formatDifficulty(info?.targetDifficulty)
 	return (
-		<div className='rounded-2xl bg-stone-900/40 border-white/10 border-[0.5px] p-4 flex flex-col gap-3'>
+		<div className='rounded-2xl bg-surface-raised border-line border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
-				<span className='text-green-400 text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
-                    {info?.nickname || mini.extranonce1}
-                    <span className='text-green-400/50 text-[11px] font-[400] shrink-0' title={mini.extranonce1}>
-                        {info?.nickname ? ` (${mini.extranonce1})` : ''}
-                    </span>
+				<span className='text-body text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
+					{info?.nickname || mini.extranonce1}
+					{info?.nickname && (
+						<span className='text-body-subtle text-[11px] font-[400]'> ({mini.extranonce1})</span>
+					)}
 				</span>
-				<span className='text-stone-600 text-[11px] font-[400] shrink-0'>{protocol}</span>
+				<span className='text-body-faint text-[11px] font-[400] shrink-0'>{protocol}</span>
 			</div>
 
-			<div className='flex items-baseline gap-1' title={info?.hashrate}>
-				<span className='text-green-400 text-[20px] font-[500] leading-none'>{hashrate.value || '—'}</span>
-				<span className='text-green-400/50 text-[12px] font-[400]'>{hashrate.unit}</span>
-			</div>
+			<BigStat
+				value={hashrate.value || '—'}
+				unit={hashrate.unit}
+				tone='accent'
+				title={info ? `${info.hashrate} Mh/s` : undefined}
+			/>
 
 			<div className='grid grid-cols-2 gap-x-3 gap-y-2'>
-				<Field label='User Agent' value={mini.userAgent || '—'} />
-				<Field label='Shares (a/r)' value={shares} />
-				<Field color='text-cyan-400' label='Best Share' value={Object.values(bestDiff).join('') || '—'} title={info?.bestDifficulty} />
-				<Field color='text-blue-400' label='Target Diff' value={Object.values(targetDiff).join('') || '—'} title={info?.targetDifficulty} />
-                <Field
-                    color='text-blue-400'
-					label='Avg Share Time'
-					value={info ? formatUptimeSeconds(info.averageShareTime/1000) : '—'}
+				<Field label='User Agent' value={mini.userAgent || '—'} tone='muted' title={mini.userAgent} />
+
+				{/* Accepted and rejected get their own tones, and the label spells out
+				    which is which so the meaning does not rest on colour alone. */}
+				<SplitField
+					label='Shares (acc / rej)'
+					segments={
+						info
+							? [
+									{value: info.sharesAccepted.toLocaleString(), tone: 'good'},
+									{value: info.sharesRejected.toLocaleString(), tone: info.sharesRejected > 0 ? 'bad' : 'muted'},
+								]
+							: [{value: '—', tone: 'muted'}]
+					}
+					title={info ? `${info.sharesAccepted} accepted, ${info.sharesRejected} rejected` : undefined}
 				/>
-				<Field color='text-blue-400' label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'}/>
+
+				<Field
+					label='Best Share'
+					value={bestDiff.value || '—'}
+					unit={bestDiff.unit}
+					tone='highlight'
+					title={info ? String(info.bestDifficulty) : undefined}
+				/>
+				<Field
+					label='Target Diff'
+					value={targetDiff.value || '—'}
+					unit={targetDiff.unit}
+					tone='accent'
+					title={info ? String(info.targetDifficulty) : undefined}
+				/>
+				<Field
+					label='Avg Share Time'
+					// pogolo reports averageShareTime in milliseconds
+					value={info ? formatUptimeSeconds(info.averageShareTime / 1000) : '—'}
+					tone='muted'
+				/>
+				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} tone='muted' />
 			</div>
 
-			{info?.address && <Field color='text-green-600' label='Address' value={info.address} />}
+			{info?.address && (
+				<Field label='Address' value={info.address} tone='muted' title={info.address} />
+			)}
 		</div>
 	)
 }
@@ -84,20 +104,20 @@ export default function ClientList() {
 	return (
 		<InsightCard>
 			<CardHeader>
-				<CardTitle className='font-bold text-white text-[20px] font-[400]'>
+				<CardTitle className='text-body text-[20px] font-[400]'>
 					Connected Miners
-					{gophers.length > 0 && <span className='text-white/40 text-[15px] font-[300] ml-2'>{gophers.length}</span>}
+					{gophers.length > 0 && (
+						<span className='text-body-subtle text-[15px] font-[300] ml-2'>{gophers.length}</span>
+					)}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{isLoading ? (
-					<p className='text-white/40 text-[14px]'>Loading…</p>
+					<p className='text-body-subtle text-[14px]'>Loading…</p>
 				) : gophers.length === 0 ? (
 					<div className='flex flex-col gap-1 py-4'>
-						<span className='text-white/60 text-[14px]'>No miners connected</span>
-						<span className='text-white/40 text-[12px]'>
-							Point a miner at your pool and it will show up here.
-						</span>
+						<span className='text-body-muted text-[14px]'>No miners connected</span>
+						<span className='text-body-subtle text-[12px]'>Point a miner at your pool and it will show up here.</span>
 					</div>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
