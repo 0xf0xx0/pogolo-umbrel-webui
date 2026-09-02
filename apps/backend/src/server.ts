@@ -7,6 +7,7 @@ import helmet from '@fastify/helmet'
 
 import {ensureConfig} from './modules/config/config.js'
 import {startLogStream} from './modules/pogolo/logs.js'
+import {startSampling} from './modules/pogolo/history.js'
 import {ensureDirs} from './lib/paths.js'
 import routes from './routes.js'
 
@@ -20,6 +21,9 @@ await ensureConfig().catch((error) => console.error('Failed to ensure pogolo con
 
 // Follow the pogolo container's logs in the background
 startLogStream()
+
+// Sample pool metrics so the charts have history to draw
+startSampling()
 
 // Create the HTTP server and register the routes
 const app = Fastify({logger: true})

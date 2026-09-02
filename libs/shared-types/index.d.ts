@@ -66,6 +66,19 @@ export type PogoloInfo = {
 	gophers: MiniGopherInfo[]
 }
 
+// One point in the sampled metric history. Each metric maps series id -> value,
+// where the series id is 'pool' for the pool total or a gopher's extranonce1.
+export type MetricSample = {
+	timestamp: number
+	hashrate: Record<string, number>
+}
+
+export type MetricHistory = {
+	// How often the backend samples, so the UI can spot gaps
+	intervalMs: number
+	samples: MetricSample[]
+}
+
 // One line of pogolo output, streamed over the log websocket.
 // `html` is the line with its ANSI escapes converted to spans.
 export type LogLine = {
@@ -80,6 +93,9 @@ export type ConnectionDetails = {
 			host: string
 			port: string
 			uri: string
+			// The configured SV1 password, if the pool requires one. Empty when
+			// any client may connect.
+			password: string
 		}
 	}
 }

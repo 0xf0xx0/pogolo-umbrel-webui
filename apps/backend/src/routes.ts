@@ -7,6 +7,7 @@ import {ZodError} from 'zod'
 
 import * as pogolo from './modules/pogolo/pogolo.js'
 import {wsLogStream} from './modules/pogolo/logs.js'
+import {getHistory} from './modules/pogolo/history.js'
 import * as connect from './modules/connect/connect.js'
 import * as config from './modules/config/config.js'
 import * as widgets from './modules/widgets/widgets.js'
@@ -31,6 +32,9 @@ export default fp(async (app: FastifyInstance) => {
 	app.get<{Params: {idOrNickname: string}}>(`${poolBase}/gopher/:idOrNickname`, (req) =>
 		pogolo.gopher(req.params.idOrNickname),
 	)
+
+	// Sampled metric history for the charts
+	app.get(`${poolBase}/history`, () => getHistory())
 
 	// connect routes
 	const connectBase = `${BASE}/connect`
