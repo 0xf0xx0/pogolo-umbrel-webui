@@ -1,7 +1,5 @@
-import {useState} from 'react'
 import QrSvg from '@wojtekmaj/react-qr-svg'
-import copy from 'copy-to-clipboard'
-import {Copy, X as XIcon} from 'lucide-react'
+import {X as XIcon} from 'lucide-react'
 
 import Logo from '@/assets/logo.svg?react'
 
@@ -15,10 +13,10 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import {Button} from '@/components/ui/button'
-import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 
 import WalletIcon from '@/assets/wallet.svg?react'
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
+import {CopyRow} from '@/components/shared/Field'
 
 import {useConnectionDetails} from '@/hooks/useConnectionDetails'
 
@@ -71,65 +69,16 @@ export default function ConnectionDetails() {
     					</p>
 
     					<div className='row-span-3 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
-    						<Field className='col-span-full' label='URL' value={conn?.uri} />
-    						<Field className='col-span-4' label='Host' value={conn?.host} />
-    						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
-    						<Field className='col-span-4' label='Username' value='btcaddress.workername' />
-    						<Field className='col-span-2' label='Pass' value={conn?.password || ''} />
+    						<CopyRow className='col-span-full' label='URL' value={conn?.uri} />
+    						<CopyRow className='col-span-4' label='Host' value={conn?.host} />
+    						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
+    						<CopyRow className='col-span-4' label='Username' value='btcaddress.workername' />
+    						<CopyRow className='col-span-2' label='Pass' value={conn?.password || ''} />
     					</div>
                     </div>
 				</div>
 			</DialogContent>
 		</Dialog>
-	)
-}
-
-function Field({ label, value, className }: { label: string; value?: string; className?: string }) {
-	const blank = !value // true when no data
-	const [open, setOpen] = useState(false)
-
-	const handleCopy = () => {
-		// return early if we have nothing to copy
-		if (blank) return
-
-		copy(value!)
-		setOpen(true)
-		setTimeout(() => setOpen(false), 600)
-	}
-
-	return (
-		<div className={`h-[42px] grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 text-sm ${className}`}>
-			<span className='shrink-0 text-body'>{label}</span>
-
-			<div className='flex min-w-0 items-center justify-end gap-2'>
-				{/* show an em-dash when no data */}
-				<span className='min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-body-muted' title={value}>
-					{value ?? '—'}
-				</span>
-
-				<Popover open={open} onOpenChange={setOpen}>
-					<PopoverTrigger asChild>
-						<Button
-							type='button'
-							variant='ghost'
-							size='sm'
-							onClick={handleCopy}
-							disabled={blank} // disabled when no data
-							className='h-4 w-4 shrink-0 p-0 hover:bg-transparent'
-						>
-							<Copy className='scale-75 text-body-muted' />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent
-						side='top'
-						align='center'
-						className='w-auto rounded-md border border-line-strong bg-surface/95 px-2 py-1 text-[12px] text-body'
-					>
-						Copied!
-					</PopoverContent>
-				</Popover>
-			</div>
-		</div>
 	)
 }
 

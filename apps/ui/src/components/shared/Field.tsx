@@ -1,3 +1,9 @@
+import {useState} from 'react'
+import {Copy} from 'lucide-react'
+import copy from 'copy-to-clipboard'
+
+import {Button} from '@/components/ui/button'
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import {cn} from '@/lib/utils'
 
 // Semantic tones a value can carry. Named by meaning rather than colour so a
@@ -79,6 +85,70 @@ export function SplitField({
 					</span>
 				))}
 			</span>
+		</div>
+	)
+}
+
+// A label and value on one row, with a copy button. Used for connection details
+// the user needs to paste into a miner.
+export function CopyRow({
+	label,
+	value,
+	tone = 'muted',
+	className,
+}: {
+	label: string
+	value?: string
+	tone?: Tone
+	className?: string
+}) {
+	const blank = !value // true when no data
+	const [open, setOpen] = useState(false)
+
+	const handleCopy = () => {
+		// return early if we have nothing to copy
+		if (blank) return
+
+		copy(value as string)
+		setOpen(true)
+		setTimeout(() => setOpen(false), 600)
+	}
+
+	return (
+		<div className={cn('h-[42px] grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 text-sm', className)}>
+			<span className='shrink-0 text-body'>{label}</span>
+
+			<div className='flex min-w-0 items-center justify-end gap-2'>
+				{/* show an em-dash when no data */}
+				<span
+					className={cn('min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal', VALUE_TONE[tone])}
+					title={value}
+				>
+					{value || '—'}
+				</span>
+
+				<Popover open={open} onOpenChange={setOpen}>
+					<PopoverTrigger asChild>
+						<Button
+							type='button'
+							variant='ghost'
+							size='sm'
+							onClick={handleCopy}
+							disabled={blank} // disabled when no data
+							className='h-4 w-4 shrink-0 p-0 hover:bg-transparent'
+						>
+							<Copy className='scale-75 text-body-muted' />
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent
+						side='top'
+						align='center'
+						className='w-auto rounded-md border border-line-strong bg-surface/95 px-2 py-1 text-[12px] text-body'
+					>
+						Copied!
+					</PopoverContent>
+				</Popover>
+			</div>
 		</div>
 	)
 }
