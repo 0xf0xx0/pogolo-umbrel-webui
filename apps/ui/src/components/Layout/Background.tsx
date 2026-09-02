@@ -2,7 +2,7 @@
 
 export default function Background() {
 	// temp black background until we have a good shader gradient
-	return <div className='bg-black absolute inset-0 -z-10' />
+	return <div className='bg-stone-950 absolute inset-0 -z-10' />
 	// return (
 	// 	<>
 	// 		{/* ShaderGradient requires style prop */}

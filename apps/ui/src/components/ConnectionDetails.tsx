@@ -60,7 +60,7 @@ export default function ConnectionDetails() {
 				</DialogHeader>
 
 				<div className='space-y-4 mt-2 grid grid-cols-3 gap-4'>
-					<div className='bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D] p-5 rounded-xl'>
+					<div className='bg-gradient-to-b from-stone-900 to-stone-950 p-5 rounded-xl'>
 						<QR value={conn?.uri} />
                     </div>
 
@@ -70,7 +70,7 @@ export default function ConnectionDetails() {
     						address from Settings will be used instead.
     					</p>
 
-    					<div className='row-span-3 divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-[#1C1C1C] to-[#0D0D0D]'>
+    					<div className='row-span-3 divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-stone-900 to-stone-950'>
     						<Field className='col-span-full' label='URL' value={conn?.uri} />
     						<Field className='col-span-4' label='Host' value={conn?.host} />
     						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
