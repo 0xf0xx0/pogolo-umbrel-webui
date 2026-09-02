@@ -21,21 +21,21 @@ export default function CustomConfigEditor() {
 	const canSave = !isLoading && !save.isPending && isDirty
 
 	return (
-		<div className='border border-white/20 rounded-lg p-4 w-full'>
-			<label className='text-[14px] font-[400] text-white'>Edit pogolo.toml directly</label>
-			<p className='text-[13px] font-[400] text-white/60'>
+		<div className='border border-line-strong rounded-lg p-4 w-full'>
+			<label className='text-[14px] font-[400] text-body'>Edit pogolo.toml directly</label>
+			<p className='text-[13px] font-[400] text-body-muted'>
 				This is pogolo's raw config file. Editing it here replaces the whole file, so anything you remove is gone.
 				Invalid TOML is rejected.
 			</p>
 
 			<Textarea
-				className='mt-2 h-40 w-full whitespace-pre-wrap !text-[13px] text-white border border-white/20 rounded-lg p-2 resize-none font-mono
+				className='mt-2 h-40 w-full whitespace-pre-wrap !text-[13px] text-body border border-line-strong rounded-lg p-2 resize-none font-mono
 					[&::-webkit-scrollbar]:w-[3px] [&::-webkit-scrollbar]:bg-transparent
 					[&::-webkit-scrollbar-thumb]:bg-[hsla(0,0%,100%,0.15)] [&::-webkit-scrollbar-thumb]:rounded-full
 					[&::-webkit-scrollbar-thumb]:hover:bg-[hsla(0,0%,100%,0.25)]
 					[&::-webkit-scrollbar-track]:bg-transparent
 					[scrollbar-width:thin] [scrollbar-color:hsla(0,0%,100%,0.15)_transparent]
-					focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-white/30'
+					focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-line-strong'
 				placeholder='# key = value'
 				value={text}
 				onChange={(e) => setText(e.target.value)}

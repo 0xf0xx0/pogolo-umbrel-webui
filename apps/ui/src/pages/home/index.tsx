@@ -24,7 +24,7 @@ export default function HomePage() {
 				<GradientBorderTopBottom depth='7%' />
 				<CardContent className='flex flex-col md:flex-row px-4 items-center'>
 					{/* Live pogolo log output + running status */}
-					<div className='relative w-full flex-none md:flex-1 h-64 md:h-[375px] rounded-2xl bg-stone-900/20 border-white/10 border-[0.5px] overflow-hidden'>
+					<div className='relative w-full flex-none md:flex-1 h-64 md:h-[375px] rounded-2xl bg-surface-sunken border-line border-[0.5px] overflow-hidden'>
 						<GradientBorderFromCorners />
 
 						<LogStream />
@@ -40,17 +40,17 @@ export default function HomePage() {
 									animate={{opacity: 1}}
 									exit={{opacity: 0}}
 									transition={{duration: 0.25}}
-									className='absolute top-[7%] left-[5%] flex items-center gap-1 justify-center pointer-events-none select-none bg-black/40 backdrop-blur-sm rounded-full pl-1 pr-3 py-0.5'
+									className='absolute top-[7%] left-[5%] flex items-center gap-1 justify-center pointer-events-none select-none bg-surface/60 backdrop-blur-sm rounded-full pl-1 pr-3 py-0.5'
 								>
 									<StatusDot running={running} />
 
 									{running ? (
 										<>
-											<span className='text-[#0BC39E] text-[14px] font-[500] ml-1'>Running</span>
-											{uptime && <span className='text-white/60 text-[14px] font-[400]'>for {uptime}</span>}
+											<span className='text-running text-[14px] font-[500] ml-1'>Running</span>
+											{uptime && <span className='text-body-muted text-[14px] font-[400]'>for {uptime}</span>}
 										</>
 									) : (
-										<span className='text-[#EF4444] text-[14px] font-[500] ml-1'>Not running</span>
+										<span className='text-stopped text-[14px] font-[500] ml-1'>Not running</span>
 									)}
 								</motion.h3>
 							)}
@@ -66,7 +66,7 @@ export default function HomePage() {
 
 			{/* Found blocks — horizontally scrollable on mobile */}
 			<div className='w-full mt-4'>
-				<span className='text-white/50 text-[14px] font-[400] ml-4'>Blocks Found</span>
+				<span className='text-body-subtle text-[14px] font-[400] ml-4'>Blocks Found</span>
 				<HorizontalFadeScroll>
 					<FoundBlocks />
 				</HorizontalFadeScroll>

@@ -74,13 +74,13 @@ function DockTrigger({
 		>
 			<NavLink
 				to={to}
-				className='group relative inline-flex items-center gap-1 rounded-full text-white/60 transition-colors data-[state=active]:text-white data-[state=active]:delay-[200ms]'
+				className='group relative inline-flex items-center gap-1 rounded-full text-body-muted transition-colors data-[state=active]:text-body data-[state=active]:delay-[200ms]'
 			>
 				{/* This is the sliding pill that only exists inside the active trigger, and is used to create the illusion of a pill sliding between the tabs.*/}
 				{active && (
 					<motion.span
 						layoutId='dock-pill'
-						className='absolute inset-0 -z-10 rounded-full bg-stone-800'
+						className='absolute inset-0 -z-10 rounded-full bg-surface-input'
 						transition={{type: 'tween', ease: 'easeInOut', duration: 0.2}}
 					>
 						<GradientBorderFromTop />

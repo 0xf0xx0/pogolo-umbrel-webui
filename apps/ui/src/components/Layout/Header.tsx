@@ -25,7 +25,7 @@ export default function Header({className}: {className?: string}) {
 					</h1>
 
 					{/* We gracefully handle loading and error states for no layout shift */}
-					<p className='text-[14px] md:text-[16px] leading-none font-[400] text-white/35'>
+					<p className='text-[14px] md:text-[16px] leading-none font-[400] text-body-faint'>
 						<span
 							className={clsx(
 								'inline-block transition-opacity duration-500 ease-in-out truncate max-w-[200px] md:max-w-[360px] font-fix',

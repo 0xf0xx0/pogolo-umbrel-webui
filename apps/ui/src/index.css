@@ -16,7 +16,85 @@ body {
 	font-family: 'Fira Code', monospace;
 }
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * PALETTE
+ *
+ * The app is dark-only and built on Tailwind's warm stone ramp. Everything is
+ * defined once here as a semantic token, so components never hardcode a colour.
+ *
+ * Accent pair is blue/amber rather than green/red: red-green is the most common
+ * form of colour blindness, so status is carried by hue *and* an explicit label
+ * wherever it matters.
+ */
+@theme {
+	/* ── Surfaces ──────────────────────────────────── */
+	--color-surface: var(--color-stone-950);
+	--color-surface-raised: --alpha(var(--color-stone-900) / 40%);
+	--color-surface-sunken: --alpha(var(--color-stone-950) / 20%);
+	--color-surface-input: var(--color-stone-800);
+
+	/* ── Text ──────────────────────────────────────── */
+	--color-body: var(--color-stone-100);
+	--color-body-muted: --alpha(var(--color-stone-200) / 60%);
+	--color-body-subtle: --alpha(var(--color-stone-300) / 40%);
+	--color-body-faint: --alpha(var(--color-stone-400) / 30%);
+
+	/* ── Lines ─────────────────────────────────────── */
+	--color-line: --alpha(var(--color-stone-200) / 10%);
+	--color-line-strong: --alpha(var(--color-stone-200) / 20%);
+
+	/* ── Accents ───────────────────────────────────── */
+	/* Primary accent, used for live/positive values */
+	--color-accent: var(--color-blue-400);
+	--color-accent-muted: --alpha(var(--color-blue-400) / 50%);
+	/* Secondary accent, used for the pool's own headline figures */
+	--color-highlight: var(--color-cyan-400);
+	--color-highlight-muted: --alpha(var(--color-cyan-400) / 50%);
+
+	/* ── Status ────────────────────────────────────── */
+	--color-good: var(--color-blue-400);
+	--color-warn: var(--color-amber-400);
+	--color-bad: var(--color-orange-500);
+	--color-running: var(--color-teal-400);
+	--color-stopped: var(--color-orange-500);
+}
+
+@layer base {
+	* {
+		border-color: var(--color-line);
+	}
+	body {
+		background-color: var(--color-surface);
+		color: var(--color-body);
+	}
+}
+
+:root {
+	--radius: 0.625rem;
+	/* We reserve bottom space so content doesn't sit under the floating Dock. */
+	--dock-clearance: 80px;
+
+	/* Radix/shadcn primitives read these. They map onto the tokens above so
+	   there is a single source of truth for the palette. */
+	--background: var(--color-surface);
+	--foreground: var(--color-body);
+	--card: var(--color-surface-raised);
+	--card-foreground: var(--color-body);
+	--popover: var(--color-surface-input);
+	--popover-foreground: var(--color-body);
+	--primary: var(--color-body);
+	--primary-foreground: var(--color-surface);
+	--secondary: var(--color-surface-input);
+	--secondary-foreground: var(--color-body);
+	--muted: var(--color-surface-input);
+	--muted-foreground: var(--color-body-muted);
+	--accent: var(--color-surface-input);
+	--accent-foreground: var(--color-body);
+	--destructive: var(--color-bad);
+	--border: var(--color-line);
+	--input: var(--color-line-strong);
+	--ring: var(--color-accent-muted);
+}
 
 @theme inline {
 	--radius-sm: calc(var(--radius) - 4px);
@@ -35,105 +113,12 @@ body {
 	--color-secondary-foreground: var(--secondary-foreground);
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
+	--color-accent-surface: var(--accent);
 	--color-accent-foreground: var(--accent-foreground);
 	--color-destructive: var(--destructive);
 	--color-border: var(--border);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
-	--color-chart-1: var(--chart-1);
-	--color-chart-2: var(--chart-2);
-	--color-chart-3: var(--chart-3);
-	--color-chart-4: var(--chart-4);
-	--color-chart-5: var(--chart-5);
-	--color-sidebar: var(--sidebar);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-ring: var(--sidebar-ring);
-}
-
-:root {
-	--radius: 0.625rem;
-	/* We reserve bottom space so content doesn't sit under the floating Dock. */
-	--dock-clearance: 80px;
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
-	--chart-1: oklch(0.646 0.222 41.116);
-	--chart-2: oklch(0.6 0.118 184.704);
-	--chart-3: oklch(0.398 0.07 227.392);
-	--chart-4: oklch(0.828 0.189 84.429);
-	--chart-5: oklch(0.769 0.188 70.08);
-	--sidebar: oklch(0.985 0 0);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.205 0 0);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
-	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
-	--chart-1: oklch(0.488 0.243 264.376);
-	--chart-2: oklch(0.696 0.17 162.48);
-	--chart-3: oklch(0.769 0.188 70.08);
-	--chart-4: oklch(0.627 0.265 303.9);
-	--chart-5: oklch(0.645 0.246 16.439);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-	* {
-		@apply border-border outline-ring/50;
-	}
-	body {
-		@apply bg-background text-foreground;
-	}
 }
 
 @layer utilities {
@@ -159,14 +144,13 @@ body {
 		background-image: linear-gradient(
 			90deg,
 			transparent 0%,
-			rgba(255, 255, 255, 0) 40%,
-			rgba(255, 255, 255, 0.9) 50%,
-			rgba(255, 255, 255, 0) 60%,
+			transparent 40%,
+			var(--color-body) 50%,
+			transparent 60%,
 			transparent 100%
 		);
 		background-size: 200% 100%;
 		background-repeat: no-repeat;
-		/* background-position: -200% 0; */
 		-webkit-background-clip: text;
 		background-clip: text; /* gradient only on glyphs */
 		color: transparent; /* overlay itself invisible */
@@ -179,117 +163,129 @@ body {
 	height: 1.1rem;
 }
 
-/* Palette for pogolo log output. The backend emits <span class="ansi-*">
-   wrappers; these map them onto colours that stay readable on the dark card. */
-.ansi-log .ansi-black {
-	color: #6b6b6b;
-}
-.ansi-log .ansi-red {
-	color: #f87171;
-}
-.ansi-log .ansi-green {
-	color: #4ade80;
-}
-.ansi-log .ansi-yellow {
-	color: #fbbf24;
-}
-.ansi-log .ansi-blue {
-	color: #60a5fa;
-}
-.ansi-log .ansi-magenta {
-	color: #e879f9;
-}
-.ansi-log .ansi-cyan {
-	color: #22d3ee;
-}
-.ansi-log .ansi-white {
-	color: #e5e5e5;
-}
-.ansi-log .ansi-bright-black {
-	color: #8a8a8a;
-}
-.ansi-log .ansi-bright-red {
-	color: #fca5a5;
-}
-.ansi-log .ansi-bright-green {
-	color: #86efac;
-}
-.ansi-log .ansi-bright-yellow {
-	color: #fde047;
-}
-.ansi-log .ansi-bright-blue {
-	color: #93c5fd;
-}
-.ansi-log .ansi-bright-magenta {
-	color: #f0abfc;
-}
-.ansi-log .ansi-bright-cyan {
-	color: #67e8f9;
-}
-.ansi-log .ansi-bright-white {
-	color: #ffffff;
-}
+/*
+ * ANSI log output.
+ *
+ * The backend emits <span class="ansi-*"> wrappers; these map them onto the
+ * Tailwind ramps. The 8 ANSI hues collapse badly for colourblind readers, so
+ * the mapping leans on ramps that stay distinguishable by lightness:
+ * red -> orange, green -> teal, yellow -> amber, blue/cyan -> blue/sky.
+ * Magenta keeps a violet so it does not collide with the red/orange end.
+ */
+.ansi-log {
+	.ansi-black {
+		color: var(--color-stone-600);
+	}
+	.ansi-red {
+		color: var(--color-orange-400);
+	}
+	.ansi-green {
+		color: var(--color-teal-400);
+	}
+	.ansi-yellow {
+		color: var(--color-amber-300);
+	}
+	.ansi-blue {
+		color: var(--color-blue-400);
+	}
+	.ansi-magenta {
+		color: var(--color-violet-400);
+	}
+	.ansi-cyan {
+		color: var(--color-sky-300);
+	}
+	.ansi-white {
+		color: var(--color-stone-200);
+	}
 
-.ansi-log .ansi-bg-black {
-	background-color: #1a1a1a;
-}
-.ansi-log .ansi-bg-red {
-	background-color: #7f1d1d;
-}
-.ansi-log .ansi-bg-green {
-	background-color: #14532d;
-}
-.ansi-log .ansi-bg-yellow {
-	background-color: #713f12;
-}
-.ansi-log .ansi-bg-blue {
-	background-color: #1e3a8a;
-}
-.ansi-log .ansi-bg-magenta {
-	background-color: #701a75;
-}
-.ansi-log .ansi-bg-cyan {
-	background-color: #164e63;
-}
-.ansi-log .ansi-bg-white {
-	background-color: #d4d4d4;
-	color: #171717;
-}
-.ansi-log .ansi-bg-bright-black {
-	background-color: #404040;
-}
-.ansi-log .ansi-bg-bright-red {
-	background-color: #b91c1c;
-}
-.ansi-log .ansi-bg-bright-green {
-	background-color: #15803d;
-}
-.ansi-log .ansi-bg-bright-yellow {
-	background-color: #a16207;
-}
-.ansi-log .ansi-bg-bright-blue {
-	background-color: #1d4ed8;
-}
-.ansi-log .ansi-bg-bright-magenta {
-	background-color: #a21caf;
-}
-.ansi-log .ansi-bg-bright-cyan {
-	background-color: #0e7490;
-}
-.ansi-log .ansi-bg-bright-white {
-	background-color: #fafafa;
-	color: #171717;
-}
+	/* Bright variants: same hue, one step lighter */
+	.ansi-bright-black {
+		color: var(--color-stone-500);
+	}
+	.ansi-bright-red {
+		color: var(--color-orange-300);
+	}
+	.ansi-bright-green {
+		color: var(--color-teal-300);
+	}
+	.ansi-bright-yellow {
+		color: var(--color-amber-200);
+	}
+	.ansi-bright-blue {
+		color: var(--color-blue-300);
+	}
+	.ansi-bright-magenta {
+		color: var(--color-violet-300);
+	}
+	.ansi-bright-cyan {
+		color: var(--color-sky-200);
+	}
+	.ansi-bright-white {
+		color: var(--color-stone-50);
+	}
 
-.ansi-log .ansi-bold {
-	font-weight: 600;
-}
-.ansi-log .ansi-dim {
-	opacity: 0.6;
-}
-.ansi-log .ansi-italic {
-	font-style: italic;
-}
-.ansi-log .ansi-underline {
-	text-decoration: underline;
+	/* Backgrounds use the dark end of the same ramps so text stays readable */
+	.ansi-bg-black {
+		background-color: var(--color-stone-900);
+	}
+	.ansi-bg-red {
+		background-color: var(--color-orange-950);
+	}
+	.ansi-bg-green {
+		background-color: var(--color-teal-950);
+	}
+	.ansi-bg-yellow {
+		background-color: var(--color-amber-950);
+	}
+	.ansi-bg-blue {
+		background-color: var(--color-blue-950);
+	}
+	.ansi-bg-magenta {
+		background-color: var(--color-violet-950);
+	}
+	.ansi-bg-cyan {
+		background-color: var(--color-sky-950);
+	}
+	.ansi-bg-white {
+		background-color: var(--color-stone-300);
+		color: var(--color-stone-950);
+	}
+	.ansi-bg-bright-black {
+		background-color: var(--color-stone-800);
+	}
+	.ansi-bg-bright-red {
+		background-color: var(--color-orange-900);
+	}
+	.ansi-bg-bright-green {
+		background-color: var(--color-teal-900);
+	}
+	.ansi-bg-bright-yellow {
+		background-color: var(--color-amber-900);
+	}
+	.ansi-bg-bright-blue {
+		background-color: var(--color-blue-900);
+	}
+	.ansi-bg-bright-magenta {
+		background-color: var(--color-violet-900);
+	}
+	.ansi-bg-bright-cyan {
+		background-color: var(--color-sky-900);
+	}
+	.ansi-bg-bright-white {
+		background-color: var(--color-stone-100);
+		color: var(--color-stone-950);
+	}
+
+	.ansi-bold {
+		font-weight: 600;
+	}
+	.ansi-dim {
+		opacity: 0.6;
+	}
+	.ansi-italic {
+		font-style: italic;
+	}
+	.ansi-underline {
+		text-decoration: underline;
+	}
 }

@@ -22,9 +22,9 @@ export default function NotFoundPage() {
 						<p className='text-3xl md:text-5xl font-bold leading-none tracking-tighter bg-text-gradient bg-clip-text text-transparent'>
 							404 — unfed fops
 						</p>
-						<p className='mt-2 text-sm md:text-lg text-white/60'>Got lost running pogolo?</p>
+						<p className='mt-2 text-sm md:text-lg text-body-muted'>Got lost running pogolo?</p>
 					</div>
-					<p className='text-sm md:text-base text-white/60'>
+					<p className='text-sm md:text-base text-body-muted'>
 						This page doesn't exist. Check the URL or head back home.
 					</p>
 					<div>

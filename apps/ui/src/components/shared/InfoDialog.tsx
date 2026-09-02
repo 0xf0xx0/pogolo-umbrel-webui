@@ -23,17 +23,17 @@ export default function InfoDialog({trigger, title, description, className}: Inf
 		<Dialog>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogContent
-				className={`sm:max-w-[425px] bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl ${className || ''}`}
+				className={`sm:max-w-[425px] bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl ${className || ''}`}
 				showCloseButton={false}
 			>
 				<DialogClose asChild>
 					<button className='absolute top-4 right-4 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors'>
-						<XIcon className='w-3 h-3 text-white/70' />
+						<XIcon className='w-3 h-3 text-body-muted' />
 					</button>
 				</DialogClose>
 				<DialogHeader>
-					<DialogTitle className='text-white text-left'>{title}</DialogTitle>
-					<DialogDescription className='text-white/60 whitespace-pre-line text-left'>{description}</DialogDescription>
+					<DialogTitle className='text-body text-left'>{title}</DialogTitle>
+					<DialogDescription className='text-body-muted whitespace-pre-line text-left'>{description}</DialogDescription>
 				</DialogHeader>
 			</DialogContent>
 		</Dialog>

@@ -32,45 +32,45 @@ export default function ConnectionDetails() {
 			<DialogTrigger asChild>
 				<Button className='cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
-					<WalletIcon className='w-5 h-5 text-[#969696]' />
-					<span className='text-[13px] text-white/80 font-[500]'>Connect</span>
+					<WalletIcon className='w-5 h-5 text-body-subtle' />
+					<span className='text-[13px] text-body font-[500]'>Connect</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[60vw]'
+				className='bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[60vw]'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
 				<DialogClose asChild>
 					<button className='absolute top-4 right-4 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors'>
-						<XIcon className='w-3 h-3 text-white/70' />
+						<XIcon className='w-3 h-3 text-body-muted' />
 					</button>
 				</DialogClose>
 				<DialogHeader>
-					<DialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
+					<DialogTitle className='font-bold text-body text-[20px] font-[400] text-left'>
 						<div className='flex items-center gap-2'>
-							<WalletIcon className='w-5 h-5 text-white' />
+							<WalletIcon className='w-5 h-5 text-body' />
 							Connect a gopher
 						</div>
 					</DialogTitle>
-					<DialogDescription className='text-white/60 text-left text-[13px]'>
+					<DialogDescription className='text-body-muted text-left text-[13px]'>
 						Point your miner at this address to start mining to your own pool. Most miners take the URL as-is; some
 						want the host and port in separate fields.
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className='space-y-4 mt-2 grid grid-cols-3 gap-4'>
-					<div className='bg-gradient-to-b from-stone-900 to-stone-950 p-5 rounded-xl'>
+					<div className='bg-gradient-to-b from-surface-input to-surface p-5 rounded-xl'>
 						<QR value={conn?.uri} />
                     </div>
 
                     <div className='col-span-2 grid grid-rows-4'>
-                        <p className='text-white/50 text-[12px] font-[400]'>
+                        <p className='text-body-subtle text-[12px] font-[400]'>
     						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
     						address from Settings will be used instead.
     					</p>
 
-    					<div className='row-span-3 divide-y divide-white/6 overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-stone-900 to-stone-950'>
+    					<div className='row-span-3 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
     						<Field className='col-span-full' label='URL' value={conn?.uri} />
     						<Field className='col-span-4' label='Host' value={conn?.host} />
     						<Field className='col-span-2' label='Port' value={conn?.port?.toString()} />
@@ -99,11 +99,11 @@ function Field({ label, value, className }: { label: string; value?: string; cla
 
 	return (
 		<div className={`h-[42px] grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 text-sm ${className}`}>
-			<span className='shrink-0 text-white'>{label}</span>
+			<span className='shrink-0 text-body'>{label}</span>
 
 			<div className='flex min-w-0 items-center justify-end gap-2'>
 				{/* show an em-dash when no data */}
-				<span className='min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-white/60' title={value}>
+				<span className='min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-body-muted' title={value}>
 					{value ?? '—'}
 				</span>
 
@@ -117,13 +117,13 @@ function Field({ label, value, className }: { label: string; value?: string; cla
 							disabled={blank} // disabled when no data
 							className='h-4 w-4 shrink-0 p-0 hover:bg-transparent'
 						>
-							<Copy className='scale-75 text-white/70' />
+							<Copy className='scale-75 text-body-muted' />
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent
 						side='top'
 						align='center'
-						className='w-auto rounded-md border border-white/20 bg-black/90 px-2 py-1 text-[12px] text-white'
+						className='w-auto rounded-md border border-line-strong bg-surface/95 px-2 py-1 text-[12px] text-body'
 					>
 						Copied!
 					</PopoverContent>
@@ -158,9 +158,9 @@ function QR({value}: {value?: string}) {
 			</div>
 
 			{/* Umbrel logo overlay */}
-			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 p-2 shadow-md pointer-events-none select-none bg-[#1C1C1C]'>
+			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 p-2 shadow-md pointer-events-none select-none bg-surface-input'>
 				<div className='w-full h-full flex items-center justify-center bg-white/10 rounded-md p-1.5'>
-					<Logo className='w-full h-full text-white' />
+					<Logo className='w-full h-full text-body' />
 				</div>
 			</div>
 
