@@ -176,6 +176,21 @@ export const settingsMetadata = {
 		step: 1,
 		default: 0,
 	},
+
+	/* ===== Web UI tab ===== */
+	// No tomlKey: this belongs to the webui, not pogolo, so it is stored
+	// separately and never written to pogolo.toml.
+	explorer_url: {
+		tab: 'webui',
+		kind: 'text',
+		label: 'Block Explorer',
+		description:
+			'A mempool.space or btc-rpc-explorer instance. Found blocks link to it, so you can inspect them in one click.',
+		subDescription: 'Leave empty to show found blocks without links.',
+		default: 'http://umbrel.local:3006',
+		optional: true,
+		placeholder: 'http://umbrel.local:3006',
+	},
 } satisfies Record<string, Option>
 
 export type SettingKey = keyof typeof settingsMetadata

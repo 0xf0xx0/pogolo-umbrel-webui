@@ -48,7 +48,7 @@ function TomlKeyBadge({option}: {option: Option}) {
 
 	return (
 		<div className='flex flex-wrap gap-1 my-1'>
-			<span className='text-[12px] font-[400] text-white/50 bg-[#2C2C2C] px-1 rounded-sm'>{option.tomlKey}</span>
+			<span className='text-[12px] font-[400] text-body-subtle bg-surface-input px-1 rounded-sm'>{option.tomlKey}</span>
 		</div>
 	)
 }
@@ -73,7 +73,7 @@ function SettingsTabTrigger({
 	return (
 		<TabsTrigger
 			value={value}
-			className='relative text-[12px] bg-transparent border-none data-[state=active]:text-white data-[state=active]:bg-transparent data-[state=inactive]:text-white/60 focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-white/80 transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-white'
+			className='relative text-[12px] bg-transparent border-none data-[state=active]:text-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-body'
 		>
 			{children}
 
@@ -81,9 +81,9 @@ function SettingsTabTrigger({
 			{hasError && (
 				<span aria-hidden className='relative inline-flex h-2 w-2'>
 					{/* outer expanding ring that pings */}
-					<span className='absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping' />
+					<span className='absolute inline-flex h-full w-full rounded-full bg-bad opacity-75 animate-ping' />
 					{/* solid center dot */}
-					<span className='relative inline-flex h-2 w-2 rounded-full bg-red-500' />
+					<span className='relative inline-flex h-2 w-2 rounded-full bg-bad' />
 				</span>
 			)}
 		</TabsTrigger>
@@ -99,7 +99,7 @@ function SettingsTabContent({tab, form}: {tab: Tab; form: ReturnType<typeof useF
 	return (
 		<>
 			{fieldsForTab.map((k, index) => (
-				<div key={String(k)} className={index < fieldsForTab.length - 1 ? 'border-b-[1px] border-white/20 pb-6' : ''}>
+				<div key={String(k)} className={index < fieldsForTab.length - 1 ? 'border-b-[1px] border-line-strong pb-6' : ''}>
 					<FieldRenderer name={k as SettingName} form={form} />
 				</div>
 			))}
@@ -119,11 +119,11 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 				<div className='flex flex-row justify-between items-center'>
 					<div>
 						{form.formState.errors[name] && (
-							<p className='absolute top-10 right-1 text-xs text-red-500'>
+							<p className='absolute top-10 right-1 text-xs text-bad'>
 								{form.formState.errors[name]?.message as string}
 							</p>
 						)}
-						<label className='text-[14px] font-[400] text-white'>{option.label}</label>
+						<label className='text-[14px] font-[400] text-body'>{option.label}</label>
 						<TomlKeyBadge option={option} />
 					</div>
 					<InputField
@@ -138,9 +138,9 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						disabled={disabled}
 					/>
 				</div>
-				<p className='text-[13px] font-[400] text-white/60'>{option.description}</p>
-				{option.subDescription && <p className='text-[12px] font-[400] text-white/60 mt-1'>{option.subDescription}</p>}
-				<p className='text-[12px] font-[400] text-white/50  mt-2'>
+				<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
+				{option.subDescription && <p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>}
+				<p className='text-[12px] font-[400] text-body-subtle  mt-2'>
 					default: {option.default} {option.unit}
 				</p>
 			</div>
@@ -154,11 +154,11 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 				<div className='flex flex-col gap-2'>
 					<div>
 						{form.formState.errors[name] && (
-							<p className='absolute top-10 right-1 text-xs text-red-500'>
+							<p className='absolute top-10 right-1 text-xs text-bad'>
 								{form.formState.errors[name]?.message as string}
 							</p>
 						)}
-						<label className='text-[14px] font-[400] text-white'>{option.label}</label>
+						<label className='text-[14px] font-[400] text-body'>{option.label}</label>
 						<TomlKeyBadge option={option} />
 					</div>
 					<InputField
@@ -171,10 +171,10 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						disabled={disabled}
 					/>
 				</div>
-				<p className='text-[13px] font-[400] text-white/60'>{option.description}</p>
-				{option.subDescription && <p className='text-[12px] font-[400] text-white/60 mt-1'>{option.subDescription}</p>}
+				<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
+				{option.subDescription && <p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>}
 				{option.default !== '' && (
-					<p className='text-[12px] font-[400] text-white/50 mt-2'>default: {option.default}</p>
+					<p className='text-[12px] font-[400] text-body-subtle mt-2'>default: {option.default}</p>
 				)}
 			</div>
 		)
@@ -196,7 +196,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 					<div className='relative flex flex-col gap-1'>
 						<div className='flex flex-row justify-between sm:items-center'>
 							<div>
-								<label className='text-[14px] font-[400] text-white'>{option.label}</label>
+								<label className='text-[14px] font-[400] text-body'>{option.label}</label>
 								<TomlKeyBadge option={option} />
 							</div>
 							<div className='max-sm:mt-2'>
@@ -210,15 +210,15 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								/>
 							</div>
 						</div>
-						<p className='text-[13px] font-[400] text-white/60'>{option.description}</p>
+						<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
 						{option.subDescription && (
-							<p className='text-[12px] font-[400] text-white/60 mt-1'>{option.subDescription}</p>
+							<p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>
 						)}
-						<p className='text-[12px] font-[400] text-white/50 mt-2'>
+						<p className='text-[12px] font-[400] text-body-subtle mt-2'>
 							default: {option.default ? 'enabled' : 'disabled'}
 						</p>
 						{fieldState.error && (
-							<p className='absolute -bottom-4 left-0 text-xs text-red-500'>{fieldState.error.message}</p>
+							<p className='absolute -bottom-4 left-0 text-xs text-bad'>{fieldState.error.message}</p>
 						)}
 					</div>
 				)}
@@ -237,9 +237,9 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						<div className='flex flex-row justify-between items-center'>
 							<div>
 								{fieldState.error && (
-									<p className='absolute top-10 right-1 text-xs text-red-500'>{fieldState.error.message}</p>
+									<p className='absolute top-10 right-1 text-xs text-bad'>{fieldState.error.message}</p>
 								)}
-								<label className='text-[14px] font-[400] text-white'>{option.label}</label>
+								<label className='text-[14px] font-[400] text-body'>{option.label}</label>
 								<TomlKeyBadge option={option} />
 							</div>
 							<Select
@@ -249,12 +249,12 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								disabled={disabled}
 							>
 								<SelectTrigger
-									className={`rounded bg-[#272727] shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-white focus:ring-0 ring-offset-0 border-none max-sm:text-[12px]`}
+									className={`rounded bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-body focus:ring-0 ring-offset-0 border-none max-sm:text-[12px]`}
 								>
 									<SelectValue placeholder='Select…' />
 								</SelectTrigger>
 
-								<SelectContent className='bg-[#272727] shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-white border-none'>
+								<SelectContent className='bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body border-none'>
 									{option.options.map((opt) => (
 										<SelectItem key={opt.value} value={opt.value} className='cursor-pointer'>
 											{opt.label}
@@ -263,11 +263,11 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								</SelectContent>
 							</Select>
 						</div>
-						<p className='text-[13px] font-[400] text-white/60'>{option.description}</p>
+						<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
 						{option.subDescription && (
-							<p className='text-[12px] font-[400] text-white/60 mt-1'>{option.subDescription}</p>
+							<p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>
 						)}
-						<p className='text-[12px] font-[400] text-white/50 mt-2'>default: {option.default}</p>
+						<p className='text-[12px] font-[400] text-body-subtle mt-2'>default: {option.default}</p>
 					</div>
 				)}
 			/>
@@ -281,6 +281,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 // This array drives both the tab triggers (navigation) and tab content rendering
 const tabs = [
 	{value: 'pool', label: 'Pool'},
+	{value: 'webui', label: 'Web UI'},
 	{value: 'advanced', label: 'Advanced'},
 ] as const
 
@@ -371,14 +372,14 @@ export default function SettingsCard() {
 						<GradientBorderFromTop />
 						<CardHeader>
 							<div className='flex items-center justify-between'>
-								<CardTitle className='font-bold text-white text-[20px] font-[400] pt-2'>Settings</CardTitle>
+								<CardTitle className='font-bold text-body text-[20px] font-[400] pt-2'>Settings</CardTitle>
 								<div className='relative max-w-xs mt-2'>
-									<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white' />
+									<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-body' />
 									<Input
 										value={query}
 										onChange={(e) => setQuery(e.target.value)}
 										placeholder='Search'
-										className='pl-10 border-none bg-[#272727] shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-white placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-white/10'
+										className='pl-10 border-none bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body placeholder:text-body-subtle focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-line'
 									/>
 								</div>
 							</div>
@@ -430,13 +431,13 @@ export default function SettingsCard() {
 								>
 									{isSearching ? (
 										matchingFields.length === 0 ? (
-											<p className='text-white/60 text-center text-[14px] font-[400]'>No results found for "{query}"</p>
+											<p className='text-body-muted text-center text-[14px] font-[400]'>No results found for "{query}"</p>
 										) : (
 											matchingFields.map((name, i) => (
 												<div
 													key={name}
 													// styling to exactly match when rendered inside tabs
-													className={i < matchingFields.length - 1 ? 'border-b-[1px] border-white/20 pb-6 mb-6' : ''}
+													className={i < matchingFields.length - 1 ? 'border-b-[1px] border-line-strong pb-6 mb-6' : ''}
 												>
 													<FieldRenderer name={name} form={form} />
 												</div>
@@ -476,12 +477,12 @@ export default function SettingsCard() {
 									</Button>
 								</AlertDialogTrigger>
 
-								<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-white/10 border-[0.5px] rounded-2xl'>
+								<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl'>
 									<AlertDialogHeader>
-										<AlertDialogTitle className='font-bold text-white text-[20px] font-[400] text-left'>
+										<AlertDialogTitle className='font-bold text-body text-[20px] font-[400] text-left'>
 											Restore default settings?
 										</AlertDialogTitle>
-										<AlertDialogDescription className='text-white/60 text-left text-[13px] space-y-3'>
+										<AlertDialogDescription className='text-body-muted text-left text-[13px] space-y-3'>
 											<span className='block'>
 												This will restore every setting on this page to its default value. You cannot undo this action.
 												Any options in pogolo.toml that this page does not manage are left alone.
