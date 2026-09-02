@@ -7,7 +7,7 @@
 //
 // History is in memory only, so it resets when the backend restarts.
 
-import {getInfo, getGopher, getGophers} from './api-client.js'
+import {getInfo, getGophers} from './api-client.js'
 
 import type {MetricSample, MetricHistory} from '#types'
 

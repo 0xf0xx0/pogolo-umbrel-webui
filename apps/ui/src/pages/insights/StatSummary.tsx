@@ -59,23 +59,23 @@ export default function StatSummary() {
 				'
 			>
 				<Stat
-					label='Hashrate'
+					label='Total Hashrate'
 					value={hashrate.value}
 					unit={hashrate.unit}
-					description='The combined hashrate currently connected to your pool. This is estimated from the shares your miners submit, so it moves around a little even when your miners are running at a steady speed.'
+					description='The combined hashrate currently connected to pogolo. This is estimated from the shares your gophers submit, so it moves around a little even when they are running at a steady speed.'
 				/>
 				<Stat
 					label='Gophers'
 					value={data?.totalGophers ?? 0}
-					description='The number of miners currently connected to your pool. Each connected device counts as one gopher.'
+					description='The number of gophers currently connected to pogolo. Each connected device counts as one gopher.'
 				/>
 				<Stat
 					label='Best Share'
 					value={difficulty.value || '—'}
 					unit={difficulty.unit}
-					description={`The highest-difficulty share your pool has produced, including any blocks it has found. A block is found when a share's difficulty is at least the network difficulty.`}
+					description={`The highest-difficulty share a gopher connected has produced, including any blocks it has found. A block is found when a share's difficulty is at least the network difficulty.`}
 				/>
-				<Stat label='Pool Uptime' value={uptimeStr} description='How long pogolo has been running.' />
+				<Stat label='Uptime' value={uptimeStr} description='How long pogolo has been running.' />
 			</div>
 		</InsightCard>
 	)

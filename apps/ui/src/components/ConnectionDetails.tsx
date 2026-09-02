@@ -52,7 +52,7 @@ export default function ConnectionDetails() {
 						</div>
 					</DialogTitle>
 					<DialogDescription className='text-body-muted text-left text-[13px]'>
-						Point your miner at this address to start mining to your own pool. Most miners take the URL as-is; some
+						Point your miner at this address to start mining to your pogolo. Most miners take the URL as-is; some
 						want the host and port in separate fields.
 					</DialogDescription>
 				</DialogHeader>

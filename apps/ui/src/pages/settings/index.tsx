@@ -280,7 +280,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 
 // This array drives both the tab triggers (navigation) and tab content rendering
 const tabs = [
-	{value: 'pool', label: 'Pool'},
+	{value: 'pool', label: 'Pogolo'},
 	{value: 'webui', label: 'Web UI'},
 	{value: 'advanced', label: 'Advanced'},
 ] as const

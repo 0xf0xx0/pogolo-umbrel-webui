@@ -8,7 +8,7 @@ export default function DangerZoneAlert() {
 			<AlertTitle className='text-warn'>Danger Zone</AlertTitle>
 			<AlertDescription className='text-warn'>
 				Changes you make here are written straight to pogolo's config file. Please ensure that you know what you are
-				doing, and that you understand how changes may impact your pool and the miners connected to it.
+				doing, and that you understand how changes may impact your pool and the gophers connected to it.
 			</AlertDescription>
 		</Alert>
 	)

@@ -78,7 +78,7 @@ export default function HashrateChart() {
 	const {series, max, count} = useMemo(() => {
 		// Map a gopher id to a readable label, preferring its user agent
 		const labelFor = (id: string) => {
-			if (id === POOL_SERIES) return 'Pool total'
+			if (id === POOL_SERIES) return 'Total'
 			const gopher = gophersInfo?.find((g) => g.extranonce1 === id)
 			return gopher?.nickname ? `${gopher.nickname} (${id})` : id
 		}
@@ -130,7 +130,7 @@ export default function HashrateChart() {
 					<div className='flex flex-col gap-1 py-4'>
 						<span className='text-body-muted text-[14px]'>Not enough history yet</span>
 						<span className='text-body-subtle text-[12px]'>
-							The chart fills in as your pool runs; check back in a minute.
+							The chart fills in as pogolo runs; check back in a minute.
 						</span>
 					</div>
 				) : (
