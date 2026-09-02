@@ -4,7 +4,7 @@ import {useQuery} from '@tanstack/react-query'
 import InsightCard from './InsightsCard'
 import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {api} from '@/lib/api'
-import {usePoolInfo} from '@/hooks/usePogolo'
+import {usePoolInfo, useGophers} from '@/hooks/usePogolo'
 import {formatHashrate} from '@/lib/formatPool'
 
 import type {MetricHistory} from '#types'
@@ -65,7 +65,9 @@ function buildPath(values: (number | null)[], max: number, count: number): strin
 }
 
 export default function HashrateChart() {
-	const {data: info} = usePoolInfo()
+    const { data: info } = usePoolInfo()
+    const {data: gophersInfo} = useGophers()
+
 
 	const {data: history, isLoading} = useQuery({
 		queryKey: ['pool', 'history'],
@@ -77,8 +79,8 @@ export default function HashrateChart() {
 		// Map a gopher id to a readable label, preferring its user agent
 		const labelFor = (id: string) => {
 			if (id === POOL_SERIES) return 'Pool total'
-			const gopher = info?.gophers.find((g) => g.extranonce1 === id)
-			return gopher?.userAgent ? `${gopher.userAgent} (${id})` : id
+			const gopher = gophersInfo?.find((g) => g.extranonce1 === id)
+			return gopher?.nickname ? `${gopher.nickname} (${id})` : id
 		}
 
 		const samples = history?.samples ?? []
@@ -109,7 +111,7 @@ export default function HashrateChart() {
 		})
 
 		return {series: built, max: peak, count: samples.length}
-	}, [history, info])
+	}, [history, info, gophersInfo])
 
 	const peakLabel = formatHashrate(max)
 

@@ -99,6 +99,27 @@ export async function getGopher(idOrNickname: string): Promise<GopherInfo> {
 
     return fetchJson<GopherInfo>(`/api/v1/gopher/${encodeURIComponent(idOrNickname)}`)
 }
+// Get full stats for all miners.
+export async function getGophers(): Promise<GopherInfo[]> {
+    return new Promise<GopherInfo[]>((resolve, _) => {
+        resolve([{
+          "extranonce1": "deedbeef",
+          "address": "bc1qfakeaddrFAKEADDRfakeaddrFAKEADDRfakeaddrFAKEADDR",
+          "nickname": "gaymma",
+          "userAgent": "bitaxe/bm1370",
+          "sharesAccepted": 17273,
+          "sharesRejected": 2,
+          "hashrate": 1196454,
+          "bestDifficulty": 75775272,
+          "targetDifficulty": 1024,
+          "averageShareTime": 4484,
+          "uptime": 42069,
+          "protocolVersion": 1
+        }])
+    })
+
+    return fetchJson<GopherInfo[]>(`/api/v1/gophers`)
+}
 
 // Whether pogolo is reachable. Used for the running indicator on the home page.
 export async function isReachable(): Promise<boolean> {

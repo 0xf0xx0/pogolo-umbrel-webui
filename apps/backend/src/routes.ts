@@ -27,6 +27,7 @@ export default fp(async (app: FastifyInstance) => {
 	const poolBase = `${BASE}/pool`
 
 	app.get(`${poolBase}/status`, pogolo.status)
+	app.get(`${poolBase}/gophers`, pogolo.gophers)
 	app.get(`${poolBase}/info`, pogolo.info)
 
 	app.get<{Params: {idOrNickname: string}}>(`${poolBase}/gopher/:idOrNickname`, (req) =>

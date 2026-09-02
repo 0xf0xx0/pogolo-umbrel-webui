@@ -26,8 +26,18 @@ export function usePoolStatus() {
 export function useGopher(idOrNickname: string | null) {
 	return useQuery({
 		queryKey: ['pool', 'gopher', idOrNickname],
-		queryFn: () => api<GopherInfo>(`/pool/gopher/${encodeURIComponent(idOrNickname as string)}`),
+		queryFn: () => api<GopherInfo>(`/pool/gophers/${encodeURIComponent(idOrNickname as string)}`),
 		enabled: idOrNickname !== null,
 		refetchInterval: 5_000,
+	})
+}
+
+// Full stats for all miners
+export function useGophers() {
+	return useQuery({
+		queryKey: ['pool', 'gopher'],
+		queryFn: () => api<GopherInfo[]>(`/pool/gophers`),
+        refetchInterval: 5_000,
+        staleTime: 2_500,
 	})
 }

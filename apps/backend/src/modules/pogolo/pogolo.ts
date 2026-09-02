@@ -3,7 +3,7 @@
 // pogolo runs as its own container, so we do not manage its lifecycle. "Running"
 // means "its API answered us", and uptime comes from pogolo itself.
 
-import {getInfo, getGopher} from './api-client.js'
+import {getInfo, getGopher, getGophers} from './api-client.js'
 
 import type {PogoloStatus, PogoloInfo, GopherInfo} from '#types'
 
@@ -34,4 +34,7 @@ export async function info(): Promise<PogoloInfo> {
 
 export async function gopher(idOrNickname: string): Promise<GopherInfo> {
 	return getGopher(idOrNickname)
+}
+export async function gophers(): Promise<GopherInfo[]> {
+	return getGophers()
 }

@@ -7,7 +7,7 @@
 //
 // History is in memory only, so it resets when the backend restarts.
 
-import {getInfo, getGopher} from './api-client.js'
+import {getInfo, getGopher, getGophers} from './api-client.js'
 
 import type {MetricSample, MetricHistory} from '#types'
 
@@ -35,13 +35,12 @@ async function sample() {
 
 		// /api/v1/info carries no per-gopher hashrate, so fetch each one's detail.
 		// A gopher that disconnects mid-sample is simply left out of this sample.
-		const details = await Promise.allSettled(info.gophers.map((gopher) => getGopher(gopher.extranonce1)))
+		const details = await getGophers()
 
 		for (const [index, result] of details.entries()) {
-			if (result.status !== 'fulfilled') continue
 			const gopher = info.gophers[index]
 			if (!gopher) continue
-			hashrate[gopher.extranonce1] = result.value.hashrate
+			hashrate[result.extranonce1] = result.hashrate
 		}
 
 		samples.push({timestamp: Date.now(), hashrate})

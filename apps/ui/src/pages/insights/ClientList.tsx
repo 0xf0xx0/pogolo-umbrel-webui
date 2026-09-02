@@ -4,7 +4,7 @@ import InsightCard from './InsightsCard'
 import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {Field, SplitField, BigStat} from '@/components/shared/Field'
 import {api} from '@/lib/api'
-import {usePoolInfo} from '@/hooks/usePogolo'
+import {usePoolInfo, useGophers} from '@/hooks/usePogolo'
 import {formatHashrate, formatDifficulty, formatUptimeSeconds} from '@/lib/formatPool'
 
 import type {GopherInfo, MiniGopherInfo} from '#types'
@@ -86,26 +86,19 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 }
 
 export default function ClientList() {
+    const {data: gophersInfo, isLoading1} = useGophers()
 	const {data, isLoading} = usePoolInfo()
 	const gophers = data?.gophers ?? []
-
 	// /api/v1/info only carries a user agent and id per miner, so fetch the full
 	// stats for each connected miner alongside it.
-	const details = useQueries({
-		queries: gophers.map((gopher) => ({
-			queryKey: ['pool', 'gopher', gopher.extranonce1],
-			queryFn: () => api<GopherInfo>(`/pool/gopher/${encodeURIComponent(gopher.extranonce1)}`),
-			refetchInterval: 5_000,
-			// A miner that disconnects mid-flight 404s; keep the card rather than erroring the page
-			retry: false,
-		})),
-	})
+    const details = gophersInfo ?? []
+
 
 	return (
 		<InsightCard>
 			<CardHeader>
 				<CardTitle className='text-body text-[20px] font-[400]'>
-					Connected Miners
+					Connected Gophers
 					{gophers.length > 0 && (
 						<span className='text-body-subtle text-[15px] font-[300] ml-2'>{gophers.length}</span>
 					)}
@@ -116,13 +109,13 @@ export default function ClientList() {
 					<p className='text-body-subtle text-[14px]'>Loading…</p>
 				) : gophers.length === 0 ? (
 					<div className='flex flex-col gap-1 py-4'>
-						<span className='text-body-muted text-[14px]'>No miners connected</span>
-						<span className='text-body-subtle text-[12px]'>Point a miner at your pool and it will show up here.</span>
+						<span className='text-body-muted text-[14px]'>No gophers connected</span>
+						<span className='text-body-subtle text-[12px]'>Point your miner at pogolo and it will show up here.</span>
 					</div>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
 						{gophers.map((gopher, index) => (
-							<ClientCard key={gopher.extranonce1} mini={gopher} info={details[index]?.data} />
+							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.[index]} />
 						))}
 					</div>
 				)}
