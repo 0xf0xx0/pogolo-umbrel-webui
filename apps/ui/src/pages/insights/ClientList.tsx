@@ -115,7 +115,7 @@ export default function ClientList() {
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
 						{gophers.map((gopher, index) => (
-							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.[index]} />
+							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.find(v => v.extranonce1 === gopher.extranonce1)} />
 						))}
 					</div>
 				)}
