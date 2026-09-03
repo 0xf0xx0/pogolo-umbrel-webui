@@ -10,7 +10,7 @@ import {cn} from '@/lib/utils'
 // palette change never means editing call sites.
 export type Tone = 'default' | 'muted' | 'accent' | 'highlight' | 'good' | 'warn' | 'bad'
 
-const VALUE_TONE: Record<Tone, string> = {
+export const VALUE_TONE: Record<Tone, string> = {
 	default: 'text-body',
 	muted: 'text-body-muted',
 	accent: 'text-accent',

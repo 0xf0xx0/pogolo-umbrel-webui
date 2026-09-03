@@ -33,7 +33,7 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 			<BigStat
 				value={hashrate.value || '—'}
 				unit={hashrate.unit}
-				tone='accent'
+				tone='good'
 				title={info ? `${info.hashrate} Mh/s` : undefined}
 			/>
 

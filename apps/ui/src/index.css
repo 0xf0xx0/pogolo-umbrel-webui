@@ -52,7 +52,7 @@ body {
 	--color-highlight-muted: --alpha(var(--color-cyan-400) / 50%);
 
 	/* ── Status ────────────────────────────────────── */
-	--color-good: var(--color-blue-400);
+	--color-good: var(--color-green-400);
 	--color-warn: var(--color-amber-400);
 	--color-bad: var(--color-orange-500);
 	--color-running: var(--color-teal-400);
