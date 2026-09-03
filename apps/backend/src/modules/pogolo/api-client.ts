@@ -64,27 +64,6 @@ export async function getInfo(): Promise<PogoloInfo> {
 	// Fold concurrent callers into the in-flight request
     if (inflightInfo) return inflightInfo
 
-    /*
-        inflightInfo = new Promise<PogoloInfo>((resolve, _) => {
-        resolve({
-          "uptime": 696969,
-          "blockHeight": 964907,
-          "totalGophers": 1,
-          "totalHashrate": 1196454,
-          "bestDifficulty": 75775272,
-          "tag": "/pogolo - build the world you wish to live in - decentralize or die/",
-          "gophers": [
-            {
-              "userAgent": "bitaxe/bm1370",
-              "extranonce1": "deedbeef",
-              "protocolVersion": 1
-            }
-          ],
-          "blocksFound": []
-        })
-     })
-    */
-
 	inflightInfo = fetchJson<PogoloInfo>('/api/v1/info')
         .then((value) => {
             value.gophers.sort(compareGophers)
@@ -100,25 +79,6 @@ export async function getInfo(): Promise<PogoloInfo> {
 
 // Get full stats for a single miner by extranonce1 or nickname.
 export async function getGopher(idOrNickname: string): Promise<GopherInfo> {
-    // return new Promise<GopherInfo>((resolve, _) => {
-    //     resolve({
-    //       "extranonce1": "deedbeef",
-    //       "address": "bc1qfakeaddrFAKEADDRfakeaddrFAKEADDRfakeaddrFAKEADDR",
-    //       "nickname": "gaymma",
-    //       "userAgent": "bitaxe/bm1370",
-    //       "sharesAccepted": 17273,
-    //       "sharesRejected": 2,
-    //       "hashrate": 1196454,
-    //       "bestDifficulty": 75775272,
-    //       "targetDifficulty": 1024,
-    //       "averageShareTime": 4484,
-    //       "uptime": 42069,
-    //       "protocolVersion": 1
-    //     })
-    // })
-
-    // .sort(compareGophers)
-
     return fetchJson<GopherInfo>(`/api/v1/gopher/${encodeURIComponent(idOrNickname)}`)
 }
 // Get full stats for all miners.
