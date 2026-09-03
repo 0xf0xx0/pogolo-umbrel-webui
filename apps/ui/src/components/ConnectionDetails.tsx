@@ -1,5 +1,5 @@
 import QrSvg from '@wojtekmaj/react-qr-svg'
-import {X as XIcon} from 'lucide-react'
+import {TriangleAlert, X as XIcon} from 'lucide-react'
 
 import Logo from '@/assets/logo.svg?react'
 
@@ -12,7 +12,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import {Button} from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import {Alert, AlertDescription} from '@/components/ui/alert'
 
 import WalletIcon from '@/assets/wallet.svg?react'
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
@@ -74,8 +75,15 @@ export default function ConnectionDetails() {
     						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
     						<CopyRow className='col-span-4' label='Username' value='btcaddress.workername' />
     						<CopyRow className='col-span-2' label='Pass' value={conn?.password || ''} />
-    					</div>
+                        </div>
+
                     </div>
+                    <Alert className='bg-[#EDCE0017] text-warn border-none col-span-full'>
+						<TriangleAlert className='h-4 w-4' />
+						<AlertDescription className='text-warn'>
+    						Please don't expose pogolo on the public internet; instead, use a VPN like Tailscale for remote access.
+						</AlertDescription>
+					</Alert>
 				</div>
 			</DialogContent>
 		</Dialog>
