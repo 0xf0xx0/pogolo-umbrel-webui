@@ -16,7 +16,7 @@
 # Dependencies layer — install every workspace deps
 # Functions as a shared cache for dev & app-builder stages
 ##########################################################
-FROM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS deps
+FROM --platform=$BUILDPLATFORM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS deps
 WORKDIR /repo
 
 # Copy only dependency manifests to keep this layer cache-friendly
@@ -36,7 +36,7 @@ ENV PATH="/repo/node_modules/.bin:$PATH"
 # - `docker compose up` targets it via `target: dev`
 #   in the docker-compose.yml file.
 ####################################################
-FROM deps AS dev
+FROM --platform=$BUILDPLATFORM deps AS dev
 WORKDIR /repo/apps/backend
 
 VOLUME /data
@@ -59,7 +59,7 @@ RUN tsc -b libs/shared-types libs/settings apps/backend \
 ########################################
 # runtime stage — final production image
 ########################################
-FROM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS runtime
+FROM --platform=$BUILDPLATFORM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS runtime
 WORKDIR /app
 
 # Install production dependencies only
