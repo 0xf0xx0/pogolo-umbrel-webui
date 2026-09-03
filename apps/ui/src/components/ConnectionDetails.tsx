@@ -28,7 +28,7 @@ export default function ConnectionDetails() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className='cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
+				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
 					<WalletIcon className='w-5 h-5 text-body-subtle' />
 					<span className='text-[13px] text-body font-[500]'>Connect</span>
@@ -52,7 +52,7 @@ export default function ConnectionDetails() {
 						</div>
 					</DialogTitle>
 					<DialogDescription className='text-body-muted text-left text-[13px]'>
-						Point your miner at this address to start mining to your pogolo. Most miners take the URL as-is; some
+						Point your miner at this address to start mining to your pool. Most miners take the URL as-is; some
 						want the host and port in separate fields.
 					</DialogDescription>
 				</DialogHeader>
@@ -99,14 +99,14 @@ function QR({value}: {value?: string}) {
 					width={200}
 					height={200}
 					level='Q' // Q = 25% error correction
-					fgColor='#c1e269' // solid orange fill
+					fgColor='#c1e269' // pogolo green fill
 					bgColor='transparent' // transparent background
 					cellClassPrefix='qrPx' // produces .qrPx & .qrPx-filled that we can target with CSS
 					style={{display: 'block', shapeRendering: 'crispEdges'}}
 				/>
 			</div>
 
-			{/* Umbrel logo overlay */}
+			{/* Pogolo logo overlay */}
 			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 p-2 shadow-md pointer-events-none select-none bg-surface-input'>
 				<div className='w-full h-full flex items-center justify-center bg-white/10 rounded-md p-1.5'>
 					<Logo className='w-full h-full text-body' />
@@ -115,7 +115,6 @@ function QR({value}: {value?: string}) {
 
 			{/* Correct selector: path.qrPx-filled */}
 			<style>{`
-        /* add a lighter-orange outline to each "filled" cell */
         .qrPx-filled {
           stroke-width: 0.5px !important;
           stroke-linejoin: miter;

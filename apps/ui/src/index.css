@@ -27,6 +27,8 @@ body {
  * wherever it matters.
  */
 @theme {
+    /* body of the addict */
+    --color-pogolo-body: #c1e269;
 	/* ── Surfaces ──────────────────────────────────── */
 	--color-surface: var(--color-stone-950);
 	--color-surface-raised: --alpha(var(--color-stone-900) / 40%);

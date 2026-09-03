@@ -30,13 +30,12 @@ export default function SaveSettingsDialog({open, onOpenChange, onSave}: SaveSet
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel className='bg-surface-input/50 hover:bg-surface-input'>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className='hover:bg-surface-raised'>Cancel</AlertDialogCancel>
 					<AlertDialogAction
 						onClick={() => {
 							onOpenChange(false)
 							onSave()
-						}}
-						className='bg-body hover:bg-surface-input hover:text-body'
+                        }}
 					>
 						Yes
 					</AlertDialogAction>

@@ -19,7 +19,7 @@ export default function FoundBlocks() {
 		return (
 			<div className='h-[120px] flex flex-col justify-center px-4'>
 				<span className='text-body-muted text-[14px]'>No blocks yet!</span>
-				<span className='text-body-subtle text-[12px] mt-1'>Blocks your pool mines will show up here.</span>
+				<span className='text-body-subtle text-[12px] mt-1'>Blocks your gophers mine will show up here.</span>
 			</div>
 		)
 	}
@@ -44,7 +44,7 @@ export default function FoundBlocks() {
 								target='_blank'
 								rel='noreferrer'
 								title={`View block ${height} in the explorer`}
-								className='text-highlight hover:underline text-[15px] font-[500] w-fit'
+								className='text-blue-400 hover:underline text-[15px] font-[500] w-fit'
 							>
 								{height}
 							</a>
@@ -59,8 +59,8 @@ export default function FoundBlocks() {
 							by {block.gopher}
 						</span>
 						<span className='text-body-faint text-[11px]' title={String(block.difficulty)}>
-							diff {difficulty.value}
-							{difficulty.unit}
+							diff <span className='text-green-400'>{difficulty.value}</span>
+							<span className='text-green-400/50'>{difficulty.unit}</span>
 						</span>
 					</div>
 				)

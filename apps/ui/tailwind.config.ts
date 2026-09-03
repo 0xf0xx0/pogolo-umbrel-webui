@@ -8,8 +8,6 @@ export default {
                 iosevka: ['Iosevka Variable', 'sans-serif'],
 				firaCode: ['Fira Code Variable', 'monospace'],
 			},
-			// Warm stone surfaces, so the gradients match the palette in index.css
-			// rather than the neutral greys they started as.
 			backgroundImage: {
 				'card-gradient': 'linear-gradient(to bottom, oklch(0.18 0.005 60), oklch(0.14 0.004 60))',
 				'text-gradient': 'linear-gradient(to bottom, oklch(0.97 0.003 60), oklch(0.97 0.003 60 / 0.64))',
