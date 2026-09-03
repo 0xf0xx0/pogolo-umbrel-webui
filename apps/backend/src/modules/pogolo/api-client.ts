@@ -46,7 +46,9 @@ async function fetchJson<T>(path: string): Promise<T> {
 
 function compareGophers(a: GopherInfo | MiniGopherInfo, b: GopherInfo | MiniGopherInfo) {
     let r = a.extranonce1.localeCompare(b.extranonce1)
+    //@ts-expect-error no shit sherlock thats why the FUCKING CHECK is here
     if (a.nickname) {
+        //@ts-expect-error dumbass
         r = a.nickname.localeCompare(b.nickname)
     }
     if (r == 0) {
