@@ -6,7 +6,7 @@
 		"apps/*"
 	],
 	"engines": {
-		"node": ">=24 <27w"
+		"node": ">=24 <27"
 	},
 	"type": "module",
 	"scripts": {

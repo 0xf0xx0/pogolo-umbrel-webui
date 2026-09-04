@@ -78,6 +78,7 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} tone='muted' />
 			</div>
 
+			{/* TODO: if address === pool address, set label to (mining to pool address) */}
 			{info?.address && (
 				<Field label='Address' value={info.address} tone='muted' title={info.address} />
 			)}
