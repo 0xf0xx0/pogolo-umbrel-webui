@@ -81,7 +81,7 @@ export default function ConnectionDetails() {
                     <Alert className='bg-[#EDCE0017] text-warn border-none col-span-full'>
 						<TriangleAlert className='h-4 w-4' />
 						<AlertDescription className='text-warn'>
-    						Please don't expose pogolo on the public internet; instead, use a VPN like Tailscale for remote access.
+    						Please don't expose pogolo on the public internet; instead, use Tailscale or ZeroTier for remote access.
 						</AlertDescription>
 					</Alert>
 				</div>
