@@ -5,14 +5,17 @@ import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {Field, SplitField, BigStat} from '@/components/shared/Field'
 import {api} from '@/lib/api'
 import {usePoolInfo, useGophers} from '@/hooks/usePogolo'
+import {useSettings} from '@/hooks/useSettings'
 import {formatHashrate, formatDifficulty, formatUptimeSeconds} from '@/lib/formatPool'
 
 import type {GopherInfo, MiniGopherInfo} from '#types'
 
-function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | undefined}) {
+function ClientCard({ mini, info }: { mini: MiniGopherInfo; info: GopherInfo | undefined }) {
+    const { data: settings } = useSettings()
+    const isMiningToPoolAddr = settings?.['pool_address'] === info?.address
 	const hashrate = formatHashrate(info?.hashrate ?? 0)
 	const bestDiff = formatDifficulty(info?.bestDifficulty ?? 0)
-	const targetDiff = formatDifficulty(info?.targetDifficulty ?? 0)
+    const targetDiff = formatDifficulty(info?.targetDifficulty ?? 0)
 
 	// pogolo reports SV1 as 1 and SV2 as 2
 	const protocolVersion = info?.protocolVersion ?? mini.protocolVersion
@@ -78,9 +81,8 @@ function ClientCard({mini, info}: {mini: MiniGopherInfo; info: GopherInfo | unde
 				<Field label='Uptime' value={info ? formatUptimeSeconds(info.uptime) : '—'} tone='muted' />
 			</div>
 
-			{/* TODO: if address === pool address, set label to (mining to pool address) */}
 			{info?.address && (
-				<Field label='Address' value={info.address} tone='muted' title={info.address} />
+				<Field label='Address' value={isMiningToPoolAddr ? '(mining to pool address)' : info.address} tone='muted' title={isMiningToPoolAddr ? '(mining to pool address)' : info.address} />
 			)}
 		</div>
 	)
@@ -115,7 +117,7 @@ export default function ClientList() {
 					</div>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-						{gophers.map((gopher, index) => (
+                        {gophers.map((gopher, index) => (
 							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.find(v => v.extranonce1 === gopher.extranonce1)} />
 						))}
 					</div>
