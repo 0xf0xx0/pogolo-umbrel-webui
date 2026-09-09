@@ -12,10 +12,6 @@ function buildSettingsSchema(metadata: Record<string, Option>): z.ZodObject<Reco
 			case 'number': {
 				let schema = z.number({invalid_type_error: `${meta.label} must be a number`})
 
-				// Enforce integer only when the step implies integer inputs
-				const stepImpliesInteger = meta.step === undefined || Number.isInteger(meta.step)
-				if (stepImpliesInteger) schema = schema.int(`${meta.label} must be an integer`)
-
 				if (meta.min !== undefined) {
 					schema = schema.min(meta.min, {message: `Minimum ${meta.label} is ${meta.min}${meta.unit ?? ''}`})
 				}
