@@ -58,7 +58,7 @@ export default function ConnectionDetails() {
 						</div>
 					</DialogTitle>
 					<DialogDescription className='text-body-muted text-left text-sm'>
-						Point your miner at this address to start mining to your pool. Most miners take the URL as-is; some
+						Point your miner at this address to start mining to your pool. Most miners take the URL as-is; others
 						want the host and port in separate fields.
 					</DialogDescription>
 				</DialogHeader>

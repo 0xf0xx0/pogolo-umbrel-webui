@@ -491,8 +491,8 @@ export default function SettingsCard() {
 									</AlertDialogHeader>
 
 									<AlertDialogFooter>
-										<AlertDialogCancel className='bg-white/90 hover:bg-white'>Cancel</AlertDialogCancel>
-										<AlertDialogAction onClick={onRestoreDefaults} className='hover:bg-white/10'>
+										<AlertDialogCancel className='hover:bg-surface-raised'>Cancel</AlertDialogCancel>
+										<AlertDialogAction onClick={onRestoreDefaults}>
 											Yes
 										</AlertDialogAction>
 									</AlertDialogFooter>
