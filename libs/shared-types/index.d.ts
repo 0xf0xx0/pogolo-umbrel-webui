@@ -63,7 +63,9 @@ export type PogoloInfo = {
 	totalHashrate: number // MH/s
 	bestDifficulty: number
 	tag: string
-	gophers: MiniGopherInfo[]
+    gophers: MiniGopherInfo[]
+    version: string
+	activeChain: string
 }
 
 // One point in the sampled metric history. Each metric maps series id -> value,

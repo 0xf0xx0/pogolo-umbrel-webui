@@ -25,7 +25,7 @@ services:
         ipv4_address: 10.21.21.9
     environment:
       POGOLO_HOST: "0.0.0.0"
-      POGOLO_BACKEND_HOST: "172.17.0.1:18443"
+      POGOLO_BACKEND_HOST: "10.21.0.1:18443"
       POGOLO_BACKEND_RPCAUTH: "user:pass"
       # colorful logs
       FORCE_COLOR: 1

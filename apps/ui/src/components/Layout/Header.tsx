@@ -20,8 +20,14 @@ export default function Header({className}: {className?: string}) {
 			<div className='flex flex-row items-center gap-2.5 md:gap-3.5'>
 				<Logo aria-label='pogolo logo' className='w-[50px] md:w-[60px] h-[50px] md:h-[60px] shrink-0' />
 				<div>
-					<h1 className='text-2xl md:text-3xl font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'>
-						pogolo
+                    <h1 title={`pogolo v${info?.version} on ${info?.activeChain}`} className='text-2xl md:text-3xl font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'>
+                        pogolo<span className={clsx(
+                            'text-sm font-normal',
+                            info?.activeChain === 'mainnet' ?
+                                'text-[#F7931A]' :
+                                info?.activeChain.startsWith('test') ?
+                                    'text-sky-500' : 'text-red-800'
+						)}> {info?.version}</span>
 					</h1>
 
 					{/* We gracefully handle loading and error states for no layout shift */}
