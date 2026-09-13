@@ -1,7 +1,10 @@
+import {useState} from 'react'
 import QrSvg from '@wojtekmaj/react-qr-svg'
-import {TriangleAlert, X as XIcon} from 'lucide-react'
+import {TriangleAlert, X as XIcon, Info} from 'lucide-react'
+import {motion, AnimatePresence} from 'framer-motion'
 
 import Logo from '@/assets/logo.svg?react'
+import WalletIcon from '@/assets/wallet.svg?react'
 
 import {
 	Dialog,
@@ -12,10 +15,10 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
+import {Tabs, TabsList, TabsTrigger, TabsContent} from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import {Alert, AlertDescription} from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
-import WalletIcon from '@/assets/wallet.svg?react'
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
 import {CopyRow} from '@/components/shared/Field'
 
@@ -24,7 +27,9 @@ import {useConnectionDetails} from '@/hooks/useConnectionDetails'
 export default function ConnectionDetails() {
 	const {data} = useConnectionDetails()
 
-	const conn = data?.stratum.local
+	const [tab, setTab] = useState<'sv1' | 'sv2'>('sv1')
+    const conn = data?.stratum.local
+    const uri = `${tab === 'sv2' ? "stratum2+tcp://" : "stratum+tcp://"}${conn?.uri}`
 
 	return (
 		<Dialog>
@@ -46,7 +51,7 @@ export default function ConnectionDetails() {
 					</button>
 				</DialogClose>
 				<DialogHeader>
-					<DialogTitle className='font-bold text-body text-[20px] font-[400] text-left'>
+					<DialogTitle className='font-bold text-body text-[20px] text-left'>
 						<div className='flex items-center gap-2'>
 							<WalletIcon className='w-5 h-5 text-body' />
 							Connect a gopher
@@ -60,25 +65,71 @@ export default function ConnectionDetails() {
 
 				<div className='space-y-4 mt-2 grid grid-cols-3 gap-4'>
 					<div className='bg-gradient-to-b from-surface-input to-surface p-5 rounded-xl'>
-						<QR value={conn?.uri} />
+    					<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'sv1' | 'sv2')} className='w-[200px] mx-auto mb-3'>
+    						<TabsList className='relative flex w-full rounded-md bg-surface backdrop-blur-xl p-1 ring-white/10'>
+    							<GradientBorderFromTop />
+
+    							<TabsTrigger
+    								value='sv1'
+    								className='relative cursor-pointer rounded-md py-2 px-4 font-bold text-body/60 data-[state=active]:text-body transition-colors data-[state=active]:bg-transparent'
+    							>
+    								{tab === 'sv1' && (
+    									<motion.span
+    										layoutId='connection-pill'
+    										className='absolute inset-0 -z-10 rounded-sm bg-surface-raised'
+    										transition={{type: 'tween', ease: 'backOut', duration: 0.4}}
+    									>
+    										<GradientBorderFromTop />
+    									</motion.span>
+    								)}
+    								SV1
+    							</TabsTrigger>
+
+    							<TabsTrigger
+    								value='sv2'
+    								className='relative cursor-pointer rounded-md py-2 px-4 font-bold text-body/60 data-[state=active]:text-body transition-colors data-[state=active]:bg-transparent'
+    							>
+    								{tab === 'sv2' && (
+    									<motion.span
+    										layoutId='connection-pill'
+    										className='absolute inset-0 -z-10 rounded-sm bg-surface-raised'
+    										transition={{type: 'tween', ease: 'backOut', duration: 0.4}}
+    									>
+    										<GradientBorderFromTop />
+    									</motion.span>
+    								)}
+    								SV2
+    							</TabsTrigger>
+    						</TabsList>
+    					</Tabs>
+                        <QR value={uri} />
                     </div>
 
                     <div className='col-span-2 grid grid-rows-4'>
-                        <p className='text-body-subtle text-[12px] font-[400]'>
+                        <p className='text-body-subtle text-sm font-[400]'>
     						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
     						address from Settings will be used instead.
     					</p>
 
-    					<div className='row-span-3 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
-    						<CopyRow className='col-span-full' label='URL' value={conn?.uri} />
+    					<div className='row-span-2 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
     						<CopyRow className='col-span-4' label='Host' value={conn?.host} />
     						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
     						<CopyRow className='col-span-4' label='Username' value='btcaddress.workername' />
-    						<CopyRow className='col-span-2' label='Pass' value={conn?.password || ''} />
+                            <CopyRow className='col-span-2' label={tab === 'sv1' ? 'Pass' : 'Authority'} value={tab === 'sv1' ? conn?.password : ''} />
+                            <CopyRow className='col-span-full' label='URL' value={uri} />
                         </div>
-
+                        {tab === 'sv2' &&
+                            <p className='text-body-subtle text-sm font-bold'>
+                                <Alert className='bg-blue-900/30 text-accent border-none col-span-full'>
+              						<Info className='h-4 w-4' />
+              						<AlertDescription className='text-body'>
+                                        SV2 certificate validation is optional for local networks.
+              						</AlertDescription>
+               					</Alert>
+                            </p>
+                        }
                     </div>
-                    <Alert className='bg-[#EDCE0017] text-warn border-none col-span-full'>
+                    <Alert className='bg-amber-900/30 text-warn border-none col-span-full'>
 						<TriangleAlert className='h-4 w-4' />
 						<AlertDescription className='text-warn'>
     						Please don't expose pogolo on the public internet; instead, use Tailscale or ZeroTier for remote access.

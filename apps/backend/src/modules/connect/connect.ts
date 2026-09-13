@@ -18,7 +18,7 @@ export async function getConnectionDetails(): Promise<ConnectionDetails> {
 			local: {
 				host,
 				port,
-				uri: `stratum+tcp://${host}:${port}`,
+				uri: `${host}:${port}`,
 				password,
 			},
 		},
