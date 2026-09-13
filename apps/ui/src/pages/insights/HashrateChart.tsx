@@ -121,15 +121,15 @@ export default function HashrateChart() {
 	return (
 		<InsightCard>
 			<CardHeader>
-				<CardTitle className='text-body text-[20px] font-[400]'>Hashrate</CardTitle>
+				<CardTitle className='text-body text-xl font-normal'>Hashrate</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{isLoading ? (
-					<p className='text-body-subtle text-[14px]'>Loading…</p>
+					<p className='text-body-subtle text-sm'>Loading…</p>
 				) : !hasCurve ? (
 					<div className='flex flex-col gap-1 py-4'>
-						<span className='text-body-muted text-[14px]'>Not enough history yet</span>
-						<span className='text-body-subtle text-[12px]'>
+						<span className='text-body-muted text-sm'>Not enough history yet</span>
+						<span className='text-body-subtle text-xs'>
 							The chart fills in as pogolo runs; check back in a minute.
 						</span>
 					</div>
@@ -137,7 +137,7 @@ export default function HashrateChart() {
 					<div className='flex flex-col gap-3'>
 						<div className='relative'>
 							{/* Peak marker, so the vertical scale is readable */}
-							<span className='absolute top-0 left-0 text-body-faint text-[11px]'>
+							<span className='absolute top-0 left-0 text-body-faint text-xs'>
 								{peakLabel.value} {peakLabel.unit}
 							</span>
 
@@ -179,7 +179,7 @@ export default function HashrateChart() {
 											strokeWidth={s.id === POOL_SERIES ? 2 : 1.25}
 										/>
 									</svg>
-									<span className='text-body-subtle text-[11px] truncate' title={s.label}>
+									<span className='text-body-subtle text-xs truncate' title={s.label}>
 										{s.label}
 									</span>
 								</span>

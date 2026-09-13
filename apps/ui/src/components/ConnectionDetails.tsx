@@ -37,7 +37,7 @@ export default function ConnectionDetails() {
 				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
 					<WalletIcon className='w-5 h-5 text-body-subtle' />
-					<span className='text-[13px] text-body font-[500]'>Connect</span>
+					<span className='text-sm text-body font-medium'>Connect</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent
@@ -51,13 +51,13 @@ export default function ConnectionDetails() {
 					</button>
 				</DialogClose>
 				<DialogHeader>
-					<DialogTitle className='font-bold text-body text-[20px] text-left'>
+					<DialogTitle className='font-bold text-body text-lg text-left'>
 						<div className='flex items-center gap-2'>
 							<WalletIcon className='w-5 h-5 text-body' />
 							Connect a gopher
 						</div>
 					</DialogTitle>
-					<DialogDescription className='text-body-muted text-left text-[13px]'>
+					<DialogDescription className='text-body-muted text-left text-sm'>
 						Point your miner at this address to start mining to your pool. Most miners take the URL as-is; some
 						want the host and port in separate fields.
 					</DialogDescription>
@@ -106,7 +106,7 @@ export default function ConnectionDetails() {
                     </div>
 
                     <div className='col-span-2 grid grid-rows-4'>
-                        <p className='text-body-subtle text-sm font-[400]'>
+                        <p className='text-body-subtle text-sm'>
     						Set the username to your on-chain address. If you leave it blank or just provide a workername, the pool
     						address from Settings will be used instead.
     					</p>
@@ -119,7 +119,7 @@ export default function ConnectionDetails() {
                             <CopyRow className='col-span-full' label='URL' value={uri} />
                         </div>
                         {tab === 'sv2' &&
-                            <p className='text-body-subtle text-sm font-bold'>
+                            <p className='text-body-subtle text-sm'>
                                 <Alert className='bg-blue-900/30 text-accent border-none col-span-full'>
               						<Info className='h-4 w-4' />
               						<AlertDescription className='text-body'>

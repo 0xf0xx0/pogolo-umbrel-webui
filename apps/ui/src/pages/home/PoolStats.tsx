@@ -31,7 +31,7 @@ export default function PoolStats() {
 function Stat({label, value, unit, tone = 'default'}: {label: string; value: string; unit?: string; tone?: Tone}) {
 	return (
 		<div className='flex flex-col items-center'>
-            <span className='text-body-subtle text-[12px] font-[400]'>{label}</span>
+            <span className='text-body-subtle text-xs font-normal'>{label}</span>
             <BigStat
                 value={value}
 				unit={unit}

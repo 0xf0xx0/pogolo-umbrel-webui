@@ -46,11 +46,11 @@ export default function HomePage() {
 
 									{running ? (
 										<>
-											<span className='text-running text-[14px] font-[500] ml-1'>Running</span>
-											{uptime && <span className='text-body-muted text-[14px] font-[400]'>for {uptime}</span>}
+											<span className='text-running text-sm font-medium ml-1'>Running</span>
+											{uptime && <span className='text-body-muted text-sm font-normal'>for {uptime}</span>}
 										</>
 									) : (
-										<span className='text-stopped text-[14px] font-[500] ml-1'>Not running</span>
+										<span className='text-stopped text-sm font-medium ml-1'>Not running</span>
 									)}
 								</motion.h3>
 							)}
@@ -66,7 +66,7 @@ export default function HomePage() {
 
 			{/* Found blocks — horizontally scrollable on mobile */}
 			<div className='w-full mt-4'>
-				<span className='text-body-subtle text-[14px] font-[400] ml-4'>Blocks Found</span>
+				<span className='text-body-subtle text-sm font-normal ml-4'>Blocks Found</span>
 				<HorizontalFadeScroll>
 					<FoundBlocks />
 				</HorizontalFadeScroll>

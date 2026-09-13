@@ -50,8 +50,8 @@ export function Field({
 }) {
 	return (
 		<div className={cn('flex flex-col gap-0.5 min-w-0', className)}>
-			<span className='text-body-faint text-[11px] font-[400]'>{label}</span>
-			<span className={cn('text-[13px] font-[400] truncate', VALUE_TONE[tone])} title={title}>
+			<span className='text-body-faint text-xs font-normal'>{label}</span>
+			<span className={cn('text-sm font-normal truncate', VALUE_TONE[tone])} title={title}>
 				{value}
 				{unit && <span className={cn('ml-0.5', UNIT_TONE[tone])}>{unit}</span>}
 			</span>
@@ -76,8 +76,8 @@ export function SplitField({
 }) {
 	return (
 		<div className={cn('flex flex-col gap-0.5 min-w-0', className)}>
-			<span className='text-body-faint text-[11px] font-[400]'>{label}</span>
-			<span className='text-[13px] font-[400] truncate' title={title}>
+			<span className='text-body-faint text-xs'>{label}</span>
+			<span className='text-sm truncate' title={title}>
 				{segments.map((segment, index) => (
 					<span key={index}>
 						{index > 0 && <span className='text-body-faint'>{separator}</span>}
@@ -143,7 +143,7 @@ export function CopyRow({
 					<PopoverContent
 						side='top'
 						align='center'
-						className='w-auto rounded-md border border-line-strong bg-surface/95 px-2 py-1 text-[12px] text-body'
+						className='w-auto rounded-md border border-line-strong bg-surface/95 px-2 py-1 text-xs text-body'
 					>
 						Copied!
 					</PopoverContent>
@@ -169,8 +169,8 @@ export function BigStat({
 }) {
 	return (
 		<div className={cn('flex items-baseline gap-1', className)} title={title}>
-			<span className={cn('text-[20px] font-[500] leading-none', VALUE_TONE[tone])}>{value}</span>
-			{unit && <span className={cn('text-[12px] font-[400]', UNIT_TONE[tone])}>{unit}</span>}
+			<span className={cn('text-xl font-medium leading-none', VALUE_TONE[tone])}>{value}</span>
+			{unit && <span className={cn('text-xs font-normal', UNIT_TONE[tone])}>{unit}</span>}
 		</div>
 	)
 }

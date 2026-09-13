@@ -48,7 +48,7 @@ function TomlKeyBadge({option}: {option: Option}) {
 
 	return (
 		<div className='flex flex-wrap gap-1 my-1'>
-			<span className='text-[12px] font-[400] text-body-subtle bg-surface-input px-1 rounded-sm'>{option.tomlKey}</span>
+			<span className='text-xs font-normal text-body-subtle bg-surface-input px-1 rounded-sm'>{option.tomlKey}</span>
 		</div>
 	)
 }
@@ -73,7 +73,7 @@ function SettingsTabTrigger({
 	return (
 		<TabsTrigger
 			value={value}
-			className='relative text-[12px] bg-transparent border-none data-[state=active]:text-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-body'
+			className='relative text-xs bg-transparent border-none data-[state=active]:text-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-body'
 		>
 			{children}
 
@@ -123,7 +123,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								{form.formState.errors[name]?.message as string}
 							</p>
 						)}
-						<label className='text-[14px] font-[400] text-body'>{option.label}</label>
+						<label className='text-sm font-normal text-body'>{option.label}</label>
 						<TomlKeyBadge option={option} />
 					</div>
 					<InputField
@@ -138,9 +138,9 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						disabled={disabled}
 					/>
 				</div>
-				<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
-				{option.subDescription && <p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>}
-				<p className='text-[12px] font-[400] text-body-subtle  mt-2'>
+				<p className='text-sm font-normal text-body-muted'>{option.description}</p>
+				{option.subDescription && <p className='text-xs font-normal text-body-muted mt-1'>{option.subDescription}</p>}
+				<p className='text-xs italic text-body-subtle  mt-2'>
 					default: {option.default} {option.unit}
 				</p>
 			</div>
@@ -158,7 +158,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								{form.formState.errors[name]?.message as string}
 							</p>
 						)}
-						<label className='text-[14px] font-[400] text-body'>{option.label}</label>
+						<label className='text-sm font-normal text-body'>{option.label}</label>
 						<TomlKeyBadge option={option} />
 					</div>
 					<InputField
@@ -171,10 +171,10 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						disabled={disabled}
 					/>
 				</div>
-				<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
-				{option.subDescription && <p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>}
+				<p className='text-sm font-normal text-body-muted'>{option.description}</p>
+				{option.subDescription && <p className='text-xs font-normal text-body-muted mt-1'>{option.subDescription}</p>}
 				{option.default !== '' && (
-					<p className='text-[12px] font-[400] text-body-subtle mt-2'>default: {option.default}</p>
+					<p className='text-xs italic text-body-subtle mt-2'>default: {option.default}</p>
 				)}
 			</div>
 		)
@@ -196,7 +196,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 					<div className='relative flex flex-col gap-1'>
 						<div className='flex flex-row justify-between sm:items-center'>
 							<div>
-								<label className='text-[14px] font-[400] text-body'>{option.label}</label>
+								<label className='text-sm font-normal text-body'>{option.label}</label>
 								<TomlKeyBadge option={option} />
 							</div>
 							<div className='max-sm:mt-2'>
@@ -210,11 +210,11 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								/>
 							</div>
 						</div>
-						<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
+						<p className='text-sm font-normal text-body-muted'>{option.description}</p>
 						{option.subDescription && (
-							<p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>
+							<p className='text-xs font-normal text-body-muted mt-1'>{option.subDescription}</p>
 						)}
-						<p className='text-[12px] font-[400] text-body-subtle mt-2'>
+						<p className='text-xs italic text-body-subtle mt-2'>
 							default: {option.default ? 'enabled' : 'disabled'}
 						</p>
 						{fieldState.error && (
@@ -239,7 +239,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								{fieldState.error && (
 									<p className='absolute top-10 right-1 text-xs text-bad'>{fieldState.error.message}</p>
 								)}
-								<label className='text-[14px] font-[400] text-body'>{option.label}</label>
+								<label className='text-sm font-normal text-body'>{option.label}</label>
 								<TomlKeyBadge option={option} />
 							</div>
 							<Select
@@ -249,7 +249,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								disabled={disabled}
 							>
 								<SelectTrigger
-									className={`rounded bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-body focus:ring-0 ring-offset-0 border-none max-sm:text-[12px]`}
+									className={`rounded bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-body focus:ring-0 ring-offset-0 border-none max-sm:text-xs`}
 								>
 									<SelectValue placeholder='Select…' />
 								</SelectTrigger>
@@ -263,11 +263,11 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								</SelectContent>
 							</Select>
 						</div>
-						<p className='text-[13px] font-[400] text-body-muted'>{option.description}</p>
+						<p className='text-sm font-normal text-body-muted'>{option.description}</p>
 						{option.subDescription && (
-							<p className='text-[12px] font-[400] text-body-muted mt-1'>{option.subDescription}</p>
+							<p className='text-xs font-normal text-body-muted mt-1'>{option.subDescription}</p>
 						)}
-						<p className='text-[12px] font-[400] text-body-subtle mt-2'>default: {option.default}</p>
+						<p className='text-xs italic text-body-subtle mt-2'>default: {option.default}</p>
 					</div>
 				)}
 			/>
@@ -372,7 +372,7 @@ export default function SettingsCard() {
 						<GradientBorderFromTop />
 						<CardHeader>
 							<div className='flex items-center justify-between'>
-								<CardTitle className='font-bold text-body text-[20px] font-[400] pt-2'>Settings</CardTitle>
+								<CardTitle className='font-bold text-body text-xl pt-2'>Settings</CardTitle>
 								<div className='relative max-w-xs mt-2'>
 									<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-body' />
 									<Input
@@ -431,7 +431,7 @@ export default function SettingsCard() {
 								>
 									{isSearching ? (
 										matchingFields.length === 0 ? (
-											<p className='text-body-muted text-center text-[14px] font-[400]'>No results found for "{query}"</p>
+											<p className='text-body-muted text-center text-sm font-normal'>No results found for "{query}"</p>
 										) : (
 											matchingFields.map((name, i) => (
 												<div
@@ -479,10 +479,10 @@ export default function SettingsCard() {
 
 								<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl'>
 									<AlertDialogHeader>
-										<AlertDialogTitle className='font-bold text-body text-[20px] font-[400] text-left'>
+										<AlertDialogTitle className='font-normal text-body text-xl text-left'>
 											Restore default settings?
 										</AlertDialogTitle>
-										<AlertDialogDescription className='text-body-muted text-left text-[13px] space-y-3'>
+										<AlertDialogDescription className='text-body-muted text-left text-sm space-y-3'>
 											<span className='block'>
 												This will restore every setting on this page to its default value. You cannot undo this action.
 												Any options in pogolo.toml that this page does not manage are left alone.

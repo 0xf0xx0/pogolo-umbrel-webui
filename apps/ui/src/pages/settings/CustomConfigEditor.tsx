@@ -22,14 +22,14 @@ export default function CustomConfigEditor() {
 
 	return (
 		<div className='border border-line-strong rounded-lg p-4 w-full'>
-			<label className='text-[14px] font-[400] text-body'>Edit pogolo.toml directly</label>
-			<p className='text-[13px] font-[400] text-body-muted'>
+			<label className='text-sm font-normal text-body'>Edit pogolo.toml directly</label>
+			<p className='text-sm font-normal text-body-muted'>
 				This is pogolo's raw config file. Editing it here replaces the whole file, so anything you remove is gone.
 				Invalid TOML is rejected.
 			</p>
 
 			<Textarea
-				className='mt-2 h-40 w-full whitespace-pre-wrap !text-[13px] text-body border border-line-strong rounded-lg p-2 resize-none font-mono
+				className='mt-2 h-40 w-full whitespace-pre-wrap !text-sm text-body border border-line-strong rounded-lg p-2 resize-none font-mono
 					[&::-webkit-scrollbar]:w-[3px] [&::-webkit-scrollbar]:bg-transparent
 					[&::-webkit-scrollbar-thumb]:bg-[hsla(0,0%,100%,0.15)] [&::-webkit-scrollbar-thumb]:rounded-full
 					[&::-webkit-scrollbar-thumb]:hover:bg-[hsla(0,0%,100%,0.25)]

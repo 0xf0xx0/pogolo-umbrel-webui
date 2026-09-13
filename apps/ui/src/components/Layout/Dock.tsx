@@ -102,7 +102,7 @@ function DockTrigger({
 					{active && <Icon className='h-[18px] w-[18px]' />}
 				</motion.div>
 
-				<span className='text-[12px] font-[400]'>{label}</span>
+				<span className='text-xs font-bold'>{label}</span>
 			</NavLink>
 		</TabsTrigger>
 	)

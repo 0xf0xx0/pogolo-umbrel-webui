@@ -20,12 +20,12 @@ export default function Header({className}: {className?: string}) {
 			<div className='flex flex-row items-center gap-2.5 md:gap-3.5'>
 				<Logo aria-label='pogolo logo' className='w-[50px] md:w-[60px] h-[50px] md:h-[60px] shrink-0' />
 				<div>
-					<h1 className='text-[22px] md:text-[28px] font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'>
+					<h1 className='text-2xl md:text-3xl font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'>
 						pogolo
 					</h1>
 
 					{/* We gracefully handle loading and error states for no layout shift */}
-					<p className='text-[14px] md:text-[16px] leading-none font-[400] text-body-faint'>
+					<p className='text-sm md:text-base leading-none italic text-body-faint'>
 						<span
 							className={clsx(
 								'inline-block transition-opacity duration-500 ease-in-out truncate max-w-[200px] md:max-w-[360px] font-fix',

@@ -71,7 +71,7 @@ export default function LogStream() {
 		<div
 			ref={viewportRef}
 			onScroll={onScroll}
-			className='ansi-log absolute inset-0 overflow-y-auto overflow-x-hidden px-4 pt-11 pb-4 font-mono text-[11px] leading-[1.5] text-body-muted [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+			className='ansi-log absolute inset-0 overflow-y-auto overflow-x-hidden px-4 pt-11 pb-4 font-mono text-xs leading-[1.5] text-body-muted [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
 		>
 			{status !== 'streaming' && (
 				<p className='text-body-subtle'>

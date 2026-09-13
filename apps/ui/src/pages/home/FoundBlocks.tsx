@@ -12,14 +12,14 @@ export default function FoundBlocks() {
 	const blocks = [...(data?.blocksFound ?? [])].sort((a, b) => b.height - a.height)
 
 	if (isLoading) {
-		return <div className='h-[120px] flex items-center px-4 text-body-subtle text-[13px]'>Loading…</div>
+		return <div className='h-[120px] flex items-center px-4 text-body-subtle text-sm'>Loading…</div>
 	}
 
 	if (blocks.length === 0) {
 		return (
 			<div className='h-[120px] flex flex-col justify-center px-4'>
-				<span className='text-body-muted text-[14px]'>No blocks yet!</span>
-				<span className='text-body-subtle text-[12px] mt-1'>Blocks your gophers mine will show up here.</span>
+				<span className='text-body-muted text-sm'>No blocks yet!</span>
+				<span className='text-body-subtle text-xs mt-1'>Blocks your gophers mine will show up here.</span>
 			</div>
 		)
 	}
@@ -44,21 +44,21 @@ export default function FoundBlocks() {
 								target='_blank'
 								rel='noreferrer'
 								title={`View block ${height} in the explorer`}
-								className='text-blue-400 hover:underline text-[15px] font-[500] w-fit'
+								className='text-blue-400 hover:underline text-base font-medium w-fit'
 							>
 								{height}
 							</a>
 						) : (
-							<span className='text-body text-[15px] font-[500]'>{height}</span>
+							<span className='text-body text-base font-medium'>{height}</span>
 						)}
 
-						<span className='text-body-subtle text-[12px]'>
+						<span className='text-body-subtle text-xs'>
 							{formatDistanceToNowStrict(new Date(block.timestamp * 1000), {addSuffix: true})}
 						</span>
-						<span className='text-body-subtle text-[12px] truncate' title={block.gopher}>
+						<span className='text-body-subtle text-xs truncate' title={block.gopher}>
 							by {block.gopher}
 						</span>
-						<span className='text-body-faint text-[11px]' title={String(block.difficulty)}>
+						<span className='text-body-faint text-xs' title={String(block.difficulty)}>
 							diff <span className='text-green-400'>{difficulty.value}</span>
 							<span className='text-green-400/50'>{difficulty.unit}</span>
 						</span>

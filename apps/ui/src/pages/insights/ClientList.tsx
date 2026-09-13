@@ -24,13 +24,13 @@ function ClientCard({ mini, info }: { mini: MiniGopherInfo; info: GopherInfo | u
 	return (
 		<div className='rounded-2xl bg-surface-raised border-line border-[0.5px] p-4 flex flex-col gap-3'>
 			<div className='flex items-baseline justify-between gap-2 min-w-0'>
-				<span className='text-body text-[14px] font-[500] truncate' title={info?.nickname || mini.extranonce1}>
+				<span className='text-body text-sm font-medium truncate' title={info?.nickname || mini.extranonce1}>
 					{info?.nickname || mini.extranonce1}
 					{info?.nickname && (
-						<span className='text-body-subtle text-[11px] font-[400]'> ({mini.extranonce1})</span>
+						<span className='text-body-subtle text-xs font-normal'> ({mini.extranonce1})</span>
 					)}
 				</span>
-				<span className='text-body-faint text-[11px] font-[400] shrink-0'>{protocol}</span>
+				<span className='text-body-faint text-xs font-italic shrink-0'>{protocol}</span>
 			</div>
 
 			<BigStat
@@ -100,20 +100,20 @@ export default function ClientList() {
 	return (
 		<InsightCard>
 			<CardHeader>
-				<CardTitle className='text-body text-[20px] font-[400]'>
+				<CardTitle className='text-body text-xl font-normal'>
 					Connected Gophers
 					{gophers.length > 0 && (
-						<span className='text-body-subtle text-[15px] font-[300] ml-2'>{gophers.length}</span>
+						<span className='text-body-subtle text-base font-light ml-2'>{gophers.length}</span>
 					)}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{isLoading ? (
-					<p className='text-body-subtle text-[14px]'>Loading…</p>
+					<p className='text-body-subtle text-sm'>Loading…</p>
 				) : gophers.length === 0 ? (
 					<div className='flex flex-col gap-1 py-4'>
-						<span className='text-body-muted text-[14px]'>No gophers connected</span>
-						<span className='text-body-subtle text-[12px]'>Point your miner at pogolo and it will show up here.</span>
+						<span className='text-body-muted text-sm'>No gophers connected</span>
+						<span className='text-body-subtle text-xs'>Point your miner at pogolo and it will show up here.</span>
 					</div>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
