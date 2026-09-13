@@ -30,7 +30,7 @@ function ClientCard({ mini, info }: { mini: MiniGopherInfo; info: GopherInfo | u
 						<span className='text-body-subtle text-xs font-normal'> ({mini.extranonce1})</span>
 					)}
 				</span>
-				<span className='text-body-faint text-xs font-italic shrink-0'>{protocol}</span>
+				<span className='text-body-faint text-xs italic shrink-0'>{protocol}</span>
 			</div>
 
 			<BigStat
