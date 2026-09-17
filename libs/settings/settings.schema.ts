@@ -17,7 +17,10 @@ function buildSettingsSchema(metadata: Record<string, Option>): z.ZodObject<Reco
 				}
 				if (meta.max !== undefined) {
 					schema = schema.max(meta.max, {message: `Maximum ${meta.label} is ${meta.max}${meta.unit ?? ''}`})
-				}
+                }
+                if (meta.isInt) {
+                    schema = schema.int(`${meta.label} must be an integer`)
+                }
 				schemaMap[key] = schema
 				break
 			}

@@ -19,7 +19,8 @@ interface BaseOption {
 }
 
 interface NumberOption extends BaseOption {
-	kind: 'number'
+    kind: 'number'
+	isInt?: boolean
 	min?: number
 	max?: number
 	step?: number
@@ -114,7 +115,8 @@ export const settingsMetadata = {
 			'How often, on average, you want each client to submit a share. Automatic difficulty adjustment aims for this interval.',
 		min: 1,
 		step: 1,
-		default: 5,
+        default: 5,
+		isInt: true,
 		unit: 'sec',
 	},
 
@@ -126,7 +128,8 @@ export const settingsMetadata = {
 		description: 'How often new work is sent to connected clients. At short intervals (<30s) node cache will kick in.',
 		min: 15,
 		step: 1,
-		default: 60,
+        default: 60,
+        isInt: true,
 		unit: 'sec',
 	},
 
@@ -160,7 +163,8 @@ export const settingsMetadata = {
 		min: 0,
 		max: 32,
 		step: 1,
-		default: 4,
+        default: 4,
+		isInt: true,
 		unit: 'bytes',
 	},
 
@@ -174,7 +178,8 @@ export const settingsMetadata = {
         min: -2147483648,
 		max: 2147483647,
 		step: 1,
-		default: 0,
+        default: 0,
+		isInt: true,
 	},
 
 	/* ===== Web UI tab ===== */
