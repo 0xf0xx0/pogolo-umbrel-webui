@@ -66,9 +66,10 @@ function SettingsTabTrigger({
 	names: string[]
 }) {
 	// RHF/Zod validation errors for just the fields in this tab.
-	const {errors} = useFormState({control, name: names})
+	const {errors, dirtyFields} = useFormState({control, name: names})
 	// true if any subscribed field in this tab currently has a validation error
-	const hasError = names.some((n) => !!(errors as Record<string, unknown>)?.[n])
+    const hasError = names.some((n) => !!(errors as Record<string, unknown>)?.[n])
+	const isDirty = names.some((n) => !!(dirtyFields as Record<string, unknown>)?.[n])
 
 	return (
 		<TabsTrigger
@@ -79,11 +80,20 @@ function SettingsTabTrigger({
 
 			{/* We show a pulsating red error dot to indicate that there is a validation error(s) in this tab */}
 			{hasError && (
-				<span aria-hidden className='relative inline-flex h-2 w-2'>
+				<span aria-hidden className='relative inline-flex h-2 w-2' title="bad option">
 					{/* outer expanding ring that pings */}
 					<span className='absolute inline-flex h-full w-full rounded-full bg-bad opacity-75 animate-ping' />
 					{/* solid center dot */}
 					<span className='relative inline-flex h-2 w-2 rounded-full bg-bad' />
+				</span>
+            )}
+			{/*same for unsaved changes, but body color */}
+			{isDirty && !hasError && (
+				<span aria-hidden className='relative inline-flex h-2 w-2' title="changed option">
+					{/* outer expanding ring that pings */}
+					<span className='absolute inline-flex h-full w-full rounded-full bg-body opacity-75 animate-ping' />
+					{/* solid center dot */}
+					<span className='relative inline-flex h-2 w-2 rounded-full bg-body' />
 				</span>
 			)}
 		</TabsTrigger>
