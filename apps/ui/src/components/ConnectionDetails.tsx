@@ -115,7 +115,7 @@ export default function ConnectionDetails() {
     						<CopyRow className='col-span-4' label='Host' value={conn?.host} />
     						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
     						<CopyRow className='col-span-4' label='Username' value='btcaddress.workername' />
-                            <CopyRow className='col-span-2' label={tab === 'sv1' ? 'Pass' : 'Authority'} value={tab === 'sv1' ? conn?.password : ''} />
+                            <CopyRow className='col-span-2' label={tab === 'sv1' ? 'Pass' : 'Authority'} value={tab === 'sv1' ? conn?.password : conn?.authorityKey} />
                             <CopyRow className='col-span-full' label='URL' value={uri} />
                         </div>
                         {tab === 'sv2' &&

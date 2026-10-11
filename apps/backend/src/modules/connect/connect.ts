@@ -1,4 +1,5 @@
-import {getSettings} from '../config/config.js'
+import { getSettings } from '../config/config.js'
+import { getInfo } from '../pogolo/api-client.js'
 
 import type {ConnectionDetails} from '#types'
 
@@ -10,7 +11,8 @@ export async function getConnectionDetails(): Promise<ConnectionDetails> {
 
 	// Miners need the SV1 password when one is configured, so surface it here
 	// rather than making the user go dig it out of Settings.
-	const settings = await getSettings().catch(() => undefined)
+    const settings = await getSettings().catch(() => undefined)
+	const pogoloInfo = await getInfo().catch(() => undefined)
 	const password = typeof settings?.['password'] === 'string' ? (settings['password'] as string) : ''
 
 	return {
@@ -19,7 +21,8 @@ export async function getConnectionDetails(): Promise<ConnectionDetails> {
 				host,
 				port,
 				uri: `${host}:${port}`,
-				password,
+                password,
+				authorityKey: pogoloInfo?.authorityKey ?? ''
 			},
 		},
 	}

@@ -69,6 +69,26 @@ export async function getInfo(): Promise<PogoloInfo> {
 	inflightInfo = fetchJson<PogoloInfo>('/api/v1/info')
         .then((value) => {
             value.gophers.sort(compareGophers)
+            // value.blocksFound.push({
+            //     "hash": "000000000000000079a9aeebf8ab51a6448b0db1a556eca26cbedf1d6f55b67b",
+            //     "gopher": "rental",
+            //     "extranonce2": "6a000000",
+            //     "difficulty": 9037229305.242638,
+            //     "timestamp": 1789162232,
+            //     "height": 151973,
+            //     "nonce": 2776910114,
+            //     "version": 733806592
+            // })
+            // value.blocksFound.push({
+            //     "hash": "000000000000000175e11bb8c8acac417d290746a798bff7c3f53c36aa9cef3c",
+            //     "gopher": "yipaxe",
+            //     "extranonce2": "2e000000",
+            //     "difficulty": 2940774641.812398,
+            //     "timestamp": 1789165836,
+            //     "height": 151981,
+            //     "nonce": 2657912799,
+            //     "version": 537395200
+            // })
 			cachedInfo = {fetchedAt: Date.now(), value}
 			return value
 		})

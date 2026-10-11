@@ -131,6 +131,19 @@ export const settingsMetadata = {
         default: 60,
         isInt: true,
 		unit: 'sec',
+    },
+
+    share_batch_window_size: {
+		tab: 'pool',
+		kind: 'number',
+		tomlKey: 'share_batch_window_size',
+		label: 'SV2 Maximum Share Window Size',
+		description: 'Maximum time pogolo will wait for a new share before acknowledging the batch.',
+		min: 1,
+		step: 1,
+        default: 15,
+        isInt: true,
+		unit: 'sec',
 	},
 
 	/* ===== Advanced tab ===== */
@@ -180,6 +193,15 @@ export const settingsMetadata = {
 		step: 1,
         default: 0,
 		isInt: true,
+    },
+
+    authority_keypair: {
+		tab: 'advanced',
+		kind: 'text',
+		tomlKey: 'authority_keypair',
+		label: 'SV2 Authority Keypair',
+        description: 'The encoded stratumv2.Keypair used for the authority key.',
+        default: '',
 	},
 
 	/* ===== Web UI tab ===== */
