@@ -144,9 +144,19 @@ export const settingsMetadata = {
         default: 15,
         isInt: true,
 		unit: 'sec',
-	},
+    },
+
 
 	/* ===== Advanced tab ===== */
+    wait_for_sync: {
+        tab: 'advanced',
+		kind: 'toggle',
+		tomlKey: 'wait_for_sync',
+		label: 'Wait for Backend Sync',
+		description: 'Whether to wait for the backend to sync before creating the first job.',
+		default: false,
+    },
+
 	disable_vardiff: {
 		tab: 'advanced',
 		kind: 'toggle',
@@ -162,7 +172,7 @@ export const settingsMetadata = {
 		kind: 'toggle',
 		tomlKey: 'ignore_suggested_difficulty',
 		label: 'Ignore Client-Suggested Difficulty',
-		description: 'Ignore the difficulty a gopher asks for and use the pool’s own value instead.',
+		description: 'Ignore the difficulty a gopher asks for and use the pool’s default value instead.',
 		default: false,
 	},
 
@@ -202,6 +212,8 @@ export const settingsMetadata = {
 		label: 'SV2 Authority Keypair',
         description: 'The encoded stratumv2.Keypair used for the authority key.',
         default: '',
+        optional: true,
+        placeholder: "deadbeef...c0ffee"
 	},
 
 	/* ===== Web UI tab ===== */
