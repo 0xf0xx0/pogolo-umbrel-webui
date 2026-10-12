@@ -138,7 +138,7 @@ export const settingsMetadata = {
 		kind: 'number',
 		tomlKey: 'share_batch_window_size',
 		label: 'SV2 Maximum Share Window Size',
-		description: 'Maximum time pogolo will wait for a new share before acknowledging the batch.',
+		description: 'Maximum time pogolo will wait for a new share before acknowledging the current batch.',
 		min: 1,
 		step: 1,
         default: 15,
