@@ -16,7 +16,7 @@
 # Dependencies layer — install every workspace deps
 # Functions as a shared cache for dev & app-builder stages
 ##########################################################
-FROM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS deps
+FROM node:slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS deps
 WORKDIR /repo
 
 # Copy only dependency manifests to keep this layer cache-friendly
@@ -28,6 +28,19 @@ RUN npm ci --workspaces --include-workspace-root --install-strategy=hoisted
 
 # Add npm binaries to PATH so subsequent stages can invoke tsc / vite / etc.
 ENV PATH="/repo/node_modules/.bin:$PATH"
+
+FROM golang AS godev
+WORKDIR /repo/apps/backend
+
+
+COPY apps/backend/go.mod go.mod
+COPY apps/backend/go.sum go.sum
+
+ENV PATH="$PATH:$(go env GOROOT)/lib/wasm"
+ENV GOOS=js
+ENV GOARCH=wasm
+RUN go build keygen.go /repo/apps/ui/src/keygen.wasm
+RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /repo/apps/ui/src/
 
 ####################################################
 # DEV-ONLY build stage: Backend hot-reload image
@@ -59,7 +72,7 @@ RUN tsc -b libs/shared-types libs/settings apps/backend \
 ########################################
 # runtime stage — final production image
 ########################################
-FROM node:24.19.0-slim@sha256:3638d9a6fe4030bd716be989438248074489337ba3275657f93595428be4fc03 AS runtime
+FROM node:slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS runtime
 WORKDIR /app
 
 # Install production dependencies only

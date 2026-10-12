@@ -40,6 +40,8 @@ import {defaultValues, settingsMetadata, settingsSchema, type SettingsSchema, ty
 
 import {useSettings, useUpdateSettings, useRestoreDefaults} from '@/hooks/useSettings'
 
+import * as keygen from '../../keygen.wasm'
+
 type SettingName = string
 
 // Shows the pogolo.toml key beside a setting's label
@@ -317,7 +319,9 @@ export default function SettingsCard() {
 		reValidateMode: 'onChange',
 		defaultValues: defaultValues() as any,
 		shouldUnregister: false,
-	})
+    })
+
+	console.log(keygen.keygen())
 
 	// reset form with initial settings when they are available
 	useEffect(() => {
