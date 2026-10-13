@@ -22,9 +22,9 @@ export default defineConfig({
 	// https://ui.shadcn.com/docs/installation/vite
 	resolve: {
 		alias: {
-			'@': path.resolve(__dirname, './src'),
-			'#settings': path.resolve(__dirname, '../../libs/settings/index.ts'),
-			'#types': path.resolve(__dirname, '../../libs/shared-types/index.d.ts'),
+			'@': path.resolve(import.meta.dirname, './src'),
+			'#settings': path.resolve(import.meta.dirname, '../../libs/settings/index.ts'),
+			'#types': path.resolve(import.meta.dirname, '../../libs/shared-types/index.d.ts'),
 		},
 	},
 })
