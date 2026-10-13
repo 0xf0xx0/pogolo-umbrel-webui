@@ -38,7 +38,7 @@ services:
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
-      target: wasm-artifacts
+      target: godev
     volumes:
       - wasm:/out
     networks: [devnet]

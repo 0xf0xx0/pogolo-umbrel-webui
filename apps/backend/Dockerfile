@@ -42,18 +42,8 @@ COPY apps/backend/keygen.go keygen.go
 
 RUN go mod download
 
-RUN go build -ldflags="-s -w -buildid=" -o /keygen.wasm keygen.go
-RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /wasm_exec.js
-
-############################################################
-# wasm-artifacts — tiny stage holding just the two generated
-# files. docker-compose.yml runs this to seed a named volume
-# that is overlaid onto apps/ui/src in the dev containers.
-############################################################
-FROM busybox AS wasm-artifacts
-COPY --from=godev /keygen.wasm /artifacts/keygen.wasm
-COPY --from=godev /wasm_exec.js /artifacts/wasm_exec.js
-CMD ["cp", "/artifacts/keygen.wasm", "/artifacts/wasm_exec.js", "/out/"]
+RUN go build -ldflags="-s -w -buildid=" -o /out/keygen.wasm keygen.go
+RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /out/wasm_exec.js
 
 ####################################################
 # DEV-ONLY build stage: Backend hot-reload image
@@ -78,8 +68,8 @@ CMD ["npm","run","dev"]
 FROM deps AS app-builder
 WORKDIR /repo
 COPY . .
-COPY --from=godev /keygen.wasm /repo/apps/ui/src/keygen.wasm
-COPY --from=godev /wasm_exec.js /repo/apps/ui/src/wasm_exec.js
+COPY --from=godev /out/keygen.wasm /repo/apps/ui/src/keygen.wasm
+COPY --from=godev /out/wasm_exec.js /repo/apps/ui/src/wasm_exec.js
 # build shared libraries (libs/*/dist)
 # build backend (ts → js) (apps/backend/dist)
 # bundle UI (vite build) (apps/ui/dist)
