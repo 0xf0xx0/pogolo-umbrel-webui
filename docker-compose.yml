@@ -31,6 +31,18 @@ services:
       FORCE_COLOR: 1
     command: ["/pogolo", "--conf", "/data/pogolo.toml", "--logfile", "/data/pogolo.log"] #
 
+  # Builds keygen.wasm + wasm_exec.js and copies them into the `wasm` volume.
+  # Runs to completion before backend/ui start; they overlay the two files onto
+  # apps/ui/src, which the repo bind-mount would otherwise leave missing.
+  wasm:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      target: wasm-artifacts
+    volumes:
+      - wasm:/out
+    networks: [devnet]
+
   # Backend container with hot reload.
   # In production the React bundle is baked into backend, but in dev we have a separate ui container for vite hot-reload.
   backend:
@@ -40,10 +52,24 @@ services:
       dockerfile: apps/backend/Dockerfile
       target: dev # use the hot-reload dev stage, not the full production image
     working_dir: /repo
+    depends_on:
+      wasm:
+        condition: service_completed_successfully
     volumes:
       - .:/repo # live source for hot reload
       - ./data/__node_modules_linux__:/repo/node_modules # deps cache shared with the ui container
       - ./data:/data # pogolo config dir + log file
+      # Generated wasm, overlaid on top of the bind-mount above.
+      - type: volume
+        source: wasm
+        target: /repo/apps/ui/src/keygen.wasm
+        volume:
+          subpath: keygen.wasm
+      - type: volume
+        source: wasm
+        target: /repo/apps/ui/src/wasm_exec.js
+        volume:
+          subpath: wasm_exec.js
 
     # We install workspaces only when package-lock.json changes (uses hash guard).
     # TODO: handle changes to non-root package.json files.
@@ -94,12 +120,29 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+      wasm:
+        condition: service_completed_successfully
     volumes:
       - .:/repo
       - ./data/__node_modules_linux__:/repo/node_modules # shares same deps cache as backend container
+      # Generated wasm, overlaid on top of the bind-mount above.
+      # main.tsx imports ./keygen.wasm and ./wasm_exec.js from src/.
+      - type: volume
+        source: wasm
+        target: /repo/apps/ui/src/keygen.wasm
+        volume:
+          subpath: keygen.wasm
+      - type: volume
+        source: wasm
+        target: /repo/apps/ui/src/wasm_exec.js
+        volume:
+          subpath: wasm_exec.js
     command: ['npm', 'run', 'dev', '--', '--host']
     ports:
       - '127.0.0.1:5173:5173' # localhost:5173 for ui
     environment:
       VITE_API_BASE: http://backend:5663
     networks: [devnet]
+
+volumes:
+  wasm: # generated keygen.wasm + wasm_exec.js, rebuilt by the `wasm` service

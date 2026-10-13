@@ -32,7 +32,6 @@ ENV PATH="/repo/node_modules/.bin:$PATH"
 FROM golang:1.27@sha256:007a316059246276cb214df93950be77837545dc78007a73e0291a4963d5d3bf AS godev
 WORKDIR /repo/apps/backend
 
-ENV PATH="$PATH:$(go env GOROOT)/lib/wasm"
 ENV GOOS=js
 ENV GOARCH=wasm
 ENV GOFLAGS="-trimpath -mod=readonly -modcacherw"
@@ -46,6 +45,16 @@ RUN go mod download
 RUN go build -ldflags="-s -w -buildid=" -o /keygen.wasm keygen.go
 RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /wasm_exec.js
 
+############################################################
+# wasm-artifacts — tiny stage holding just the two generated
+# files. docker-compose.yml runs this to seed a named volume
+# that is overlaid onto apps/ui/src in the dev containers.
+############################################################
+FROM busybox AS wasm-artifacts
+COPY --from=godev /keygen.wasm /artifacts/keygen.wasm
+COPY --from=godev /wasm_exec.js /artifacts/wasm_exec.js
+CMD ["cp", "/artifacts/keygen.wasm", "/artifacts/wasm_exec.js", "/out/"]
+
 ####################################################
 # DEV-ONLY build stage: Backend hot-reload image
 # - Not referenced by later COPY --from=… steps,
@@ -57,8 +66,9 @@ FROM deps AS dev
 WORKDIR /repo/apps/backend
 VOLUME /data
 
-COPY --from=godev /keygen.wasm /repo/apps/ui/src/keygen.wasm
-COPY --from=godev /wasm_exec.js /repo/apps/ui/src/wasm_exec.js
+# No wasm COPY here: compose bind-mounts the host repo over /repo, which would
+# shadow anything written to apps/ui/src. The dev stack gets the wasm from the
+# wasm-artifacts stage via a named volume instead (see docker-compose.yml).
 
 CMD ["npm","run","dev"]
 
