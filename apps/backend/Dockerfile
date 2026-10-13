@@ -32,15 +32,19 @@ ENV PATH="/repo/node_modules/.bin:$PATH"
 FROM golang AS godev
 WORKDIR /repo/apps/backend
 
-
-COPY apps/backend/go.mod go.mod
-COPY apps/backend/go.sum go.sum
-
 ENV PATH="$PATH:$(go env GOROOT)/lib/wasm"
 ENV GOOS=js
 ENV GOARCH=wasm
-RUN go build keygen.go /repo/apps/ui/src/keygen.wasm
-RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /repo/apps/ui/src/
+ENV GOFLAGS="-trimpath -mod=readonly -modcacherw"
+
+COPY apps/backend/go.mod go.mod
+COPY apps/backend/go.sum go.sum
+COPY apps/backend/keygen.go keygen.go
+
+RUN go mod download
+
+RUN go build -ldflags="-s -w -buildid=" -o /keygen.wasm keygen.go
+RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /wasm_exec.js
 
 ####################################################
 # DEV-ONLY build stage: Backend hot-reload image
@@ -51,8 +55,10 @@ RUN cp -v "$(go env GOROOT)/lib/wasm/wasm_exec.js" /repo/apps/ui/src/
 ####################################################
 FROM deps AS dev
 WORKDIR /repo/apps/backend
-
 VOLUME /data
+
+COPY --from=godev /keygen.wasm /repo/apps/ui/src/keygen.wasm
+COPY --from=godev /wasm_exec.js /repo/apps/ui/src/wasm_exec.js
 
 CMD ["npm","run","dev"]
 
@@ -62,7 +68,8 @@ CMD ["npm","run","dev"]
 FROM deps AS app-builder
 WORKDIR /repo
 COPY . .
-
+COPY --from=godev /keygen.wasm /repo/apps/ui/src/keygen.wasm
+COPY --from=godev /wasm_exec.js /repo/apps/ui/src/wasm_exec.js
 # build shared libraries (libs/*/dist)
 # build backend (ts → js) (apps/backend/dist)
 # bundle UI (vite build) (apps/ui/dist)
