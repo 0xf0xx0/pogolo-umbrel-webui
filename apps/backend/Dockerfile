@@ -29,7 +29,7 @@ RUN npm ci --workspaces --include-workspace-root --install-strategy=hoisted
 # Add npm binaries to PATH so subsequent stages can invoke tsc / vite / etc.
 ENV PATH="/repo/node_modules/.bin:$PATH"
 
-FROM golang AS godev
+FROM golang:1.27@sha256:007a316059246276cb214df93950be77837545dc78007a73e0291a4963d5d3bf AS godev
 WORKDIR /repo/apps/backend
 
 ENV PATH="$PATH:$(go env GOROOT)/lib/wasm"

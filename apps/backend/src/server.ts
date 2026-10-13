@@ -30,9 +30,10 @@ const app = Fastify({logger: true})
 
 // CSP
 await app.register(helmet, {
-	contentSecurityPolicy: {
+    contentSecurityPolicy: {
 		// We keep Helmet’s defaults and only add what's missing
 		directives: {
+            "script-src": ["'wasm-unsafe-eval'", "'self'"],
 			// Upgrade-insecure-requests is ignored on HTTP, so we omit it entirely
 			upgradeInsecureRequests: null,
 		},
