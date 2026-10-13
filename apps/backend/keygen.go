@@ -13,6 +13,6 @@ func main() {
 		b, _ := stratumv2.NewKeypair().Encode()
 		return hex.EncodeToString(b)
 	}))
-	fmt.Println("test log from wasm go")
+	fmt.Println("wasm go executed")
 	select {}
 }
