@@ -29,7 +29,8 @@ export default function ConnectionDetails() {
 
 	const [tab, setTab] = useState<'sv1' | 'sv2'>('sv1')
     const conn = data?.stratum.local
-    const uri = `${tab === 'sv2' ? "stratum2+tcp://" : "stratum+tcp://"}${conn?.uri}`
+    const uri = `${tab === 'sv2' ? "stratum2+tcp://" : "stratum+tcp://"}${conn?.uri}` +
+        `${tab === 'sv2' && conn?.authorityKey ? `/${conn?.authorityKey}` : ''}`
 
 	return (
 		<Dialog>
