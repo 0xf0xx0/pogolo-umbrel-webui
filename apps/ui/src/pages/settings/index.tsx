@@ -31,6 +31,7 @@ import FadeScrollArea from '@/components/shared/FadeScrollArea'
 import {Form} from './Form'
 import Toggle from './Toggle'
 import InputField from './InputField'
+import KeygenButton from './KeygenButton'
 import {SettingsDisabledContext, useInputsDisabled} from './SettingsDisabledContext'
 import DangerZoneAlert from './DangerZoneAlert'
 import CustomConfigEditor from './CustomConfigEditor'
@@ -171,15 +172,26 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						<label className='text-sm font-normal text-body'>{option.label}</label>
 						<TomlKeyBadge option={option} />
 					</div>
-					<InputField
-						className='w-full'
-						id={option.tomlKey ?? name}
-						type={option.secret ? 'password' : 'text'}
-						placeholder={option.placeholder}
-						maxLength={option.maxLength}
-						{...form.register(name)}
-						disabled={disabled}
-					/>
+					<div className='flex flex-row items-start gap-2'>
+						<InputField
+							className='w-full max-w-xs'
+							id={option.tomlKey ?? name}
+							type={option.secret ? 'password' : 'text'}
+							placeholder={option.placeholder}
+							maxLength={option.maxLength}
+							{...form.register(name)}
+							disabled={disabled}
+						/>
+						{option.keygen && (
+							<KeygenButton
+								currentValue={form.watch(name) ?? ''}
+								onGenerate={(keypair) =>
+									form.setValue(name, keypair, {shouldDirty: true, shouldValidate: true})
+								}
+								disabled={disabled}
+							/>
+						)}
+					</div>
 				</div>
 				<p className='text-sm font-normal text-body-muted'>{option.description}</p>
 				{option.subDescription && <p className='text-xs font-normal text-body-muted mt-1'>{option.subDescription}</p>}

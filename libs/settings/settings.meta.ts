@@ -44,6 +44,8 @@ interface StringOption extends BaseOption {
 	secret?: boolean
 	// Allowed to be empty even though it is a string
 	optional?: boolean
+	// Shows a Generate button that fills the field from the keygen wasm
+	keygen?: boolean
 }
 
 interface SelectOption extends BaseOption {
@@ -213,7 +215,8 @@ export const settingsMetadata = {
         description: 'The encoded stratumv2.Keypair used for the authority key.',
         default: '',
         optional: true,
-        placeholder: "deadbeef...c0ffee"
+        placeholder: "deadbeef...c0ffee",
+        keygen: true,
 	},
 
 	/* ===== Web UI tab ===== */
