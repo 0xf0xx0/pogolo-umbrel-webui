@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import {Button} from '../../components/ui/button'
-import notFoundImg from '@/assets/404.jpg'
+import notFoundImg from '@/assets/404.webp'
 
 export default function NotFoundPage() {
 	return (
