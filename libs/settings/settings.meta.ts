@@ -135,11 +135,11 @@ export const settingsMetadata = {
 		unit: 'sec',
     },
 
-    share_batch_window_size: {
+    share_batch_window: {
 		tab: 'pool',
 		kind: 'number',
-		tomlKey: 'share_batch_window_size',
-		label: 'Stratum V2 Maximum Share Window Size',
+		tomlKey: 'share_batch_window',
+		label: 'Stratum V2 Share Batching Window',
 		description: 'Maximum time pogolo will wait for the next share before acknowledging the current batch.',
 		min: 1,
 		step: 1,
