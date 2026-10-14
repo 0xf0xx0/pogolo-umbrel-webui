@@ -6,7 +6,7 @@ import {
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogCancel,
-	AlertDialogAction,
+	AlertDialogConfirm,
 } from '@/components/ui/alert-dialog'
 
 interface SaveSettingsDialogProps {
@@ -30,15 +30,15 @@ export default function SaveSettingsDialog({open, onOpenChange, onSave}: SaveSet
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel className='hover:bg-surface-raised'>Cancel</AlertDialogCancel>
-					<AlertDialogAction
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogConfirm
 						onClick={() => {
 							onOpenChange(false)
 							onSave()
                         }}
 					>
 						Yes
-					</AlertDialogAction>
+					</AlertDialogConfirm>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

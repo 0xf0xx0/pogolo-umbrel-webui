@@ -12,7 +12,7 @@ import {
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogCancel,
-	AlertDialogAction,
+	AlertDialogConfirm,
 } from '@/components/ui/alert-dialog'
 
 const hasKeygen = () => typeof globalThis.Keygen === 'function'
@@ -44,7 +44,7 @@ export default function KeygenButton({
 	return (
 		<>
 			<Button
-				type='button'
+                type='button'
 				disabled={disabled}
 				// Only ask before replacing an existing key
 				onClick={() => (currentValue ? setIsConfirmOpen(true) : generate())}
@@ -65,8 +65,8 @@ export default function KeygenButton({
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel className='hover:bg-surface-raised'>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={generate}>Replace</AlertDialogAction>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogConfirm onClick={generate}>Replace</AlertDialogConfirm>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

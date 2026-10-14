@@ -82,8 +82,8 @@ body {
 	--foreground: var(--color-body);
 	--card: var(--color-surface-raised);
 	--card-foreground: var(--color-body);
-	--popover: var(--color-surface-input);
-	--popover-foreground: var(--color-body);
+	--popover: var(--color-surface-raised);
+	--popover-foreground: var(--color-foreground);
 	--primary: var(--color-body);
 	--primary-foreground: var(--color-surface);
 	--secondary: var(--color-surface-input);

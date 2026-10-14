@@ -23,7 +23,7 @@ import {
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogCancel,
-	AlertDialogAction,
+	AlertDialogConfirmDestructive,
 } from '@/components/ui/alert-dialog'
 
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
@@ -499,9 +499,9 @@ export default function SettingsCard() {
 									</Button>
 								</AlertDialogTrigger>
 
-								<AlertDialogContent className='bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl'>
+								<AlertDialogContent className='backdrop-blur-2xl border-line border-[0.5px] rounded-2xl'>
 									<AlertDialogHeader>
-										<AlertDialogTitle className='font-normal text-body text-xl text-left'>
+										<AlertDialogTitle className='font-normal text-warn text-xl text-left'>
 											Restore default settings?
 										</AlertDialogTitle>
 										<AlertDialogDescription className='text-body-muted text-left text-sm space-y-3'>
@@ -513,16 +513,17 @@ export default function SettingsCard() {
 									</AlertDialogHeader>
 
 									<AlertDialogFooter>
-										<AlertDialogCancel className='hover:bg-surface-raised'>Cancel</AlertDialogCancel>
-										<AlertDialogAction onClick={onRestoreDefaults}>
+										<AlertDialogCancel className='hover:bg-surface-raised'>No</AlertDialogCancel>
+										<AlertDialogConfirmDestructive onClick={onRestoreDefaults}>
 											Yes
-										</AlertDialogAction>
+										</AlertDialogConfirmDestructive>
 									</AlertDialogFooter>
 								</AlertDialogContent>
 							</AlertDialog>
 
 							{/* SAVE BUTTON */}
-							<Button
+                            <Button
+                                className='hover:bg-good/40'
 								type='button'
 								// We don't allow saving if the form is not dirty (meaning it is unchanged), is invalid, if we're still loading initial settings, if the form is submitting, or if the updated settings are pending
 								disabled={!isDirty || !isValid || isLoading || isSubmitting || updateSettings.isPending}
