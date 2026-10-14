@@ -44,6 +44,7 @@ body {
 	/* ── Lines ─────────────────────────────────────── */
 	--color-line: --alpha(var(--color-stone-200) / 10%);
 	--color-line-strong: --alpha(var(--color-stone-200) / 20%);
+	--color-line-max: --alpha(var(--color-stone-200) / 50%);
 
 	/* ── Accents ───────────────────────────────────── */
 	/* Primary accent, used for live/positive values */

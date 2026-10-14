@@ -49,7 +49,7 @@ function TomlKeyBadge({option}: {option: Option}) {
 
 	return (
 		<div className='flex flex-wrap gap-1 my-1'>
-			<span className='text-xs font-normal text-body-subtle bg-surface-input px-1 rounded-sm'>{option.tomlKey}</span>
+			<span className='text-xs font-normal text-body-muted bg-surface-input px-1 rounded-sm'>{option.tomlKey}</span>
 		</div>
 	)
 }
@@ -75,7 +75,7 @@ function SettingsTabTrigger({
 	return (
 		<TabsTrigger
 			value={value}
-			className='relative text-xs bg-transparent border-none data-[state=active]:text-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-transparent data-[state=active]:after:bg-body'
+			className='relative text-xs bg-transparent border-none data-[state=active]:text-pogolo-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[0.2em] after:bg-transparent data-[state=active]:after:bg-line-max'
 		>
 			{children}
 
@@ -92,9 +92,9 @@ function SettingsTabTrigger({
 			{isDirty && !hasError && (
 				<span aria-hidden className='relative inline-flex h-2 w-2' title="changed option">
 					{/* outer expanding ring that pings */}
-					<span className='absolute inline-flex h-full w-full rounded-full bg-body opacity-75 animate-ping' />
+					<span className='absolute inline-flex h-full w-full rounded-full bg-pogolo-body opacity-75 animate-ping' />
 					{/* solid center dot */}
-					<span className='relative inline-flex h-2 w-2 rounded-full bg-body' />
+					<span className='relative inline-flex h-2 w-2 rounded-full bg-pogolo-body' />
 				</span>
 			)}
 		</TabsTrigger>
