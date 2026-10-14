@@ -5,15 +5,16 @@
 /* Imported fonts */
 @import '@fontsource-variable/fira-code';
 @import '@fontsource/iosevka';
+@import '@fontsource/noto-color-emoji';
 
 html,
 body {
 	/* ── Make Iosevka the default ───────────────────── */
-	font-family: 'Iosevka', sans-serif;
+	font-family: 'Iosevka', 'Noto Color Emoji', sans-serif;
 }
 
 .font-mono {
-	font-family: 'Fira Code', monospace;
+	font-family: 'Fira Code', 'Noto Color Emoji', monospace;
 }
 
 /*

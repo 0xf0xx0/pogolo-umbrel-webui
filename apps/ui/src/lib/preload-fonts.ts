@@ -3,7 +3,7 @@
 
 import fira from '@fontsource-variable/fira-code/files/fira-code-latin-wght-normal.woff2?url'
 import iosevka from '@fontsource/iosevka/files/iosevka-latin-400-normal.woff2?url'
-
+import noto from '@fontsource/noto-color-emoji/files/noto-color-emoji-emoji-400-normal.woff2?url'
 function preload(href: string) {
 	const link = Object.assign(document.createElement('link'), {
 		rel: 'preload',
@@ -16,5 +16,5 @@ function preload(href: string) {
 }
 
 export default function preloadFonts() {
-	;[fira, iosevka].forEach(preload)
+	;[noto, fira, iosevka].forEach(preload)
 }
