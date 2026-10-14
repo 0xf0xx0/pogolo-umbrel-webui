@@ -1,10 +1,9 @@
 import {useState} from 'react'
 import QrSvg from '@wojtekmaj/react-qr-svg'
-import {TriangleAlert, X as XIcon, Info} from 'lucide-react'
+import {TriangleAlert, X as XIcon, Info, Pickaxe} from 'lucide-react'
 import {motion, AnimatePresence} from 'framer-motion'
 
 import Logo from '@/assets/logo.svg?react'
-import WalletIcon from '@/assets/wallet.svg?react'
 
 import {
 	Dialog,
@@ -37,7 +36,7 @@ export default function ConnectionDetails() {
 			<DialogTrigger asChild>
 				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
-					<WalletIcon className='w-5 h-5 text-body-subtle' />
+					<Pickaxe className='w-5 h-5' />
 					<span className='text-sm text-body font-medium'>Connect</span>
 				</Button>
 			</DialogTrigger>
@@ -54,7 +53,7 @@ export default function ConnectionDetails() {
 				<DialogHeader>
 					<DialogTitle className='font-bold text-body text-lg text-left'>
 						<div className='flex items-center gap-2'>
-							<WalletIcon className='w-5 h-5 text-body' />
+							<Pickaxe className='w-5 h-5 text-body' />
 							Connect a gopher
 						</div>
 					</DialogTitle>
