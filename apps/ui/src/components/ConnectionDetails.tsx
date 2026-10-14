@@ -42,7 +42,7 @@ export default function ConnectionDetails() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[60vw]'
+				className='bg-card-gradient overflow-scroll backdrop-blur-2xl border-line border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[100vw] sm:max-h-screen lg:max-w-[60vw]'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
@@ -64,7 +64,7 @@ export default function ConnectionDetails() {
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className='space-y-4 mt-2 grid grid-cols-3 gap-4'>
+				<div className='space-y-4 mt-2 md:grid md:grid-cols-3 md:gap-4'>
 					<div className='bg-gradient-to-b from-surface-input to-surface p-5 rounded-xl'>
     					<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'sv1' | 'sv2')} className='w-[200px] mx-auto mb-3'>
     						<TabsList className='relative flex w-full rounded-md bg-surface backdrop-blur-xl p-1 ring-white/10'>
@@ -129,13 +129,13 @@ export default function ConnectionDetails() {
                					</Alert>
                             </p>
                         }
+                        <Alert className='border-none col-span-full'>
+    						<TriangleAlert className='h-4 w-4' />
+    						<AlertDescription>
+      						Please don't expose pogolo on the public internet; instead, use Tailscale or ZeroTier for remote access.
+    						</AlertDescription>
+    					</Alert>
                     </div>
-                    <Alert className='bg-amber-900/30 text-warn border-none col-span-full'>
-						<TriangleAlert className='h-4 w-4' />
-						<AlertDescription className='text-warn'>
-    						Please don't expose pogolo on the public internet; instead, use Tailscale or ZeroTier for remote access.
-						</AlertDescription>
-					</Alert>
 				</div>
 			</DialogContent>
 		</Dialog>
