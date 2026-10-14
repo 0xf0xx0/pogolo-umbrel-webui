@@ -75,7 +75,7 @@ function SettingsTabTrigger({
 	return (
 		<TabsTrigger
 			value={value}
-			className='relative text-xs bg-transparent border-none data-[state=active]:text-pogolo-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[0.2em] after:bg-transparent data-[state=active]:after:bg-line-max'
+			className='relative text-xs bg-transparent border-none data-[state=active]:text-body data-[state=active]:bg-transparent data-[state=inactive]:text-body-muted focus-visible:outline-none focus:outline-none focus:ring-0 rounded-none hover:text-body transition-none pb-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[0.2em] after:bg-transparent data-[state=active]:after:bg-pogolo-body/60'
 		>
 			{children}
 

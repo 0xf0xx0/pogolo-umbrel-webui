@@ -121,7 +121,7 @@ export default function ConnectionDetails() {
                         </div>
                         {tab === 'sv2' &&
                             <p className='text-body-subtle text-sm'>
-                                <Alert className='bg-blue-900/30 text-accent border-none col-span-full'>
+                                <Alert className='bg-blue-900/30 text-blue-400 border-none col-span-full'>
               						<Info className='h-4 w-4' />
               						<AlertDescription className='text-body'>
                                         SV2 certificate validation is optional for local networks.
