@@ -81,7 +81,7 @@ export function Layout() {
 					/>
 
 					{/* Inner column has a max width of 768px to float within the viewport */}
-					<div className='w-full max-w-screen-md mx-auto'>
+					<div className='w-full max-w-3xl xl:max-w-5xl mx-auto'>
 						{/* We wrap the routed page in an ErrorBoundary to catch unexpected render-time errors */}
 						{/* We still show header and dock, but the content is replaced by the ErrorFallback. */}
 						<ErrorBoundary resetKeys={[pathname]} fallbackRender={() => <ErrorFallback />}>

@@ -41,7 +41,7 @@ export default function ConnectionDetails() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent
-				className='bg-card-gradient overflow-scroll backdrop-blur-2xl border-line border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[100vw] sm:max-h-screen lg:max-w-[60vw]'
+				className='bg-card-gradient overflow-scroll backdrop-blur-2xl border-line border-[0.5px] rounded-2xl max-h-[90vh] flex flex-col sm:max-w-[100vw] sm:max-h-screen md:max-w-3xl xl:max-w-5xl 2xl:max-w-7xl 2xl:top-1/6'
 				showCloseButton={false}
 			>
 				<GradientBorderFromTop />
@@ -65,7 +65,7 @@ export default function ConnectionDetails() {
 
 				<div className='space-y-4 mt-2 md:grid md:grid-cols-3 md:gap-4'>
 					<div className='bg-gradient-to-b from-surface-input to-surface p-5 rounded-xl'>
-    					<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'sv1' | 'sv2')} className='w-[200px] mx-auto mb-3'>
+    					<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'sv1' | 'sv2')} className='w-50 mx-auto mb-3'>
     						<TabsList className='relative flex w-full rounded-md bg-surface backdrop-blur-xl p-1 ring-white/10'>
     							<GradientBorderFromTop />
 
@@ -147,7 +147,7 @@ export default function ConnectionDetails() {
 // Increasing the `level` (error correction) can help.
 function QR({value}: {value?: string}) {
 	if (!value) {
-		return <div className='flex h-[196px] w-[196px] m-auto items-center rounded-md bg-white/5' />
+		return <div className='flex h-49 w-49 m-auto items-center rounded-md bg-white/5' />
 	}
 
 	return (
@@ -155,20 +155,19 @@ function QR({value}: {value?: string}) {
 			<div className='p-2 rounded-md'>
 				<QrSvg
 					value={value}
-					width={200}
-					height={200}
 					level='Q' // Q = 25% error correction
 					fgColor='#c1e269' // pogolo green fill
 					bgColor='transparent' // transparent background
 					cellClassPrefix='qrPx' // produces .qrPx & .qrPx-filled that we can target with CSS
-					style={{display: 'block', shapeRendering: 'crispEdges'}}
+                    style={{ display: 'block', shapeRendering: 'crispEdges' }}
+					className='h-full w-full'
 				/>
 			</div>
 
 			{/* Pogolo logo overlay */}
-			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 p-2 shadow-md pointer-events-none select-none bg-surface-input'>
-				<div className='w-full h-full flex items-center justify-center bg-white/10 rounded-md p-1.5'>
-					<Logo className='w-full h-full text-body' />
+			<div className='absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 p-2 shadow-md pointer-events-none select-none'>
+				<div className='w-full h-full flex items-center justify-center bg-stone-900 rounded-md p-1.5'>
+					<Logo className='w-full h-full' />
 				</div>
 			</div>
 
