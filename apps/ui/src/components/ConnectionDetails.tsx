@@ -114,8 +114,8 @@ export default function ConnectionDetails() {
     					<div className='row-span-2 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
     						<CopyRow className='col-span-4' label='Host' value={conn?.host} />
     						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
-    						<CopyRow className='col-span-4' label='Username' value='btcaddress.workername' />
-                            <CopyRow className='col-span-2' label={tab === 'sv1' ? 'Pass' : 'Authority'} value={tab === 'sv1' ? conn?.password : conn?.authorityPubkey} />
+    						<CopyRow className='col-span-3' label='Username' value='btcaddress.workername' />
+                            <CopyRow className='col-span-3' label={tab === 'sv1' ? 'Pass' : 'Authority'} value={tab === 'sv1' ? conn?.password : conn?.authorityPubkey} />
                             <CopyRow className='col-span-full' label='URL' value={uri} />
                         </div>
                         {tab === 'sv2' &&
