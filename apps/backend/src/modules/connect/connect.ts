@@ -22,7 +22,7 @@ export async function getConnectionDetails(): Promise<ConnectionDetails> {
 				port,
 				uri: `${host}:${port}`,
                 password,
-				authorityKey: pogoloInfo?.authorityKey ?? ''
+				authorityPubkey: pogoloInfo?.authorityPubkey ?? ''
 			},
 		},
 	}

@@ -66,7 +66,7 @@ export type PogoloInfo = {
     gophers: MiniGopherInfo[]
     version: string
     activeChain: string
-	authorityKey: string
+	authorityPubkey: string
 }
 
 // One point in the sampled metric history. Each metric maps series id -> value,
@@ -99,7 +99,7 @@ export type ConnectionDetails = {
 			// The configured SV1 password, if the pool requires one. Empty when
 			// any client may connect.
             password: string
-			authorityKey: string
+			authorityPubkey: string
 		}
 	}
 }
