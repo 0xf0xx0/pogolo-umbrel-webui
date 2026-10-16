@@ -29,7 +29,7 @@ const BACKFILL_BYTES = 64 * 1024
 const history: LogLine[] = []
 const clients = new Set<WebSocket>()
 
-let seq = 0
+let seq = new Uint32Array(1)
 let started = false
 
 // Where we have read up to, and what we are reading. Tracking the inode lets us
@@ -52,8 +52,9 @@ function push(line: string) {
 	const cleaned = line.replace(/[\x00-\x08\x0b-\x1a\x1c-\x1f]/g, '').trimEnd()
 	if (!cleaned) return
 
-	const entry: LogLine = {
-		seq: seq++,
+    const entry: LogLine = {
+        /// use a random sequence so the frontend displays the new logs after a backend restart
+        seq: crypto.getRandomValues(seq)[0],
 		timestamp: Date.now(),
 		html: ansiToHtml(cleaned),
 	}
