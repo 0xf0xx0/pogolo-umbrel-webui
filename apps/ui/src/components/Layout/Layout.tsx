@@ -73,7 +73,7 @@ export function Layout() {
 				>
 					{/* Top fade right below the header - only appears when scrolled */}
 					<motion.div
-						className='pointer-events-none sticky top-0 h-12 -mt-12 z-10'
+						className='pointer-events-none sticky top-0 h-6 -mt-6 z-10'
 						style={{
 							background: 'linear-gradient(to bottom, var(--color-stone-950) 0%, transparent 100%)',
 							opacity: isAtTop ? 0 : fadeOpacity,
@@ -92,7 +92,7 @@ export function Layout() {
 
 				{/* Bottom fade overlay fixed to viewport bottom (Dock sits over it)*/}
 				<div
-					className='pointer-events-none fixed inset-x-0 bottom-0 h-12 z-20'
+					className='pointer-events-none fixed inset-x-0 bottom-0 h-6 z-20'
 					style={{background: 'linear-gradient(to top, var(--color-stone-950) 0%, transparent 100%)'}}
 				/>
 			</div>

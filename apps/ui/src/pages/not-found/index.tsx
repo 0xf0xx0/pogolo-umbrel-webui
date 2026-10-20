@@ -20,7 +20,7 @@ export default function NotFoundPage() {
 				<div className='space-y-3'>
 					<div>
 						<p className='text-3xl md:text-5xl font-bold leading-none tracking-tighter bg-text-gradient bg-clip-text text-transparent'>
-							404 — unfed fops
+							404 — Fops Not Fed
 						</p>
 						<p className='mt-2 text-sm md:text-lg text-body-muted'>Got lost running pogolo?</p>
 					</div>

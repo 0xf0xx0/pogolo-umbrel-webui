@@ -89,8 +89,8 @@ function ClientCard({ mini, info }: { mini: MiniGopherInfo; info: GopherInfo | u
 }
 
 export default function ClientList() {
-    const {data: gophersInfo, isLoading1} = useGophers()
-	const {data, isLoading} = usePoolInfo()
+    const {data: gophersInfo, isLoadingGophers} = useGophers()
+	const {data, isLoadingInfo} = usePoolInfo()
 	const gophers = data?.gophers ?? []
 	// /api/v1/info only carries a user agent and id per miner, so fetch the full
 	// stats for each connected miner alongside it.
@@ -108,7 +108,7 @@ export default function ClientList() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				{isLoading ? (
+				{isLoadingInfo || isLoadingGophers ? (
 					<p className='text-body-subtle text-sm'>Loading…</p>
 				) : gophers.length === 0 ? (
 					<div className='flex flex-col gap-1 py-4'>
@@ -117,8 +117,8 @@ export default function ClientList() {
 					</div>
 				) : (
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-                        {gophers.map((gopher, index) => (
-							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.find(v => v.extranonce1 === gopher.extranonce1)} />
+                        {gophers.map((gopher: MiniGopherInfo, _) => (
+							<ClientCard key={gopher.extranonce1} mini={gopher} info={details?.find((v: GopherInfo) => v.extranonce1 === gopher.extranonce1)} />
 						))}
 					</div>
 				)}

@@ -185,7 +185,7 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 						{option.keygen && (
 							<KeygenButton
 								currentValue={form.watch(name) ?? ''}
-								onGenerate={(keypair) =>
+								onGenerate={(keypair: string) =>
 									form.setValue(name, keypair, {shouldDirty: true, shouldValidate: true})
 								}
 								disabled={disabled}
