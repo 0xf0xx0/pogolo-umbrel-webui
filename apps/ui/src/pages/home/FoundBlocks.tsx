@@ -24,7 +24,7 @@ export default function FoundBlocks() {
 		)
 	}
 
-	return (
+    return (
 		<div className='flex gap-3 px-4 py-2'>
 			{blocks.map((block) => {
 				const difficulty = formatDifficulty(block.difficulty)

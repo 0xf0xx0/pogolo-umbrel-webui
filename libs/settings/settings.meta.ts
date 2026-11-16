@@ -68,7 +68,7 @@ export const settingsMetadata = {
 		tomlKey: 'tag',
 		label: 'Coinbase Tag',
 		description: 'The tag embedded in the coinbase of blocks pogolo produces.',
-		subDescription: `Customize it! Add your swarm stats, like '/pogolo on Umbrel - gamma x1 - decentralize or die/'. Tags longer than ${MAX_TAG_LENGTH} characters are replaced by the default tag.`,
+		subDescription: `Customize it! Add your swarm stats, like '/pogolo on Umbrel - decentralize or die/gamma/naja duo/'. Tags longer than ${MAX_TAG_LENGTH} characters are replaced by the default tag.`,
 		default: '/pogolo on Umbrel - decentralize or die/',
 		maxLength: MAX_TAG_LENGTH,
 		optional: true,

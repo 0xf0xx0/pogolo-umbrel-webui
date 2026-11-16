@@ -110,7 +110,7 @@ function SettingsTabContent({tab, form}: {tab: Tab; form: ReturnType<typeof useF
 	return (
 		<>
 			{fieldsForTab.map((k, index) => (
-				<div key={String(k)} className={index < fieldsForTab.length - 1 ? 'border-b-[1px] border-line-strong pb-6' : ''}>
+				<div key={String(k)} className={index < fieldsForTab.length - 1 ? 'border-b border-line-strong pb-6' : ''}>
 					<FieldRenderer name={k as SettingName} form={form} />
 				</div>
 			))}
@@ -271,13 +271,13 @@ function FieldRenderer({name, form}: {name: SettingName; form: ReturnType<typeof
 								disabled={disabled}
 							>
 								<SelectTrigger
-									className={`rounded bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-body focus:ring-0 ring-offset-0 border-none max-sm:text-xs`}
+									className={`rounded bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),inset_0_1px_1px_0_rgba(0,0,0,0.36)] p-3 text-body focus:ring-0 ring-offset-0 border-none max-sm:text-xs`}
 								>
 									<SelectValue placeholder='Select…' />
 								</SelectTrigger>
 
-								<SelectContent className='bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body border-none'>
-									{option.options.map((opt) => (
+								<SelectContent className='bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body border-none'>
+									{option.options.map((opt: { value: any; label: any }) => (
 										<SelectItem key={opt.value} value={opt.value} className='cursor-pointer'>
 											{opt.label}
 										</SelectItem>
@@ -401,7 +401,7 @@ export default function SettingsCard() {
 										value={query}
 										onChange={(e) => setQuery(e.target.value)}
 										placeholder='Search'
-										className='pl-10 border-none bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),_inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body placeholder:text-body-subtle focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-line'
+										className='pl-10 border-none bg-surface-input shadow-[inset_0_-1px_1px_0_rgba(255,255,255,0.2),inset_0_1px_1px_0_rgba(0,0,0,0.36)] text-body placeholder:text-body-subtle focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-line'
 									/>
 								</div>
 							</div>
@@ -459,7 +459,7 @@ export default function SettingsCard() {
 												<div
 													key={name}
 													// styling to exactly match when rendered inside tabs
-													className={i < matchingFields.length - 1 ? 'border-b-[1px] border-line-strong pb-6 mb-6' : ''}
+													className={i < matchingFields.length - 1 ? 'border-b border-line-strong pb-6 mb-6' : ''}
 												>
 													<FieldRenderer name={name} form={form} />
 												</div>

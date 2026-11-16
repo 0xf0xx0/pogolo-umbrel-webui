@@ -50,13 +50,13 @@ export function Layout() {
 
 			{/* The full-viewport, flex column div that contains the floating dock, header, and main content */}
 			{/* We're using dvh (Dynamic Viewport Height) units throughout to ensure the layout is responsive and doesn't have white space at the bottom on browsers that have a dynamic address bar (like iOS Safari) */}
-			<div className='h-[100dvh] w-[100vw] flex flex-col pt-6 px-4'>
+			<div className='h-dvh w-screen flex flex-col pt-6 px-4'>
 				{/* Floating dock – stays on top so content scrolls under it */}
 				<Dock className='fixed bottom-4 left-1/2 -translate-x-1/2 z-30' />
 
 				{/* Header at the very top */}
 				<header className='flex justify-center'>
-					<Header className='w-full max-w-screen-md' />
+					<Header className='w-full max-w-3xl' />
 				</header>
 
 				{/* Main content below the header */}
@@ -66,7 +66,7 @@ export function Layout() {
 					className={cn(
 						// Base scroll container styles; visually hide scrollbars
 						// Reserve bottom space for the floating Dock (including safe-area for iOS bars/notches)
-						'flex-1 min-h-0 overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-[calc(var(--dock-clearance)+env(safe-area-inset-bottom))]',
+						'flex-1 min-h-0 overscroll-contain scrollbar-none [&::-webkit-scrollbar]:hidden pb-[calc(var(--dock-clearance)+env(safe-area-inset-bottom))]',
 						// Settings page is non-scrollable (content handles its own overflow), while the other pages scroll
 						isSettingsPage ? 'overflow-hidden' : 'overflow-y-auto',
 					)}
