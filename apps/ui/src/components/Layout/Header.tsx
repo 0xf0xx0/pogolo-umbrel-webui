@@ -7,6 +7,7 @@ import {cn} from '@/lib/utils'
 import Logo from '@/assets/logo.svg?react'
 
 import ConnectionDetails from '@/components/ConnectionDetails'
+import Info from '@/components/About'
 import {usePoolInfo} from '@/hooks/usePogolo'
 
 export default function Header({className}: {className?: string}) {
@@ -44,9 +45,10 @@ export default function Header({className}: {className?: string}) {
 					</p>
 				</div>
 			</div>
-			<div>
+            <div>
+                 <Info />
 				{/* Connect button + modal */}
-				<ConnectionDetails />
+				 <ConnectionDetails />
 			</div>
 		</header>
 	)
