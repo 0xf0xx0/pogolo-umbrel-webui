@@ -12,21 +12,19 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import {Tabs, TabsList, TabsTrigger, TabsContent} from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import {Button} from '@/components/ui/button'
 
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
-import {CopyRow} from '@/components/shared/Field'
-import { usePoolInfo } from '@/hooks/usePogolo'
+import {usePoolInfo} from '@/hooks/usePogolo'
 import {useConnectionDetails} from '@/hooks/useConnectionDetails'
 
 export default function About() {
-    const {data: connDetails} = useConnectionDetails()
-    const { data: info, isLoading, isError } = usePoolInfo()
+	const {data: connDetails} = useConnectionDetails()
+	const {data: info, isLoading, isError} = usePoolInfo()
 
-    const apiLicense = `http://${connDetails?.stratum.local.host}:5662/license.txt`
-    return (<Dialog>
+	const apiLicense = `http://${connDetails?.stratum.local.host}:5662/license.txt`
+	return (
+		<Dialog>
 			<DialogTrigger asChild>
 				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
@@ -47,44 +45,67 @@ export default function About() {
 				<DialogHeader>
 					<DialogTitle className='font-bold text-body text-lg text-left'>
 						<div className='flex items-center gap-2'>
-                        <Logo className='w-15 h-15 text-body' />
+							<Logo className='w-15 h-15 text-body' />
 
-						<h2>Pogolo {!isLoading && (<span>v{info?.version} on <span className={
-                            info?.activeChain === 'mainnet' ?
-                                'text-[#F7931A]' :
-                                info?.activeChain.startsWith('test') ?
-                                    'text-sky-500' : 'text-red-800'
-                            }>{info?.activeChain}</span></span>
-                        )}
-                            <br />
-                            <span className='text-sm'>
-                                <a className='text-blue-400 hover:underline' href="https://github.com/0xf0xx0/pogolo">Repository</a>
-                            </span>
-                        </h2>
+							<h2>
+								Pogolo{' '}
+								{!isLoading && (
+									<span>
+										v{info?.version} on{' '}
+										<span
+											className={
+												info?.activeChain === 'mainnet'
+													? 'text-[#F7931A]'
+													: info?.activeChain.startsWith('test')
+														? 'text-sky-500'
+														: 'text-red-800'
+											}
+										>
+											{info?.activeChain}
+										</span>
+									</span>
+								)}
+								<br />
+								<span className='text-sm'>
+									<a className='text-blue-400 hover:underline' href='https://github.com/0xf0xx0/pogolo'>
+										Repository
+									</a>
+								</span>
+							</h2>
 						</div>
 					</DialogTitle>
-					<DialogDescription className='text-body-muted text-left text-sm'>
-                    </DialogDescription>
+					<DialogDescription className='text-body-muted text-left text-sm'></DialogDescription>
 				</DialogHeader>
-            <div className='md:gap-4'>
-                    <p></p>
-                    <div className='text-body-muted text-sm'>
-                    	<p>This program is free software: you can redistribute it and/or modify
-                    	it under the terms of the GNU Affero General Public License as published by
-                    	the Free Software Foundation, either version 3 of the License, or
-                    	(at your option) any later version.</p>
-                        <br/>
-                    	<p>This program is distributed in the hope that it will be useful,
-                    	but WITHOUT ANY WARRANTY; without even the implied warranty of
-                    	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                        GNU Affero General Public License for more details.</p>
-                        <br/>
-                    	<p>A copy of the GNU Affero General Public License is
-                    	embedded within this program. It can be acquired via <code>pogolo --license</code> and
-                    	the API endpoint <a className="text-blue-400 hover:underline" href={apiLicense}>/license.txt</a>.
-                        Otherwise, see <a className="text-blue-400 hover:underline" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
-                    </div>
+				<div className='md:gap-4'>
+					<p></p>
+					<div className='text-body-muted text-sm'>
+						<p>
+							This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero
+							General Public License as published by the Free Software Foundation, either version 3 of the License, or
+							(at your option) any later version.
+						</p>
+						<br />
+						<p>
+							This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+							implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+							License for more details.
+						</p>
+						<br />
+						<p>
+							A copy of the GNU Affero General Public License is embedded within this program. It can be acquired via{' '}
+							<code>pogolo --license</code> and the API endpoint{' '}
+							<a className='text-blue-400 hover:underline' href={apiLicense}>
+								/license.txt
+							</a>
+							. Otherwise, see{' '}
+							<a className='text-blue-400 hover:underline' href='https://www.gnu.org/licenses/'>
+								https://www.gnu.org/licenses/
+							</a>
+							.
+						</p>
+					</div>
 				</div>
 			</DialogContent>
-		</Dialog>)
+		</Dialog>
+	)
 }
