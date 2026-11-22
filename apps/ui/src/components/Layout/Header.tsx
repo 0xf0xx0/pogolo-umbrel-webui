@@ -45,7 +45,7 @@ export default function Header({className}: {className?: string}) {
 					</p>
 				</div>
 			</div>
-            <div>
+            <div className="inline-flex gap-1">
                  <Info />
 				{/* Connect button + modal */}
 				 <ConnectionDetails />

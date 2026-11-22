@@ -29,7 +29,7 @@ export default function About() {
 				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
 					<Info className='w-5 h-5' />
-					<span className='text-sm text-body font-medium'>About</span>
+					<span className='text-sm text-body font-medium hidden md:flex'>About</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent
@@ -48,7 +48,7 @@ export default function About() {
 							<Logo className='w-15 h-15 text-body' />
 
 							<h2>
-								Pogolo{' '}
+								pogolo{' '}
 								{!isLoading && (
 									<span>
 										v{info?.version} on{' '}
@@ -67,8 +67,12 @@ export default function About() {
 								)}
 								<br />
 								<span className='text-sm'>
-									<a className='text-blue-400 hover:underline' href='https://github.com/0xf0xx0/pogolo'>
-										Repository
+									<a className='text-blue-400 hover:underline' href='https://git.0xf0xx0.eth.limo/0xf0xx0/pogolo'>
+										repository
+									</a>{' '}
+									|{' '}
+									<a className='text-blue-400 hover:underline' href='https://github.com/0xf0xx0/pogolo/issues'>
+										issue tracker
 									</a>
 								</span>
 							</h2>
@@ -76,33 +80,36 @@ export default function About() {
 					</DialogTitle>
 					<DialogDescription className='text-body-muted text-left text-sm'></DialogDescription>
 				</DialogHeader>
-				<div className='md:gap-4'>
-					<p></p>
-					<div className='text-body-muted text-sm'>
-						<p>
-							This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero
-							General Public License as published by the Free Software Foundation, either version 3 of the License, or
-							(at your option) any later version.
-						</p>
+				<div className='md:gap-4 text-body-muted text-sm'>
+					<div>
+						<p>thanks for runnin pogolo :3</p>
 						<br />
-						<p>
-							This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
-							implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
-							License for more details.
-						</p>
-						<br />
-						<p>
-							A copy of the GNU Affero General Public License is embedded within this program. It can be acquired via{' '}
-							<code>pogolo --license</code> and the API endpoint{' '}
-							<a className='text-blue-400 hover:underline' href={apiLicense}>
-								/license.txt
-							</a>
-							. Otherwise, see{' '}
-							<a className='text-blue-400 hover:underline' href='https://www.gnu.org/licenses/'>
-								https://www.gnu.org/licenses/
-							</a>
-							.
-						</p>
+						<i>
+							<p>
+								This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+								Affero General Public License as published by the Free Software Foundation, either version 3 of the
+								License, or (at your option) any later version.
+							</p>
+							<br />
+							<p>
+								This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+								the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General
+								Public License for more details.
+							</p>
+							<br />
+							<p>
+								A copy of the GNU Affero General Public License is embedded within this program. It can be acquired via{' '}
+								<code>pogolo --license</code> and the API endpoint{' '}
+								<a className='text-blue-400 hover:underline' href={apiLicense}>
+									/license.txt
+								</a>
+								. Otherwise, see{' '}
+								<a className='text-blue-400 hover:underline' href='https://www.gnu.org/licenses/'>
+									https://www.gnu.org/licenses/
+								</a>
+								.
+							</p>
+						</i>
 					</div>
 				</div>
 			</DialogContent>

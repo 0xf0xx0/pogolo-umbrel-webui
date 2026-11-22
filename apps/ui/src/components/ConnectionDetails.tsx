@@ -37,7 +37,7 @@ export default function ConnectionDetails() {
 				<Button className='not-last-of-type:cursor-pointer rounded-full bg-button-gradient backdrop-blur-xl'>
 					<GradientBorderFromTop />
 					<Pickaxe className='w-5 h-5' />
-					<span className='text-sm text-body font-medium'>Connect</span>
+					<span className='text-sm text-body font-medium hidden md:flex'>Connect</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent
