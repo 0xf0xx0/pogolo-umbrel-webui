@@ -92,14 +92,12 @@ export type LogLine = {
 
 export type ConnectionDetails = {
 	stratum: {
-		local: {
-			host: string
-			port: string
-			uri: string
-			// The configured SV1 password, if the pool requires one. Empty when
-			// any client may connect.
-            password: string
-			authorityPubkey: string
-		}
+		host: string
+		port: string
+		uri: string
+		// The configured SV1 password, if the pool requires one. Empty when
+		// any client may connect.
+        password: string
+		authorityPubkey: string
 	}
 }

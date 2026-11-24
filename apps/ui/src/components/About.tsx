@@ -22,7 +22,8 @@ export default function About() {
 	const {data: connDetails} = useConnectionDetails()
 	const {data: info, isLoading, isError} = usePoolInfo()
 
-	const apiLicense = `http://${connDetails?.stratum.local.host}:5662/license.txt`
+
+	const apiLicense = `${window.location.protocol}//${connDetails?.stratum.host}:5662/license.txt`
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -73,17 +74,21 @@ export default function About() {
 									|{' '}
 									<a className='text-blue-400 hover:underline' href='https://github.com/0xf0xx0/pogolo/issues'>
 										issue tracker
-									</a>
+                                    </a>{' '}
+                                    |{' '}
+                                    <a className='text-blue-400 hover:underline' href='https://osmu.xyz/t/pogolo-local-golang-pool/28'>
+										forum thread
+                                    </a>
 								</span>
 							</h2>
 						</div>
 					</DialogTitle>
-					<DialogDescription className='text-body-muted text-left text-sm'></DialogDescription>
+                    <DialogDescription className='text-body-muted text-left text-sm'>
+                        <p>thanks for runnin pogolo :3</p>
+					</DialogDescription>
 				</DialogHeader>
 				<div className='md:gap-4 text-body-muted text-sm'>
 					<div>
-						<p>thanks for runnin pogolo :3</p>
-						<br />
 						<i>
 							<p>
 								This program is free software: you can redistribute it and/or modify it under the terms of the GNU
