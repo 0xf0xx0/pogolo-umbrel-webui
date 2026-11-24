@@ -17,13 +17,11 @@ export async function getConnectionDetails(): Promise<ConnectionDetails> {
 
 	return {
 		stratum: {
-			local: {
-				host,
-				port,
-				uri: `${host}:${port}`,
-                password,
-				authorityPubkey: pogoloInfo?.authorityPubkey ?? ''
-			},
+			host,
+			port,
+			uri: `${host}:${port}`,
+            password,
+			authorityPubkey: pogoloInfo?.authorityPubkey ?? ''
 		},
 	}
 }
