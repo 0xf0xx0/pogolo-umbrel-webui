@@ -24,7 +24,7 @@ export default function HomePage() {
 				<GradientBorderTopBottom depth='7%' />
 				<CardContent className='flex flex-col md:flex-row px-4 items-center'>
 					{/* Live pogolo log output + running status */}
-					<div className='relative w-full flex-none md:flex-1 h-64 md:h-[375px] rounded-2xl bg-surface-sunken border-line border-[0.5px] overflow-hidden'>
+					<div className='relative w-full flex-none md:flex-1 h-64 md:h-96 rounded-2xl bg-surface-sunken border-line border-[0.5px] overflow-hidden'>
 						<GradientBorderFromCorners />
 
 						<LogStream />
@@ -40,7 +40,7 @@ export default function HomePage() {
 									animate={{opacity: 1}}
 									exit={{opacity: 0}}
 									transition={{duration: 0.25}}
-									className='absolute top-[7%] left-[5%] flex items-center gap-1 justify-center pointer-events-none select-none bg-surface/60 backdrop-blur-sm rounded-full pl-1 pr-3 py-0.5'
+									className='absolute top-3 left-3 flex items-center gap-1 justify-center pointer-events-none select-none bg-surface/60 backdrop-blur-sm rounded-full pl-1 pr-3 py-0.5'
 								>
 									<StatusDot running={running} />
 

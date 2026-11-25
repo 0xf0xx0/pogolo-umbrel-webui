@@ -70,7 +70,8 @@ export type PogoloInfo = {
 }
 
 // One point in the sampled metric history. Each metric maps series id -> value,
-// where the series id is 'pool' for the pool total or a gopher's extranonce1.
+// where the series id is 'pool' for the pool total or a stable client key based
+// on its nickname (or extranonce1 when the client is unnamed).
 export type MetricSample = {
 	timestamp: number
 	hashrate: Record<string, number>

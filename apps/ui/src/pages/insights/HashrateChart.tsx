@@ -4,13 +4,14 @@ import {useQuery} from '@tanstack/react-query'
 import InsightCard from './InsightsCard'
 import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {api} from '@/lib/api'
-import {usePoolInfo, useGophers} from '@/hooks/usePogolo'
 import {formatHashrate} from '@/lib/formatPool'
 
 import type {MetricHistory} from '#types'
 
 // The pool total is stored under this reserved series id by the backend.
 const POOL_SERIES = 'pool'
+const NICKNAME_SERIES_PREFIX = 'nickname:'
+const ID_SERIES_PREFIX = 'id:'
 
 // Series colours. Chosen to stay distinguishable for the common forms of colour
 // blindness: they differ in lightness as well as hue, and avoid a red/green
@@ -65,10 +66,6 @@ function buildPath(values: (number | null)[], max: number, count: number): strin
 }
 
 export default function HashrateChart() {
-    const { data: info } = usePoolInfo()
-    const {data: gophersInfo} = useGophers()
-
-
 	const {data: history, isLoading} = useQuery({
 		queryKey: ['pool', 'history'],
 		queryFn: () => api<MetricHistory>('/pool/history'),
@@ -76,11 +73,12 @@ export default function HashrateChart() {
 	})
 
 	const {series, max, count} = useMemo(() => {
-		// Map a gopher id to a readable label, preferring its user agent
+		// Names are part of the series id, so they remain available after a disconnect.
 		const labelFor = (id: string) => {
 			if (id === POOL_SERIES) return 'Total'
-			const gopher = gophersInfo?.find((g) => g.extranonce1 === id)
-			return gopher?.nickname ? `${gopher.nickname} (${id})` : id
+			if (id.startsWith(NICKNAME_SERIES_PREFIX)) return id.slice(NICKNAME_SERIES_PREFIX.length)
+			if (id.startsWith(ID_SERIES_PREFIX)) return id.slice(ID_SERIES_PREFIX.length)
+			return id
 		}
 
 		const samples = history?.samples ?? []
@@ -111,7 +109,7 @@ export default function HashrateChart() {
 		})
 
 		return {series: built, max: peak, count: samples.length}
-	}, [history, info, gophersInfo])
+	}, [history])
 
 	const peakLabel = formatHashrate(max)
 

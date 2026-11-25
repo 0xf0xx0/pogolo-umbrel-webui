@@ -25,22 +25,29 @@ let started = false
 // collide with a gopher's extranonce1.
 export const POOL_SERIES = 'pool'
 
+// Namespaces keep client series separate from the pool total and from each
+// other's fallback ids. A nickname remains stable across reconnections.
+const NICKNAME_SERIES_PREFIX = 'nickname:'
+const ID_SERIES_PREFIX = 'id:'
+
 async function sample() {
 	try {
 		const info = await getInfo()
 
-		// Hashrate per series: the pool total plus each connected gopher.
-		// Gophers are keyed by extranonce1, which is stable for a connection.
+		// Hashrate per series: the pool total plus each connected gopher. Key named
+		// gophers by nickname so their history survives disconnects and reconnects.
 		const hashrate: Record<string, number> = {[POOL_SERIES]: info.totalHashrate}
 
 		// /api/v1/info carries no per-gopher hashrate, so fetch each one's detail.
 		// A gopher that disconnects mid-sample is simply left out of this sample.
 		const details = await getGophers()
 
-		for (const [index, result] of details.entries()) {
-			const gopher = info.gophers[index]
-			if (!gopher) continue
-			hashrate[result.extranonce1] = result.hashrate
+		for (const result of details) {
+			const id = result.nickname
+				? `${NICKNAME_SERIES_PREFIX}${result.nickname}`
+				: `${ID_SERIES_PREFIX}${result.extranonce1}`
+			// Multiple simultaneous connections can share a nickname.
+			hashrate[id] = (hashrate[id] ?? 0) + result.hashrate
 		}
 
 		samples.push({timestamp: Date.now(), hashrate})
