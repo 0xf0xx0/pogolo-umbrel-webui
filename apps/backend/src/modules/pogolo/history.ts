@@ -16,10 +16,20 @@ const SAMPLE_INTERVAL_MS = 10_000
 
 // Samples retained. At 10s each, 360 samples is an hour.
 const MAX_SAMPLES = 360
+const HISTORY_WINDOW_MS = MAX_SAMPLES * SAMPLE_INTERVAL_MS
 
 const samples: MetricSample[] = []
 
 let started = false
+
+function pruneSamples() {
+	const cutoff = Date.now() - HISTORY_WINDOW_MS
+	// Prune by time as well as count so stale clients expire even if pogolo was
+	// unreachable and no new samples were recorded for part of the window.
+	while (samples.length > 0 && (samples.length > MAX_SAMPLES || samples[0]!.timestamp < cutoff)) {
+		samples.shift()
+	}
+}
 
 // The pool's own total is stored under this reserved series id, so it cannot
 // collide with a gopher's extranonce1.
@@ -51,7 +61,7 @@ async function sample() {
 		}
 
 		samples.push({timestamp: Date.now(), hashrate})
-		if (samples.length > MAX_SAMPLES) samples.shift()
+		pruneSamples()
 	} catch {
 		// pogolo may be down; skip this sample rather than recording a zero, which
 		// would look like a real drop to zero on the chart.
@@ -72,6 +82,7 @@ export function startSampling() {
 
 // The recorded history, newest last.
 export function getHistory(): MetricHistory {
+	pruneSamples()
 	return {
 		intervalMs: SAMPLE_INTERVAL_MS,
 		samples: samples.slice(),

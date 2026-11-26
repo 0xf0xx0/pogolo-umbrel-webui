@@ -86,8 +86,8 @@ function ClientCard({ mini, info }: { mini: MiniGopherInfo; info: GopherInfo | u
 }
 
 export default function ClientList() {
-    const {data: gophersInfo, isLoadingGophers} = useGophers()
-	const {data, isLoadingInfo} = usePoolInfo()
+    const {data: gophersInfo, isLoading: isLoadingGophers} = useGophers()
+	const {data, isLoading: isLoadingInfo} = usePoolInfo()
 	const gophers = data?.gophers ?? []
 	// /api/v1/info only carries a user agent and id per miner, so fetch the full
 	// stats for each connected miner alongside it.
