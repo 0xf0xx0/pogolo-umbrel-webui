@@ -12,12 +12,12 @@ export default function FoundBlocks() {
 	const blocks = [...(data?.blocksFound ?? [])].sort((a, b) => b.height - a.height)
 
 	if (isLoading) {
-		return <div className='h-[120px] flex items-center px-4 text-body-subtle text-sm'>Loading…</div>
+		return <div className='h-30 flex items-center px-4 text-body-subtle text-sm'>Loading…</div>
 	}
 
 	if (blocks.length === 0) {
 		return (
-			<div className='h-[120px] flex flex-col justify-center px-4'>
+			<div className='h-30 flex flex-col justify-center px-4'>
 				<span className='text-body-muted text-sm'>No blocks yet!</span>
 				<span className='text-body-subtle text-xs mt-1'>Blocks your gophers mine will show up here.</span>
 			</div>
@@ -35,7 +35,7 @@ export default function FoundBlocks() {
 				return (
 					<div
 						key={block.hash}
-						className='shrink-0 w-[180px] rounded-2xl bg-surface-raised border-line border-[0.5px] p-3 flex flex-col gap-1'
+						className='shrink-0 w-45 rounded-2xl bg-surface-raised border-line border-[0.5px] p-3 flex flex-col gap-1'
 					>
 						{/* Only a link when an explorer is configured */}
 						{href ? (

@@ -26,6 +26,7 @@ export function useUpdateSettings() {
 
 		onSuccess: (fresh: SettingsSchema) => {
 			qc.setQueryData(['config', 'settings'], fresh)
+			qc.invalidateQueries({queryKey: ['config', 'raw']})
 			invalidatePoolData(qc)
 		},
 	})
@@ -40,6 +41,7 @@ export function useRestoreDefaults() {
 
 		onSuccess: (fresh: SettingsSchema) => {
 			qc.setQueryData(['config', 'settings'], fresh)
+			qc.invalidateQueries({queryKey: ['config', 'raw']})
 			invalidatePoolData(qc)
 		},
 	})
@@ -58,8 +60,7 @@ export function useUpdateRawConfig() {
 	const qc = useQueryClient()
 
 	return useMutation({
-		mutationFn: (contents: string) =>
-			api<{contents: string}>('/config/raw', {method: 'PATCH', body: {contents}}),
+		mutationFn: (contents: string) => api<{contents: string}>('/config/raw', {method: 'PATCH', body: {contents}}),
 
 		onSuccess: (fresh) => {
 			qc.setQueryData(['config', 'raw'], fresh)

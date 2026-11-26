@@ -1,9 +1,6 @@
-import {useQueries} from '@tanstack/react-query'
-
 import InsightCard from './InsightsCard'
 import {CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {Field, SplitField, BigStat} from '@/components/shared/Field'
-import {api} from '@/lib/api'
 import {usePoolInfo, useGophers} from '@/hooks/usePogolo'
 import {useSettings} from '@/hooks/useSettings'
 import {formatHashrate, formatDifficulty, formatUptimeSeconds} from '@/lib/formatPool'

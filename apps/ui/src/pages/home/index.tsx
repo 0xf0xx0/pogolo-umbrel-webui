@@ -58,7 +58,7 @@ export default function HomePage() {
 					</div>
 
 					{/* Pool stats - to the right on desktop and below on mobile */}
-					<div className='w-full md:w-[215px] flex flex-col items-center mt-4 md:mt-0 pb-7 md:pb-0'>
+					<div className='w-full md:w-55 flex flex-col items-center mt-4 md:mt-0 pb-7 md:pb-0'>
 						<PoolStats />
 					</div>
 				</CardContent>
