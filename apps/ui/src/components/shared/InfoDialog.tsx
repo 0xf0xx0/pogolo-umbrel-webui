@@ -23,7 +23,7 @@ export default function InfoDialog({trigger, title, description, className}: Inf
 		<Dialog>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogContent
-				className={`sm:max-w-[425px] bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl ${className || ''}`}
+				className={`sm:max-w-106 bg-card-gradient backdrop-blur-2xl border-line border-[0.5px] rounded-2xl ${className || ''}`}
 				showCloseButton={false}
 			>
 				<DialogClose asChild>

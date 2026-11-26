@@ -9,6 +9,7 @@ import Logo from '@/assets/logo.svg?react'
 import ConnectionDetails from '@/components/ConnectionDetails'
 import Info from '@/components/About'
 import {usePoolInfo} from '@/hooks/usePogolo'
+import {chainColor} from '@/lib/chainColor'
 
 export default function Header({className}: {className?: string}) {
 	const {data: info, isLoading, isError} = usePoolInfo()
@@ -19,23 +20,20 @@ export default function Header({className}: {className?: string}) {
 	return (
 		<header className={cn('flex items-end md:items-center justify-between mb-6 md:mb-8 w-full', className)}>
 			<div className='flex flex-row items-center gap-2.5 md:gap-3.5'>
-				<Logo aria-label='pogolo logo' className='w-[50px] md:w-[60px] h-[50px] md:h-[60px] shrink-0' />
+				<Logo aria-label='pogolo logo' className='w-12 md:w-15 h-12 md:h-15 shrink-0' />
 				<div>
-                    <h1 title={`pogolo v${info?.version} on ${info?.activeChain}`} className='text-2xl md:text-3xl font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'>
-                        pogolo<span className={clsx(
-                            'text-sm font-normal',
-                            info?.activeChain === 'mainnet' ?
-                                'text-[#F7931A]' :
-                                info?.activeChain.startsWith('test') ?
-                                    'text-sky-500' : 'text-red-800'
-						)}> {info?.version}</span>
+					<h1
+						title={`pogolo v${info?.version} on ${info?.activeChain}`}
+						className='text-2xl md:text-3xl font-bold bg-text-gradient bg-clip-text text-transparent leading-none pb-1'
+					>
+						pogolo<span className={clsx('text-sm font-normal', chainColor(info?.activeChain))}> {info?.version}</span>
 					</h1>
 
 					{/* We gracefully handle loading and error states for no layout shift */}
 					<p className='text-sm md:text-base leading-none italic text-body-faint'>
 						<span
 							className={clsx(
-								'inline-block transition-opacity duration-500 ease-in-out truncate max-w-[200px] md:max-w-[360px] font-fix',
+								'inline-block transition-opacity duration-500 ease-in-out truncate max-w-50 md:max-w-90 font-fix',
 								isLoading ? 'opacity-0 select-none' : 'opacity-100',
 							)}
 							title={info?.tag}
@@ -45,10 +43,10 @@ export default function Header({className}: {className?: string}) {
 					</p>
 				</div>
 			</div>
-            <div className="inline-flex gap-1">
-                 <Info />
+			<div className='inline-flex gap-1'>
+				<Info />
 				{/* Connect button + modal */}
-				 <ConnectionDetails />
+				<ConnectionDetails />
 			</div>
 		</header>
 	)

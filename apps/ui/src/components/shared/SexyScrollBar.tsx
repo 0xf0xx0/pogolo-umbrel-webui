@@ -11,7 +11,7 @@ export function SexyScrollBar({className, orientation = 'vertical', ...props}: S
 			orientation={orientation}
 			className={cn(
 				'',
-				orientation === 'vertical' ? 'h-full w-[3px] -mr-[20px]' : 'h-[3px] w-full flex flex-col',
+				orientation === 'vertical' ? 'h-full w-1 -mr-5' : 'h-1 w-full flex flex-col',
 				className,
 			)}
 			{...props}

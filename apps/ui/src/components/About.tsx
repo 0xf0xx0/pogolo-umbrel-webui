@@ -1,5 +1,4 @@
-import {TriangleAlert, X as XIcon, Info, Pickaxe} from 'lucide-react'
-import {motion, AnimatePresence} from 'framer-motion'
+import {X as XIcon, Info} from 'lucide-react'
 
 import Logo from '@/assets/logo.svg?react'
 
@@ -17,12 +16,13 @@ import {Button} from '@/components/ui/button'
 import {GradientBorderFromTop} from '@/components/shared/GradientBorders'
 import {usePoolInfo} from '@/hooks/usePogolo'
 import {useConnectionDetails} from '@/hooks/useConnectionDetails'
+import {chainColor} from '@/lib/chainColor'
 
 export default function About() {
 	const {data: connDetails} = useConnectionDetails()
-	const {data: info, isLoading, isError} = usePoolInfo()
+	const {data: info, isLoading} = usePoolInfo()
 
-
+	const chainClass = chainColor(info?.activeChain)
 	const apiLicense = `${window.location.protocol}//${connDetails?.stratum.host}:5662/license.txt`
 	return (
 		<Dialog>
@@ -53,15 +53,7 @@ export default function About() {
 								{!isLoading && (
 									<span>
 										v{info?.version} on{' '}
-										<span
-											className={
-												info?.activeChain === 'mainnet'
-													? 'text-[#F7931A]'
-													: info?.activeChain.startsWith('test')
-														? 'text-sky-500'
-														: 'text-red-800'
-											}
-										>
+										<span className={chainClass}>
 											{info?.activeChain}
 										</span>
 									</span>
@@ -78,14 +70,18 @@ export default function About() {
                                     |{' '}
                                     <a className='text-blue-400 hover:underline' href='https://osmu.xyz/t/pogolo-local-golang-pool/28'>
 										forum thread
+                                    </a>{' '}
+                                    |{' '}
+                                    <a className='text-blue-400 hover:underline' href='bitcoin:?sp=sp1qqwe4hnp6yzaa548f5snn6v22l47mkc5dvwqv0lrghklakfns0v67kqknueh9kjelwl25stc7jtm4sp34ykn9ysjrhumxx95cdep934yyjs5vrgw5&label=pogolo%20donation&amount=0.00001'>
+										donate (silent payment)
                                     </a>
 								</span>
 							</h2>
 						</div>
 					</DialogTitle>
-                    <DialogDescription className='text-body-muted text-left text-sm'>
+                    <DialogDescription className='text-body text-left text-sm'>
                         <p>thanks for runnin pogolo :3</p>
-                        <p>if you wind a block,</p>
+                        <p>feedback is welcome, i'd love to know how pogolo is servin you uwu</p>
 					</DialogDescription>
 				</DialogHeader>
 				<div className='md:gap-4 text-body-muted text-sm'>

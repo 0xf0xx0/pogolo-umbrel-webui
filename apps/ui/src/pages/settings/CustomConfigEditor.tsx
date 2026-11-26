@@ -29,12 +29,12 @@ export default function CustomConfigEditor() {
 			</p>
 
 			<Textarea
-				className='mt-2 h-40 w-full whitespace-pre-wrap !text-sm text-body border border-line-strong rounded-lg p-2 resize-none font-mono
-					[&::-webkit-scrollbar]:w-[3px] [&::-webkit-scrollbar]:bg-transparent
+				className='mt-2 h-40 w-full whitespace-pre-wrap text-sm! text-body border border-line-strong rounded-lg p-2 resize-none font-mono
+					[&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:bg-transparent
 					[&::-webkit-scrollbar-thumb]:bg-[hsla(0,0%,100%,0.15)] [&::-webkit-scrollbar-thumb]:rounded-full
 					[&::-webkit-scrollbar-thumb]:hover:bg-[hsla(0,0%,100%,0.25)]
 					[&::-webkit-scrollbar-track]:bg-transparent
-					[scrollbar-width:thin] [scrollbar-color:hsla(0,0%,100%,0.15)_transparent]
+					scrollbar-thin [scrollbar-color:hsla(0,0%,100%,0.15)_transparent]
 					focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-line-strong'
 				placeholder='# key = value'
 				value={text}

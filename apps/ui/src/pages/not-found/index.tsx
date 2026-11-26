@@ -5,7 +5,7 @@ import notFoundImg from '@/assets/404.webp'
 export default function NotFoundPage() {
 	return (
 		<div className='flex min-h-[70vh] justify-center px-4 items-start md:items-center'>
-			<div className='flex w-full max-w-screen-md flex-col items-center gap-4 text-center md:flex-row md:items-center md:gap-10 md:text-left'>
+			<div className='flex w-full max-w-3xl flex-col items-center gap-4 text-center md:flex-row md:items-center md:gap-10 md:text-left'>
 				<picture className='shrink-0'>
 					<img
 						src={notFoundImg}
@@ -13,7 +13,7 @@ export default function NotFoundPage() {
 						loading='lazy'
 						width={280}
 						height={180}
-						className='w-[min(60vw,260px)] md:w-[340px] h-auto rounded-lg shadow-sm opacity-90'
+						className='w-[min(60vw,260px)] md:w-85 h-auto rounded-lg shadow-sm opacity-90'
 					/>
 				</picture>
 

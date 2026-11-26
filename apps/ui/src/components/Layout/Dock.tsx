@@ -74,7 +74,7 @@ function DockTrigger({
 		>
 			<NavLink
 				to={to}
-				className='group relative inline-flex items-center gap-1 rounded-full text-body-muted transition-colors data-[state=active]:text-body data-[state=active]:delay-[200ms]'
+				className='group relative inline-flex items-center gap-1 rounded-full text-body-muted transition-colors data-[state=active]:text-body data-[state=active]:delay-200'
 			>
 				{/* This is the sliding pill that only exists inside the active trigger, and is used to create the illusion of a pill sliding between the tabs.*/}
 				{active && (
@@ -97,9 +97,9 @@ function DockTrigger({
 						hide: {width: 0, opacity: 0, marginRight: 0},
 					}}
 					transition={{duration: 0.15}}
-					className='overflow-hidden flex-shrink-0'
+					className='overflow-hidden shrink-0'
 				>
-					{active && <Icon className='h-[18px] w-[18px]' />}
+					{active && <Icon className='h-5 w-5' />}
 				</motion.div>
 
 				<span className='text-xs font-bold'>{label}</span>

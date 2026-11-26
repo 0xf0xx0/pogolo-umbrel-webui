@@ -45,7 +45,7 @@ export default function StatSummary() {
 	const uptimeStr = data && data.uptime > 0 ? formatUptimeSeconds(data.uptime) : '—'
 
 	return (
-		<InsightCard className='p-0 overflow-hidden h-[240px] md:h-[120px]'>
+		<InsightCard className='p-0 overflow-hidden h-60 md:h-30'>
 			{/* 2×2 on mobile, 1×4 on md+  */}
 			<div
 				className='

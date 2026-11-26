@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import QrSvg from '@wojtekmaj/react-qr-svg'
 import {TriangleAlert, X as XIcon, Info, Pickaxe} from 'lucide-react'
-import {motion, AnimatePresence} from 'framer-motion'
+import {motion} from 'framer-motion'
 
 import Logo from '@/assets/logo.svg?react'
 
@@ -14,7 +14,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import {Tabs, TabsList, TabsTrigger, TabsContent} from '@/components/ui/tabs'
+import {Tabs, TabsList, TabsTrigger} from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
@@ -64,7 +64,7 @@ export default function ConnectionDetails() {
 				</DialogHeader>
 
 				<div className='space-y-4 mt-2 md:grid md:grid-cols-3 md:gap-4'>
-					<div className='bg-gradient-to-b from-surface-input to-surface p-5 rounded-xl'>
+					<div className='bg-linear-to-b from-surface-input to-surface p-5 rounded-xl'>
     					<Tabs value={tab} onValueChange={(v: string) => setTab(v as 'sv1' | 'sv2')} className='w-50 mx-auto mb-3'>
     						<TabsList className='relative flex w-full rounded-md bg-surface backdrop-blur-xl p-1 ring-white/10'>
     							<GradientBorderFromTop />
@@ -111,7 +111,7 @@ export default function ConnectionDetails() {
     						address from Settings will be used instead.
     					</p>
 
-    					<div className='row-span-2 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-gradient-to-b from-surface-input to-surface'>
+    					<div className='row-span-2 divide-y divide-line overflow-hidden grid grid-cols-6 w-full h-fit rounded-xl bg-linear-to-b from-surface-input to-surface'>
     						<CopyRow className='col-span-4' label='Host' value={conn?.host} />
     						<CopyRow className='col-span-2' label='Port' value={conn?.port?.toString()} />
     						<CopyRow className='col-span-3' label='Username' value='btcaddress.workername' />
