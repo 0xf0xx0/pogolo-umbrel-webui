@@ -19,6 +19,11 @@
 FROM node:slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS deps
 WORKDIR /repo
 
+# Event-driven log tailing for the backend (also used by the dev stage).
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends inotify-tools \
+ && rm -rf /var/lib/apt/lists/*
+
 # Copy only dependency manifests to keep this layer cache-friendly
 COPY package*.json ./
 COPY apps/backend/package*.json apps/backend/
@@ -83,6 +88,11 @@ RUN tsc -b libs/shared-types libs/settings apps/backend \
 ########################################
 FROM node:slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS runtime
 WORKDIR /app
+
+# The backend tails pogolo.log through inotifywait.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends inotify-tools \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install production dependencies only
 # Note: import-map lives in package.json, so is also needed so Node can resolve "#settings/#types"

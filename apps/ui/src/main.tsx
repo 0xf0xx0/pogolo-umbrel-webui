@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client'
 
 import preloadFonts from './lib/preload-fonts'
 
-import App from './App.tsx'
+import App from './App'
 import './index.css'
 
 import * as goimp from './wasm_exec.js'
@@ -12,6 +12,7 @@ import keygenWasmUrl from './keygen.wasm?url'
 const initKeygen = async () => {
     /// force import
     goimp == goimp
+    /// go binds to globalThis :\
     const go = new globalThis.Go();
     const responsePromise = fetch(keygenWasmUrl)
     const { instance } = await WebAssembly.instantiateStreaming(responsePromise, go.importObject)

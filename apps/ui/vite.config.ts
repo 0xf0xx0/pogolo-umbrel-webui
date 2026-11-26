@@ -2,19 +2,18 @@ import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr'
-import path from 'path'
+import path from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [svgr(), react(), tailwindcss()],
 	server: {
 		proxy: {
-			// any request starting with /api → http://localhost:3000
+			// Match the backend's default listener; Docker overrides this with VITE_API_BASE.
 			'/api': {
-				target: process.env['VITE_API_BASE'] || 'http://localhost:3000',
+				target: process.env['VITE_API_BASE'] || 'http://localhost:5663',
 				changeOrigin: true,
 				ws: true,
-				rewrite: (path) => path, // keep /api/whatever as-is
 			},
 		},
 	},

@@ -85,6 +85,7 @@ export default function About() {
 					</DialogTitle>
                     <DialogDescription className='text-body-muted text-left text-sm'>
                         <p>thanks for runnin pogolo :3</p>
+                        <p>if you wind a block,</p>
 					</DialogDescription>
 				</DialogHeader>
 				<div className='md:gap-4 text-body-muted text-sm'>

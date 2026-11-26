@@ -12,6 +12,8 @@
 		"verbatimModuleSyntax": true,
 		"moduleDetection": "force",
 		"noEmit": true,
+		"composite": false,
+		"declaration": false,
 
 		/* Linting */
 		"strict": true,
@@ -20,6 +22,5 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true
 	},
-	"include": ["vite.config.ts"],
-	"references": [{"path": "../../libs/settings"}, {"path": "../../libs/shared-types"}]
+	"include": ["vite.config.ts"]
 }

@@ -5,8 +5,11 @@
 // Lines are kept in a small ring buffer so a newly-connected client immediately
 // sees recent history instead of an empty pane until pogolo next logs something.
 
-import fs from 'node:fs'
+import {spawn} from 'node:child_process'
 import fsp from 'node:fs/promises'
+import path from 'node:path'
+
+import type {ChildProcess} from 'node:child_process'
 
 import {ansiToHtml} from '../../lib/ansi-to-html.js'
 import {POGOLO_LOG} from '../../lib/paths.js'
@@ -17,14 +20,19 @@ import type {LogLine} from '#types'
 // Lines retained for replay to newly-connected clients.
 const HISTORY_LIMIT = 500
 
-// How often we look for new data. The file is on a local volume, so this is a
-// cheap stat; watch() alone is not enough because it misses writes on some
-// bind-mounted filesystems.
+// inotifywait provides immediate updates; polling remains a fallback for
+// bind-mounted filesystems that do not reliably deliver inotify events.
 const POLL_INTERVAL_MS = 1000
+
+// Restart inotifywait itself if it exits unexpectedly.
+const WATCH_RETRY_MS = 1000
 
 // Bytes of existing log to replay on startup, so the pane is not empty after a
 // webui restart. Only whole lines within this window are used.
 const BACKFILL_BYTES = 64 * 1024
+
+const LOG_FILE = path.resolve(POGOLO_LOG)
+const LOG_DIRECTORY = path.dirname(LOG_FILE)
 
 const history: LogLine[] = []
 const clients = new Set<WebSocket>()
@@ -40,11 +48,13 @@ let inode: number | undefined
 // Carry for a trailing partial line between reads
 let pending = ''
 
-// poll() is triggered by both the watcher and the interval. Without this guard
-// two overlapping runs can read the same bytes before either advances `offset`,
-// which shows up as duplicated log lines.
-let polling = false
-let pollAgain = false
+// inotifywait can emit several events for one write. Serialize read passes so
+// overlapping drains cannot read the same bytes and duplicate log lines.
+let reading = false
+let readAgain = false
+
+let watcher: ChildProcess | undefined
+let watchRetry: NodeJS.Timeout | undefined
 
 function push(line: string) {
 	// Drop stray control characters (keeping the ESC that starts a colour
@@ -52,9 +62,9 @@ function push(line: string) {
 	const cleaned = line.replace(/[\x00-\x08\x0b-\x1a\x1c-\x1f]/g, '').trimEnd()
 	if (!cleaned) return
 
-    const entry: LogLine = {
-        /// use a random sequence so the frontend displays the new logs after a backend restart
-        seq: crypto.getRandomValues(seq)[0],
+	const entry: LogLine = {
+		/// use a random sequence so the frontend displays the new logs after a backend restart
+		seq: crypto.getRandomValues(seq)[0],
 		timestamp: Date.now(),
 		html: ansiToHtml(cleaned),
 	}
@@ -89,12 +99,12 @@ async function readNewData(handle: fsp.FileHandle, size: number) {
 	emitText(buffer.subarray(0, bytesRead).toString('utf8'))
 }
 
-// Run one read pass. Never call this directly — go through poll().
+// Run one read pass. Never call this directly — go through drain().
 async function readOnce() {
 	let handle: fsp.FileHandle | undefined
 
 	try {
-		handle = await fsp.open(POGOLO_LOG, 'r')
+		handle = await fsp.open(LOG_FILE, 'r')
 		const stats = await handle.stat()
 
 		const isNewFile = inode !== undefined && stats.ino !== inode
@@ -133,23 +143,88 @@ async function readOnce() {
 	}
 }
 
-// Serialize read passes. A trigger that arrives mid-read queues exactly one
+// Serialize read passes. An event that arrives mid-read queues exactly one
 // follow-up, so we never miss the write that caused it.
-async function poll(): Promise<void> {
-	if (polling) {
-		pollAgain = true
+async function drain(): Promise<void> {
+	if (reading) {
+		readAgain = true
 		return
 	}
 
-	polling = true
+	reading = true
 	try {
 		do {
-			pollAgain = false
+			readAgain = false
 			await readOnce()
-		} while (pollAgain)
+		} while (readAgain)
 	} finally {
-		polling = false
+		reading = false
 	}
+}
+
+function startWatcher() {
+	// Watch the directory rather than the file so creation and log rotation are
+	// visible even when pogolo.log does not exist yet or is replaced.
+	const child = spawn(
+		'inotifywait',
+		[
+			'--monitor',
+			'--quiet',
+			'--event',
+			'modify',
+			'--event',
+			'close_write',
+			'--event',
+			'moved_to',
+			'--event',
+			'moved_from',
+			'--event',
+			'create',
+			'--event',
+			'delete',
+			'--event',
+			'attrib',
+			'--format',
+			'%w%f',
+			LOG_DIRECTORY,
+		],
+		{stdio: ['ignore', 'pipe', 'pipe']},
+	)
+	watcher = child
+
+	let output = ''
+	let errors = ''
+	child.stdout.setEncoding('utf8')
+	child.stderr.setEncoding('utf8')
+
+	child.stdout.on('data', (chunk: string) => {
+		output += chunk
+		const lines = output.split('\n')
+		output = lines.pop() ?? ''
+		for (const line of lines) {
+			if (line === LOG_FILE) void drain()
+		}
+	})
+	child.stderr.on('data', (chunk: string) => {
+		errors += chunk
+	})
+
+	const restart = (reason: string) => {
+		// The close event follows a spawn error; only schedule one restart.
+		if (watcher !== child || !started) return
+		watcher = undefined
+		console.error(`inotifywait stopped watching ${LOG_FILE}: ${reason}. Retrying...`)
+		watchRetry = setTimeout(() => {
+			watchRetry = undefined
+			startWatcher()
+		}, WATCH_RETRY_MS)
+		watchRetry.unref()
+	}
+
+	child.once('error', (error) => restart(error.message))
+	child.once('close', (code, signal) => {
+		restart(errors.trim() || `exit code ${code ?? 'unknown'}${signal ? ` (${signal})` : ''}`)
+	})
 }
 
 // Begin following pogolo's log file. Safe to call more than once.
@@ -157,23 +232,19 @@ export function startLogStream() {
 	if (started) return
 	started = true
 
-	void poll()
+	startWatcher()
+	void drain()
 
-	const timer = setInterval(() => void poll(), POLL_INTERVAL_MS)
-	// Never keep the process alive just for log polling
+	const timer = setInterval(() => void drain(), POLL_INTERVAL_MS)
+	// Never keep the process alive just for fallback log polling.
 	timer.unref()
 
-	// watch() gives us near-instant updates when the filesystem supports it;
-	// the interval above is the fallback that guarantees we still catch up.
-	try {
-		const watcher = fs.watch(POGOLO_LOG, () => void poll())
-		watcher.on('error', () => {
-			/* the poll interval keeps working on its own */
-		})
-		watcher.unref()
-	} catch {
-		// File may not exist yet, or the platform may not support watching it.
-	}
+	// Do not leave an orphaned inotifywait process behind on backend shutdown.
+	process.once('exit', () => {
+		started = false
+		if (watchRetry) clearTimeout(watchRetry)
+		watcher?.kill()
+	})
 }
 
 export function wsLogStream(socket: WebSocket) {

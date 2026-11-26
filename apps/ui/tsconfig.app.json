@@ -13,6 +13,8 @@
 		"verbatimModuleSyntax": true,
 		"moduleDetection": "force",
 		"noEmit": true,
+		"composite": false,
+		"declaration": false,
 		"jsx": "react-jsx",
 
 		/* Linting */
@@ -27,7 +29,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
-			"#settings": ["../../libs/settings/dist/index.d.ts"],
+			"#settings": ["../../libs/settings/index.ts"],
 			"#types": ["../../libs/shared-types/index.d.ts"]
 		}
 	},
